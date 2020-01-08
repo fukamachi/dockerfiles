@@ -1,6 +1,10 @@
 name: Build and publish sbcl Docker images
 
-on: push
+on:
+  push:
+    paths:
+      - 'roswell/**'
+      - 'sbcl/1.3.20/**'
 
 env:
   LATEST: 0
