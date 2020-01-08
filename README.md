@@ -3,7 +3,7 @@
 ## Docker Hub Links
 
 - [fukamachi/roswell](https://hub.docker.com/r/fukamachi/roswell)
-- [fukamachi/sbcl-bin](https://hub.docker.com/r/fukamachi/sbcl-bin)
+- [fukamachi/sbcl](https://hub.docker.com/r/fukamachi/sbcl)
 
 ## Developer notes
 
@@ -11,7 +11,7 @@
 
 ```
 $ ./roswell/update.sh
-$ ./sbcl-bin/update.sh
+$ ./sbcl/update.sh
 ```
 
 ### Generate GitHub Actions

@@ -1,0 +1,35 @@
+name: Build and publish sbcl Docker images
+
+on:
+  push:
+    paths:
+      - 'sbcl/1.5.7/**'
+
+env:
+  LATEST: 0
+
+jobs:
+  build:
+    name: Build and publish Docker images
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@master
+      - name: Login to Docker Hub
+        run: |
+            echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "fukamachi" --password-stdin
+      - name: Build sbcl Debian image
+        run: docker build -t "fukamachi/sbcl:1.5.7" "sbcl/1.5.7"
+      - name: Build sbcl Alpine image
+        run: docker build -t "fukamachi/sbcl:1.5.7-alpine" "sbcl/1.5.7/alpine"
+      - name: Publish sbcl Debian image
+        run: docker push "fukamachi/sbcl:1.5.7"
+      - name: Publish sbcl Alpine image
+        run: docker push "fukamachi/sbcl:1.5.7-alpine"
+      - name: Update the latest sbcl Debian image
+        if: env.LATEST == 1
+        run: |
+          docker tag "fukamachi/sbcl:1.5.7" "fukamachi/sbcl:latest"
+          docker tag "fukamachi/sbcl:1.5.7-alpine" "fukamachi/sbcl:latest-alpine"
+          docker push "fukamachi/sbcl:latest"
+          docker push "fukamachi/sbcl:latest-alpine"
