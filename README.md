@@ -2,18 +2,23 @@
 
 Dockerfiles for each versions of Common Lisp implementations and utilities. Currently this repository provides for the following products:
 
-- [roswell](https://github.com/roswell/roswell) [\[Docker Hub\]](https://hub.docker.com/r/fukamachi/roswell)
-- [sbcl](http://sbcl.org) [\[Docker Hub\]](https://hub.docker.com/r/fukamachi/sbcl)
+- [roswell](https://github.com/roswell/roswell)
+  - [https://hub.docker.com/r/fukamachi/roswell](https://hub.docker.com/r/fukamachi/roswell)
+- [sbcl](http://sbcl.org)
+  - [https://hub.docker.com/r/fukamachi/sbcl](https://hub.docker.com/r/fukamachi/sbcl)
 
 ## Usage
 
 ### Building by yourself
 
 ```
+$ git clone https://github.com/fukamachi/dockerfiles
+$ cd dockerfiles
+
 # Build SBCL 2.0.0 image (Debian)
-$ docker build -t sbcl:2.0.0 sbcl/2.0.0
+$ docker build -t sbcl:2.0.0 ./sbcl/2.0.0
 # On Alpine Linux
-$ docker build -t sbcl:2.0.0-alpine sbcl/2.0.0/alpine
+$ docker build -t sbcl:2.0.0-alpine ./sbcl/2.0.0/alpine
 
 # Start a REPL
 $ docker run -it --rm sbcl:2.0.0
@@ -25,12 +30,15 @@ $ docker run -it --rm sbcl:2.0.0
 
 ### Using built images
 
-Built images are automatically published to Docker Hub and can `docker pull`:
+Build images are also available on Docker Hub.
 
 ```
 $ docker pull fukamachi/sbcl:latest
 $ docker run -it --rm fukamachi/sbcl:latest
-*
+* (lisp-implementation-type)
+"SBCL"
+* (lisp-implementation-version)
+"2.0.0"
 ```
 
 ## Developer notes
