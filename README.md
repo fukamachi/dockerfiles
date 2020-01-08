@@ -14,17 +14,8 @@ $ ./roswell/update.sh
 $ ./sbcl-bin/update.sh
 ```
 
-### Build images from Dockerfiles
+### Generate GitHub Actions
 
 ```
-$ ./build.sh roswell
-$ ./build.sh sbcl-bin
-```
-
-### Publish images to Docker Hub
-
-```
-$ docker login
-$ ./publish.sh roswell
-$ ./publish.sh sbcl-bin
+$ ./generate-build-actions.sh
 ```
