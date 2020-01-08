@@ -1,0 +1,25 @@
+name: Build and publish Roswell Docker images
+
+on:
+  push:
+    paths:
+      - 'roswell/**'
+
+jobs:
+  build:
+    name: Build and publish Docker images
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@master
+      - name: Login to Docker Hub
+        run: |
+            echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u fukamachi --password-stdin
+      - name: Build roswell images
+        run: "ONLY_NEW_TAGS=1 ./build.sh roswell"
+      - name: Build sbcl-bin images
+        run: "./build.sh sbcl-bin"
+      - name: Publish roswell images
+        run: "ONLY_NEW_TAGS=1 ./publish.sh roswell"
+      - name: Publish sbcl-bin images
+        run: "./publish.sh sbcl-bin"

@@ -1,0 +1,27 @@
+name: Build and publish SBCL Docker images
+
+on:
+  push:
+    paths:
+      - 'sbcl-bin/**'
+
+env:
+  ONLY_NEW_TAGS: 1
+
+jobs:
+  build:
+    name: Build and publish Docker images
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        image: [sbcl-bin]
+
+    steps:
+      - uses: actions/checkout@master
+      - name: Login to Docker Hub
+        run: |
+            echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u fukamachi --password-stdin
+      - name: Build ${{ matrix.image }} images
+        run: "./build.sh ${{ matrix.image }}"
+      - name: Publish ${{ matrix.image }} images
+        run: "./publish.sh ${{ matrix.image }}"
