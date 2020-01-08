@@ -1,4 +1,4 @@
-name: Build and publish roswell Docker images
+name: Build and publish roswell:19.09.12.102 image
 
 on:
   push:
