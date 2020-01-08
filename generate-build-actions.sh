@@ -5,7 +5,10 @@ BASE_DIR=$(pwd)
 
 owner=fukamachi
 
-images=( */ )
+images=( "$@" )
+if [ ${#images[@]} -eq 0 ]; then
+    images=( */ )
+fi
 images=( "${images[@]%/}" )
 
 for image in "${images[@]}"; do
