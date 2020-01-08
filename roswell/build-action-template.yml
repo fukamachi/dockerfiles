@@ -1,4 +1,4 @@
-name: Build and publish %%IMAGE%% Docker images
+name: Build and publish %%IMAGE%%:%%VERSION%% image
 
 on: push
 
