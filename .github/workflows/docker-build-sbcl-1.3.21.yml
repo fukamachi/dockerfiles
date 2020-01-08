@@ -3,6 +3,7 @@ name: Build and publish sbcl Docker images
 on:
   push:
     paths:
+      - 'roswell/**'
       - 'sbcl/1.3.21/**'
 
 env:
