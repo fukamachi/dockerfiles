@@ -1,4 +1,4 @@
-FROM fukamachi/roswell:latest-alpine
+FROM fukamachi/roswell:19.12.13.103-alpine
 
 ENV SBCL_VERSION 1.5.0
 

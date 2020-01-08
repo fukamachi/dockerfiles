@@ -20,7 +20,7 @@ for image in "${images[@]}"; do
             -e 's/%%IMAGE%%/'"$image"'/g' \
             -e 's/%%VERSION%%/'"$version"'/g' \
             -e 's/%%LATEST%%/'"$latest"'/g' \
-            "$BASE_DIR/$image/build-action-template.yml" > "$BASE_DIR/.github/workflows/docker-build-$image-$version.yml"
+            "$BASE_DIR/build-action-template.yml" > "$BASE_DIR/.github/workflows/docker-build-$image-$version.yml"
         latest=0
     done
 done

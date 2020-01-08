@@ -1,4 +1,4 @@
-FROM fukamachi/roswell:latest
+FROM fukamachi/roswell:19.12.13.103
 
 ENV SBCL_VERSION 1.4.13
 

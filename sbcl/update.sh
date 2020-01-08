@@ -10,8 +10,8 @@ versions=( */ )
 versions=( "${versions[@]%/}" )
 IFS=$'\n'; versions=( $(echo "${versions[*]}" | sort -Vr) ); unset IFS
 
-roswellDebianTag='latest'
-roswellAlpineTag='latest-alpine'
+roswellDebianTag=$(basename $(ls -d ../roswell/*/ | sort -Vr | head -n 1))
+roswellAlpineTag="$roswellDebianTag-alpine"
 
 for version in "${versions[@]}"; do
     echo "Generating Dockerfiles for $version..."

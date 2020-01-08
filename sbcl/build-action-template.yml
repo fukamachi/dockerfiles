@@ -3,7 +3,6 @@ name: Build and publish %%IMAGE%%:%%VERSION%% image
 on:
   push:
     paths:
-      - 'roswell/**'
       - '%%IMAGE%%/%%VERSION%%/**'
 
 env:
