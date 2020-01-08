@@ -1,9 +1,6 @@
 name: Build and publish %%IMAGE%% Docker images
 
-on:
-  push:
-    paths:
-      - '%%IMAGE%%/%%VERSION%%/**'
+on: push
 
 env:
   LATEST: %%LATEST%%

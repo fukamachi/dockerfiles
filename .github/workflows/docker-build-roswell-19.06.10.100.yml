@@ -1,9 +1,6 @@
 name: Build and publish roswell Docker images
 
-on:
-  push:
-    paths:
-      - 'roswell/19.06.10.100/**'
+on: push
 
 env:
   LATEST: 0
