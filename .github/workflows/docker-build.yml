@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        image: [roswell]
+        image: [roswell, sbcl-bin]
 
     steps:
       - uses: actions/checkout@master
