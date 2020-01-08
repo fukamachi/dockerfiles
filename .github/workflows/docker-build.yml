@@ -1,0 +1,27 @@
+name: Build and publish Docker images
+
+on: push
+
+jobs:
+  build:
+    name: Build and publish Docker images
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        image: [roswell]
+
+    steps:
+      - uses: actions/checkout@master
+      - name: Login to Docker Hub
+        env:
+            DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: |
+            echo "$DOCKER_HUB_PASSWORD" | docker login -u fukamachi --password-stdin
+      - name: Build ${{ matrix.image }} images
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: ./build.sh $IMAGE
+      - name: Publish ${{ matrix.image }} images
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: ./publish.sh $IMAGE
