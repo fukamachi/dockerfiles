@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OWNER=fukamachi
+owner=fukamachi
 
 cd `dirname $0`
 
@@ -16,13 +16,13 @@ roswellAlpineTag='latest-alpine'
 for version in "${versions[@]}"; do
     echo "Generating Dockerfiles for $version..."
 
-    sed -e 's/%%OWNER%%/'"$OWNER"'/g' \
+    sed -e 's/%%OWNER%%/'"$owner"'/g' \
         -e 's/%%ROSWELL_TAG%%/'"$roswellDebianTag"'/g' \
         -e 's/%%SBCL_VERSION%%/'"$version"'/g' \
         Dockerfile-debian.template > "$version/Dockerfile"
 
     mkdir -p "$version/alpine"
-    sed -e 's/%%OWNER%%/'"$OWNER"'/g' \
+    sed -e 's/%%OWNER%%/'"$owner"'/g' \
         -e 's/%%ROSWELL_TAG%%/'"$roswellAlpineTag"'/g;' \
         -e 's/%%SBCL_VERSION%%/'"$version"'/g;' \
         Dockerfile-alpine.template > "$version/alpine/Dockerfile"
