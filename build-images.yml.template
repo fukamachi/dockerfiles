@@ -1,0 +1,46 @@
+name: Build Docker images
+
+on:
+  push:
+    paths:
+      - 'roswell/**'
+      - 'sbcl/**'
+      - '.github/workflows/build-images.yml'
+
+jobs:
+  roswell:
+    name: Build Roswell images
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        target: [debian, alpine]
+        version: %%ROSWELL_VERSIONS%%
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build roswell:${{ matrix.version }}-${{ matrix.target }} image
+        run: ./build.sh roswell ${{ matrix.version }} ${{ matrix.target }}
+      - name: Publish roswell:${{ matrix.version }}-${{ matrix.target }} image
+        if: github.ref == 'refs/heads/master'
+        env:
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: ./publish.sh roswell ${{ matrix.version }} ${{ matrix.target }}
+
+  sbcl:
+    name: Build SBCL images
+    runs-on: ubuntu-18.04
+    needs: roswell
+    strategy:
+      matrix:
+        target: [debian, alpine]
+        version: %%SBCL_VERSIONS%%
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build sbcl:${{ matrix.version }}-${{ matrix.target }} image
+        run: ./build.sh sbcl ${{ matrix.version }} ${{ matrix.target }}
+      - name: Publish sbcl:${{ matrix.version }}-${{ matrix.target }} image
+        if: github.ref == 'refs/heads/master'
+        env:
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: ./publish.sh sbcl ${{ matrix.version }} ${{ matrix.target }}

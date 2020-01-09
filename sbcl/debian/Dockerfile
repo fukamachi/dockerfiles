@@ -1,4 +1,4 @@
-FROM fukamachi/roswell:19.12.13.103
+FROM fukamachi/roswell:19.12.13.103-debian
 
 ARG VERSION
 

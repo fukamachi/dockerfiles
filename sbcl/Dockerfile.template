@@ -1,4 +1,4 @@
-FROM %%OWNER%%/roswell:%%ROSWELL_TAG%%
+FROM %%BASE%%:%%BASE_TAG%%
 
 ARG VERSION
 

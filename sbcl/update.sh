@@ -2,17 +2,18 @@
 
 cd `dirname $0`
 
-owner=fukamachi
+base="fukamachi/roswell"
 
 curl -s https://api.github.com/repos/roswell/sbcl_bin/releases | jq -r '.[] | .tag_name' | sed -e 's/^v//' | cat versions - | sort -V | uniq > versions
 
-roswellDebianTag=$(basename $(cat ../roswell/versions | sort -Vr | head -n 1))
-roswellAlpineTag="$roswellDebianTag-alpine"
+latestRoswell=$(basename $(cat ../roswell/versions | sort -Vr | head -n 1))
+roswellDebianTag="$latestRoswell-debian"
+roswellAlpineTag="$latestRoswell-alpine"
 
-sed -e 's/%%OWNER%%/'"$owner"'/g' \
-    -e 's/%%ROSWELL_TAG%%/'"$roswellDebianTag"'/g' \
-    debian/Dockerfile.template > debian/Dockerfile
+sed -e 's:%%BASE%%:'"$base"':g' \
+    -e 's/%%BASE_TAG%%/'"$roswellDebianTag"'/g' \
+    Dockerfile.template > debian/Dockerfile
 
-sed -e 's/%%OWNER%%/'"$owner"'/g' \
-    -e 's/%%ROSWELL_TAG%%/'"$roswellAlpineTag"'/g' \
-    alpine/Dockerfile.template > alpine/Dockerfile
+sed -e 's:%%BASE%%:'"$base"':g' \
+    -e 's/%%BASE_TAG%%/'"$roswellAlpineTag"'/g' \
+    Dockerfile.template > alpine/Dockerfile
