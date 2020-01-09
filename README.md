@@ -13,8 +13,7 @@ Dockerfiles for each version of Common Lisp implementations and utilities. Curre
 
 Build images are also available on Docker Hub.
 
-```
-$ docker pull fukamachi/sbcl
+```shell
 $ docker run -it --rm fukamachi/sbcl
 * (lisp-implementation-type)
 "SBCL"
@@ -22,9 +21,9 @@ $ docker run -it --rm fukamachi/sbcl
 "2.0.0"
 ```
 
-### Building by yourself
+### Building by your own
 
-```
+```shell
 $ git clone https://github.com/fukamachi/dockerfiles
 $ cd dockerfiles
 
@@ -44,18 +43,3 @@ $ docker run -it --rm sbcl:2.0.0-debian
 ## Fork
 
 To make GitHub Actions work, add your Docker Hub password as a secret named `DOCKER_HUB_PASSWORD` to your forked GitHub repository. See [GitHub's document](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets).
-
-## Developer notes
-
-### Generate Dockerfiles for recent releases
-
-```
-$ ./roswell/update.sh
-$ ./sbcl/update.sh
-```
-
-### Generate GitHub Actions
-
-```
-$ ./generate-build-actions.sh
-```

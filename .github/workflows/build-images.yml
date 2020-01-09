@@ -9,7 +9,7 @@ on:
 
 jobs:
   roswell:
-    name: Build Roswell images
+    name: Roswell
     runs-on: ubuntu-18.04
     strategy:
       matrix:
@@ -27,7 +27,7 @@ jobs:
         run: ./publish.sh roswell ${{ matrix.version }} ${{ matrix.target }}
 
   sbcl:
-    name: Build SBCL images
+    name: SBCL
     runs-on: ubuntu-18.04
     needs: roswell
     strategy:
