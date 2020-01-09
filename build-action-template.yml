@@ -23,11 +23,13 @@ jobs:
       - name: Build %%IMAGE%% Alpine image
         run: docker build -t "%%OWNER%%/%%IMAGE%%:%%VERSION%%-alpine" "%%IMAGE%%/%%VERSION%%/alpine"
       - name: Publish %%IMAGE%% Debian image
+        if: github.ref == 'refs/heads/master'
         run: docker push "%%OWNER%%/%%IMAGE%%:%%VERSION%%"
       - name: Publish %%IMAGE%% Alpine image
+        if: github.ref == 'refs/heads/master'
         run: docker push "%%OWNER%%/%%IMAGE%%:%%VERSION%%-alpine"
       - name: Update the latest %%IMAGE%% Debian image
-        if: env.LATEST == 1
+        if: env.LATEST == 1 && github.ref == 'refs/heads/master'
         run: |
           docker tag "%%OWNER%%/%%IMAGE%%:%%VERSION%%" "%%OWNER%%/%%IMAGE%%:latest"
           docker tag "%%OWNER%%/%%IMAGE%%:%%VERSION%%-alpine" "%%OWNER%%/%%IMAGE%%:latest-alpine"
