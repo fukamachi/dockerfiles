@@ -41,6 +41,10 @@ $ docker run -it --rm fukamachi/sbcl:latest
 "2.0.0"
 ```
 
+## Fork
+
+To make GitHub Actions work, add your Docker Hub password as a secret named `DOCKER_HUB_PASSWORD` to your forked GitHub repository. See [GitHub's document](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets).
+
 ## Developer notes
 
 These scripts will be called by [GitHub Actions](https://github.com/fukamachi/dockerfiles/actions) automatically, however, sometimes it needs to be run manually.
