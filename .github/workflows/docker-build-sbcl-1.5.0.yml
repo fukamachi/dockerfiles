@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'sbcl/1.5.0/**'
+      - '.github/workflows/docker-build-sbcl-1.5.0.yml'
 
 env:
   LATEST: 0
@@ -23,11 +24,13 @@ jobs:
       - name: Build sbcl Alpine image
         run: docker build -t "fukamachi/sbcl:1.5.0-alpine" "sbcl/1.5.0/alpine"
       - name: Publish sbcl Debian image
+        if: github.ref == 'refs/heads/master'
         run: docker push "fukamachi/sbcl:1.5.0"
       - name: Publish sbcl Alpine image
+        if: github.ref == 'refs/heads/master'
         run: docker push "fukamachi/sbcl:1.5.0-alpine"
       - name: Update the latest sbcl Debian image
-        if: env.LATEST == 1
+        if: env.LATEST == 1 && github.ref == 'refs/heads/master'
         run: |
           docker tag "fukamachi/sbcl:1.5.0" "fukamachi/sbcl:latest"
           docker tag "fukamachi/sbcl:1.5.0-alpine" "fukamachi/sbcl:latest-alpine"

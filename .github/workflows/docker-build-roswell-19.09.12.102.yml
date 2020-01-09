@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'roswell/19.09.12.102/**'
+      - '.github/workflows/docker-build-roswell-19.09.12.102.yml'
 
 env:
   LATEST: 0
@@ -23,11 +24,13 @@ jobs:
       - name: Build roswell Alpine image
         run: docker build -t "fukamachi/roswell:19.09.12.102-alpine" "roswell/19.09.12.102/alpine"
       - name: Publish roswell Debian image
+        if: github.ref == 'refs/heads/master'
         run: docker push "fukamachi/roswell:19.09.12.102"
       - name: Publish roswell Alpine image
+        if: github.ref == 'refs/heads/master'
         run: docker push "fukamachi/roswell:19.09.12.102-alpine"
       - name: Update the latest roswell Debian image
-        if: env.LATEST == 1
+        if: env.LATEST == 1 && github.ref == 'refs/heads/master'
         run: |
           docker tag "fukamachi/roswell:19.09.12.102" "fukamachi/roswell:latest"
           docker tag "fukamachi/roswell:19.09.12.102-alpine" "fukamachi/roswell:latest-alpine"
