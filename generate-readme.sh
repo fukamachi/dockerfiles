@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REPOS=fukamachi/dockerfiles
+owner=fukamachi
 
 image="$@"
 
@@ -18,19 +18,33 @@ cd $image
 
 image=$(basename `pwd`)
 
-versions=( */ )
-versions=( "${versions[@]%/}" )
-IFS=$'\n'; versions=( $(echo "${versions[*]}" | sort -Vr) ); unset IFS
+versions=( `cat versions | sort -Vr` )
 
-GIT_REF=$(git rev-parse HEAD)
-
-echo "# Supported tags and respective \`Dockerfile\` links"
+echo "# Docker images for $image"
 echo
-echo "- [\`${versions[0]}\`, \`latest\`](https://github.com/${REPOS}/blob/${GIT_REF}/${image}/${versions[0]}/Dockerfile)"
-echo "- [\`${versions[0]}-alpine\`, \`latest-alpine\`](https://github.com/${REPOS}/blob/${GIT_REF}/${image}/${versions[0]}/alpine/Dockerfile)"
+echo "## Usage"
+echo
+echo "\`\`\`"
+echo "$ docker pull $owner/$image"
+echo "$ docker run -it --rm $owner/$image"
+echo "$ docker pull $owner/$image:${versions[1]}"
+echo "$ docker run -it --rm $owner/$image:${versions[1]}"
+echo "\`\`\`"
+echo
+echo "## Supported tags"
+echo
+echo "- \`${versions[0]}\`, \`${versions[0]}-debian\`, \`latest\`, \`latest-debian\`"
+echo "- \`${versions[0]}-alpine\`, \`latest-alpine\`"
 unset versions[0]
 
 for version in "${versions[@]}"; do
-    echo "- [\`${version}\`](https://github.com/${REPOS}/blob/${GIT_REF}/${image}/${version}/Dockerfile)"
-    echo "- [\`${version}-alpine\`](https://github.com/${REPOS}/blob/${GIT_REF}/${image}/${version}/alpine/Dockerfile)"
+    echo "- \`${version}\`, \`${version}-debian\`"
+    echo "- \`${version}-alpine\`"
 done
+
+echo
+echo "## Building by your own"
+echo
+echo "\`\`\`"
+echo "$ docker build -t $image:${versions[1]} --build-arg VERSION=${versions[1]} sbcl/debian/"
+echo "\`\`\`"

@@ -1,15 +1,15 @@
-name: Build %%IMAGE%%:%%VERSION%%-%%TARGET%%
+name: Build roswell:19.06.10.100-debian
 
 on:
   push:
     paths:
-      - '%%IMAGE%%/%%TARGET%%/Dockerfile'
-      - '.github/workflows/docker-build-%%IMAGE%%-%%VERSION%%-%%TARGET%%.yml'
+      - 'roswell/debian/Dockerfile'
+      - '.github/workflows/docker-build-roswell-19.06.10.100-debian.yml'
 
 env:
-  IMAGE: %%IMAGE%%
-  VERSION: %%VERSION%%
-  TARGET: %%TARGET%%
+  IMAGE: roswell
+  VERSION: 19.06.10.100
+  TARGET: debian
 
 jobs:
   build:

@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        image: [roswell, sbcl-bin]
+        image: [roswell, sbcl]
 
     steps:
       - uses: actions/checkout@v2
@@ -17,6 +17,8 @@ jobs:
         run: "${{ matrix.image }}/update.sh"
       - name: Generate GitHub Actions
         run: "./generate-build-actions.sh ${{ matrix.image }}"
+      - name: Generate README
+        run: "./generate-readme.sh ${{ matrix.image }} > ${{ matrix.image }}/README.md"
       - name: Create pull request
         uses: peter-evans/create-pull-request@v2
         with:

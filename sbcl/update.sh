@@ -1,29 +1,18 @@
 #!/bin/bash
 
-owner=fukamachi
-
 cd `dirname $0`
 
-curl -s https://api.github.com/repos/roswell/sbcl_bin/releases | jq -r '.[] | .tag_name' | sed -e 's/^v//' | xargs mkdir -p
+owner=fukamachi
 
-versions=( */ )
-versions=( "${versions[@]%/}" )
-IFS=$'\n'; versions=( $(echo "${versions[*]}" | sort -Vr) ); unset IFS
+curl -s https://api.github.com/repos/roswell/sbcl_bin/releases | jq -r '.[] | .tag_name' | sed -e 's/^v//' | cat versions - | sort -V | uniq > versions
 
-roswellDebianTag=$(basename $(ls -d ../roswell/*/ | sort -Vr | head -n 1))
+roswellDebianTag=$(basename $(cat ../roswell/versions | sort -Vr | head -n 1))
 roswellAlpineTag="$roswellDebianTag-alpine"
 
-for version in "${versions[@]}"; do
-    echo "Generating Dockerfiles for $version..."
+sed -e 's/%%OWNER%%/'"$owner"'/g' \
+    -e 's/%%ROSWELL_TAG%%/'"$roswellDebianTag"'/g' \
+    debian/Dockerfile.template > debian/Dockerfile
 
-    sed -e 's/%%OWNER%%/'"$owner"'/g' \
-        -e 's/%%ROSWELL_TAG%%/'"$roswellDebianTag"'/g' \
-        -e 's/%%SBCL_VERSION%%/'"$version"'/g' \
-        Dockerfile-debian.template > "$version/Dockerfile"
-
-    mkdir -p "$version/alpine"
-    sed -e 's/%%OWNER%%/'"$owner"'/g' \
-        -e 's/%%ROSWELL_TAG%%/'"$roswellAlpineTag"'/g;' \
-        -e 's/%%SBCL_VERSION%%/'"$version"'/g;' \
-        Dockerfile-alpine.template > "$version/alpine/Dockerfile"
-done
+sed -e 's/%%OWNER%%/'"$owner"'/g' \
+    -e 's/%%ROSWELL_TAG%%/'"$roswellAlpineTag"'/g' \
+    alpine/Dockerfile.template > alpine/Dockerfile

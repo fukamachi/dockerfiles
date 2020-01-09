@@ -1,15 +1,15 @@
-name: Build %%IMAGE%%:%%VERSION%%-%%TARGET%%
+name: Build sbcl:1.4.10-alpine
 
 on:
   push:
     paths:
-      - '%%IMAGE%%/%%TARGET%%/Dockerfile'
-      - '.github/workflows/docker-build-%%IMAGE%%-%%VERSION%%-%%TARGET%%.yml'
+      - 'sbcl/alpine/Dockerfile'
+      - '.github/workflows/docker-build-sbcl-1.4.10-alpine.yml'
 
 env:
-  IMAGE: %%IMAGE%%
-  VERSION: %%VERSION%%
-  TARGET: %%TARGET%%
+  IMAGE: sbcl
+  VERSION: 1.4.10
+  TARGET: alpine
 
 jobs:
   build:

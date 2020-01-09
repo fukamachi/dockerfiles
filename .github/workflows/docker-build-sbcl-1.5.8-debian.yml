@@ -1,15 +1,15 @@
-name: Build %%IMAGE%%:%%VERSION%%-%%TARGET%%
+name: Build sbcl:1.5.8-debian
 
 on:
   push:
     paths:
-      - '%%IMAGE%%/%%TARGET%%/Dockerfile'
-      - '.github/workflows/docker-build-%%IMAGE%%-%%VERSION%%-%%TARGET%%.yml'
+      - 'sbcl/debian/Dockerfile'
+      - '.github/workflows/docker-build-sbcl-1.5.8-debian.yml'
 
 env:
-  IMAGE: %%IMAGE%%
-  VERSION: %%VERSION%%
-  TARGET: %%TARGET%%
+  IMAGE: sbcl
+  VERSION: 1.5.8
+  TARGET: debian
 
 jobs:
   build:
