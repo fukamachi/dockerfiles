@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '%%IMAGE%%/%%VERSION%%/**'
+      - '.github/workflows/docker-build-%%IMAGE%%-%%VERSION%%.yml'
 
 env:
   LATEST: %%LATEST%%
