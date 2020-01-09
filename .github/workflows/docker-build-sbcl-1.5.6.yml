@@ -11,7 +11,7 @@ env:
 
 jobs:
   build:
-    name: Build and publish Docker images
+    name: Build Docker images
     runs-on: ubuntu-18.04
 
     steps:
@@ -20,21 +20,49 @@ jobs:
         shell: bash
         run: echo "##[set-output name=owner;]$(echo ${GITHUB_REPOSITORY%/*})"
         id: info
+      - name: Login to GitHub Registry
+        run: docker login docker.pkg.github.com -u "${{ steps.info.outputs.owner }}" -p "${{ secrets.GITHUB_TOKEN }}"
+      - name: Build sbcl Debian image
+        run: docker build -t "docker.pkg.github.com/${{ steps.info.outputs.owner }}/sbcl:1.5.6" "sbcl/1.5.6"
+      - name: Save sbcl Debian image
+        run: docker push "docker.pkg.github.com/${{ steps.info.outputs.owner }}/sbcl:1.5.6"
+      - name: Build sbcl Alpine image
+        run: docker build -t "docker.pkg.github.com/${{ steps.info.outputs.owner }}/sbcl:1.5.6-alpine" "sbcl/1.5.6/alpine"
+      - name: Save sbcl Alpine image
+        run: docker push "docker.pkg.github.com/${{ steps.info.outputs.owner }}/sbcl:1.5.6-alpine"
+
+  publish:
+    name: Publish Docker images
+    runs-on: ubuntu-18.04
+    needs: build
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - uses: actions/checkout@master
+      - name: Extract owner name
+        shell: bash
+        run: echo "##[set-output name=owner;]$(echo ${GITHUB_REPOSITORY%/*})"
+        id: info
+      - name: Login to GitHub Registry
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u "${{ steps.info.outputs.owner }}" --password-stdin
+      - name: Pull sbcl Debian image
+        run: |
+          docker pull "docker.pkg.github.com/${{ steps.info.outputs.owner }}/sbcl:1.5.6"
+          docker tag "docker.pkg.github.com/${{ steps.info.outputs.owner }}/sbcl:1.5.6" "${{ steps.info.outputs.owner }}/sbcl:1.5.6"
+      - name: Pull sbcl Alpine image
+        run: |
+          docker pull "docker.pkg.github.com/${{ steps.info.outputs.owner }}/sbcl:1.5.6-alpine"
+          docker tag "docker.pkg.github.com/${{ steps.info.outputs.owner }}/sbcl:1.5.6-alpine" "${{ steps.info.outputs.owner }}/sbcl:1.5.6-alpine"
       - name: Login to Docker Hub
         run: |
-            echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ steps.info.outputs.owner }}" --password-stdin
-      - name: Build sbcl Debian image
-        run: docker build -t "${{ steps.info.outputs.owner }}/sbcl:1.5.6" "sbcl/1.5.6"
-      - name: Build sbcl Alpine image
-        run: docker build -t "${{ steps.info.outputs.owner }}/sbcl:1.5.6-alpine" "sbcl/1.5.6/alpine"
+          echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ steps.info.outputs.owner }}" --password-stdin
       - name: Publish sbcl Debian image
-        if: github.ref == 'refs/heads/master'
         run: docker push "${{ steps.info.outputs.owner }}/sbcl:1.5.6"
       - name: Publish sbcl Alpine image
-        if: github.ref == 'refs/heads/master'
         run: docker push "${{ steps.info.outputs.owner }}/sbcl:1.5.6-alpine"
       - name: Update the latest sbcl Debian image
-        if: env.LATEST == 1 && github.ref == 'refs/heads/master'
+        if: env.LATEST == 1
         run: |
           docker tag "${{ steps.info.outputs.owner }}/sbcl:1.5.6" "${{ steps.info.outputs.owner }}/sbcl:latest"
           docker tag "${{ steps.info.outputs.owner }}/sbcl:1.5.6-alpine" "${{ steps.info.outputs.owner }}/sbcl:latest-alpine"

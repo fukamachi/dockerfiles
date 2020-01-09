@@ -11,7 +11,7 @@ env:
 
 jobs:
   build:
-    name: Build and publish Docker images
+    name: Build Docker images
     runs-on: ubuntu-18.04
 
     steps:
@@ -20,21 +20,49 @@ jobs:
         shell: bash
         run: echo "##[set-output name=owner;]$(echo ${GITHUB_REPOSITORY%/*})"
         id: info
+      - name: Login to GitHub Registry
+        run: docker login docker.pkg.github.com -u "${{ steps.info.outputs.owner }}" -p "${{ secrets.GITHUB_TOKEN }}"
+      - name: Build roswell Debian image
+        run: docker build -t "docker.pkg.github.com/${{ steps.info.outputs.owner }}/roswell:19.05.10.99" "roswell/19.05.10.99"
+      - name: Save roswell Debian image
+        run: docker push "docker.pkg.github.com/${{ steps.info.outputs.owner }}/roswell:19.05.10.99"
+      - name: Build roswell Alpine image
+        run: docker build -t "docker.pkg.github.com/${{ steps.info.outputs.owner }}/roswell:19.05.10.99-alpine" "roswell/19.05.10.99/alpine"
+      - name: Save roswell Alpine image
+        run: docker push "docker.pkg.github.com/${{ steps.info.outputs.owner }}/roswell:19.05.10.99-alpine"
+
+  publish:
+    name: Publish Docker images
+    runs-on: ubuntu-18.04
+    needs: build
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - uses: actions/checkout@master
+      - name: Extract owner name
+        shell: bash
+        run: echo "##[set-output name=owner;]$(echo ${GITHUB_REPOSITORY%/*})"
+        id: info
+      - name: Login to GitHub Registry
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u "${{ steps.info.outputs.owner }}" --password-stdin
+      - name: Pull roswell Debian image
+        run: |
+          docker pull "docker.pkg.github.com/${{ steps.info.outputs.owner }}/roswell:19.05.10.99"
+          docker tag "docker.pkg.github.com/${{ steps.info.outputs.owner }}/roswell:19.05.10.99" "${{ steps.info.outputs.owner }}/roswell:19.05.10.99"
+      - name: Pull roswell Alpine image
+        run: |
+          docker pull "docker.pkg.github.com/${{ steps.info.outputs.owner }}/roswell:19.05.10.99-alpine"
+          docker tag "docker.pkg.github.com/${{ steps.info.outputs.owner }}/roswell:19.05.10.99-alpine" "${{ steps.info.outputs.owner }}/roswell:19.05.10.99-alpine"
       - name: Login to Docker Hub
         run: |
-            echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ steps.info.outputs.owner }}" --password-stdin
-      - name: Build roswell Debian image
-        run: docker build -t "${{ steps.info.outputs.owner }}/roswell:19.05.10.99" "roswell/19.05.10.99"
-      - name: Build roswell Alpine image
-        run: docker build -t "${{ steps.info.outputs.owner }}/roswell:19.05.10.99-alpine" "roswell/19.05.10.99/alpine"
+          echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ steps.info.outputs.owner }}" --password-stdin
       - name: Publish roswell Debian image
-        if: github.ref == 'refs/heads/master'
         run: docker push "${{ steps.info.outputs.owner }}/roswell:19.05.10.99"
       - name: Publish roswell Alpine image
-        if: github.ref == 'refs/heads/master'
         run: docker push "${{ steps.info.outputs.owner }}/roswell:19.05.10.99-alpine"
       - name: Update the latest roswell Debian image
-        if: env.LATEST == 1 && github.ref == 'refs/heads/master'
+        if: env.LATEST == 1
         run: |
           docker tag "${{ steps.info.outputs.owner }}/roswell:19.05.10.99" "${{ steps.info.outputs.owner }}/roswell:latest"
           docker tag "${{ steps.info.outputs.owner }}/roswell:19.05.10.99-alpine" "${{ steps.info.outputs.owner }}/roswell:latest-alpine"
