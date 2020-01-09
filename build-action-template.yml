@@ -16,23 +16,27 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
+      - name: Extract owner name
+        shell: bash
+        run: echo "##[set-output name=owner;]$(echo ${GITHUB_REPOSITORY%/*})"
+        id: info
       - name: Login to Docker Hub
         run: |
-            echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "%%OWNER%%" --password-stdin
+            echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ steps.info.outputs.owner }}" --password-stdin
       - name: Build %%IMAGE%% Debian image
-        run: docker build -t "%%OWNER%%/%%IMAGE%%:%%VERSION%%" "%%IMAGE%%/%%VERSION%%"
+        run: docker build -t "${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%" "%%IMAGE%%/%%VERSION%%"
       - name: Build %%IMAGE%% Alpine image
-        run: docker build -t "%%OWNER%%/%%IMAGE%%:%%VERSION%%-alpine" "%%IMAGE%%/%%VERSION%%/alpine"
+        run: docker build -t "${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%-alpine" "%%IMAGE%%/%%VERSION%%/alpine"
       - name: Publish %%IMAGE%% Debian image
         if: github.ref == 'refs/heads/master'
-        run: docker push "%%OWNER%%/%%IMAGE%%:%%VERSION%%"
+        run: docker push "${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%"
       - name: Publish %%IMAGE%% Alpine image
         if: github.ref == 'refs/heads/master'
-        run: docker push "%%OWNER%%/%%IMAGE%%:%%VERSION%%-alpine"
+        run: docker push "${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%-alpine"
       - name: Update the latest %%IMAGE%% Debian image
         if: env.LATEST == 1 && github.ref == 'refs/heads/master'
         run: |
-          docker tag "%%OWNER%%/%%IMAGE%%:%%VERSION%%" "%%OWNER%%/%%IMAGE%%:latest"
-          docker tag "%%OWNER%%/%%IMAGE%%:%%VERSION%%-alpine" "%%OWNER%%/%%IMAGE%%:latest-alpine"
-          docker push "%%OWNER%%/%%IMAGE%%:latest"
-          docker push "%%OWNER%%/%%IMAGE%%:latest-alpine"
+          docker tag "${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%" "${{ steps.info.outputs.owner }}/%%IMAGE%%:latest"
+          docker tag "${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%-alpine" "${{ steps.info.outputs.owner }}/%%IMAGE%%:latest-alpine"
+          docker push "${{ steps.info.outputs.owner }}/%%IMAGE%%:latest"
+          docker push "${{ steps.info.outputs.owner }}/%%IMAGE%%:latest-alpine"

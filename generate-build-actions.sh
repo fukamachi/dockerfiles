@@ -3,8 +3,6 @@
 cd `dirname $0`
 BASE_DIR=$(pwd)
 
-owner=fukamachi
-
 images=( "$@" )
 if [ ${#images[@]} -eq 0 ]; then
     images=( */ )
@@ -19,8 +17,7 @@ for image in "${images[@]}"; do
     latest=1
     for version in "${versions[@]}"; do
         echo "Generating .github/workflows/docker-build-$image-$version.yml"
-        sed -e 's/%%OWNER%%/'"$owner"'/g' \
-            -e 's/%%IMAGE%%/'"$image"'/g' \
+        sed -e 's/%%IMAGE%%/'"$image"'/g' \
             -e 's/%%VERSION%%/'"$version"'/g' \
             -e 's/%%LATEST%%/'"$latest"'/g' \
             "$BASE_DIR/build-action-template.yml" > "$BASE_DIR/.github/workflows/docker-build-$image-$version.yml"

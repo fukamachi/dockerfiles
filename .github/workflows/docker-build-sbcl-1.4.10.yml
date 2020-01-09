@@ -16,23 +16,27 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
+      - name: Extract owner name
+        shell: bash
+        run: echo "##[set-output name=owner;]$(echo ${GITHUB_REPOSITORY%/*})"
+        id: info
       - name: Login to Docker Hub
         run: |
-            echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "fukamachi" --password-stdin
+            echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ steps.info.outputs.owner }}" --password-stdin
       - name: Build sbcl Debian image
-        run: docker build -t "fukamachi/sbcl:1.4.10" "sbcl/1.4.10"
+        run: docker build -t "${{ steps.info.outputs.owner }}/sbcl:1.4.10" "sbcl/1.4.10"
       - name: Build sbcl Alpine image
-        run: docker build -t "fukamachi/sbcl:1.4.10-alpine" "sbcl/1.4.10/alpine"
+        run: docker build -t "${{ steps.info.outputs.owner }}/sbcl:1.4.10-alpine" "sbcl/1.4.10/alpine"
       - name: Publish sbcl Debian image
         if: github.ref == 'refs/heads/master'
-        run: docker push "fukamachi/sbcl:1.4.10"
+        run: docker push "${{ steps.info.outputs.owner }}/sbcl:1.4.10"
       - name: Publish sbcl Alpine image
         if: github.ref == 'refs/heads/master'
-        run: docker push "fukamachi/sbcl:1.4.10-alpine"
+        run: docker push "${{ steps.info.outputs.owner }}/sbcl:1.4.10-alpine"
       - name: Update the latest sbcl Debian image
         if: env.LATEST == 1 && github.ref == 'refs/heads/master'
         run: |
-          docker tag "fukamachi/sbcl:1.4.10" "fukamachi/sbcl:latest"
-          docker tag "fukamachi/sbcl:1.4.10-alpine" "fukamachi/sbcl:latest-alpine"
-          docker push "fukamachi/sbcl:latest"
-          docker push "fukamachi/sbcl:latest-alpine"
+          docker tag "${{ steps.info.outputs.owner }}/sbcl:1.4.10" "${{ steps.info.outputs.owner }}/sbcl:latest"
+          docker tag "${{ steps.info.outputs.owner }}/sbcl:1.4.10-alpine" "${{ steps.info.outputs.owner }}/sbcl:latest-alpine"
+          docker push "${{ steps.info.outputs.owner }}/sbcl:latest"
+          docker push "${{ steps.info.outputs.owner }}/sbcl:latest-alpine"
