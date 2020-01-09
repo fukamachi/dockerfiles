@@ -54,6 +54,7 @@ jobs:
         if: env.TARGET == 'debian'
         run: |
           docker tag "${{ steps.info.outputs.owner }}/$IMAGE:$VERSION-$TARGET" "${{ steps.info.outputs.owner }}/$IMAGE:$VERSION"
+          docker push "${{ steps.info.outputs.owner }}/$IMAGE:$VERSION"
       - name: Update the latest images
         run: |
           if [ "$VERSION" = "$(cat $IMAGE/versions | sort -Vr | head -n 1)" ]; then
