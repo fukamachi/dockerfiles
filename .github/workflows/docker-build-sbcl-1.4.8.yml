@@ -16,20 +16,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
-      - name: Extract owner name
-        shell: bash
-        run: echo "##[set-output name=owner;]$(echo ${GITHUB_REPOSITORY%/*})"
-        id: info
       - name: Login to GitHub Registry
-        run: docker login docker.pkg.github.com -u "${{ steps.info.outputs.owner }}" -p "${{ secrets.GITHUB_TOKEN }}"
+        run: docker login docker.pkg.github.com -u "${GITHUB_REPOSITORY%/*}" -p "${{ secrets.GITHUB_TOKEN }}"
       - name: Build sbcl Debian image
-        run: docker build -t "docker.pkg.github.com/${{ steps.info.outputs.owner }}/sbcl:1.4.8" "sbcl/1.4.8"
+        run: docker build -t "docker.pkg.github.com/${{ github.repository }}/sbcl:1.4.8" "sbcl/1.4.8"
       - name: Save sbcl Debian image
-        run: docker push "docker.pkg.github.com/${{ steps.info.outputs.owner }}/sbcl:1.4.8"
+        run: docker push "docker.pkg.github.com/${{ github.repository }}/sbcl:1.4.8"
       - name: Build sbcl Alpine image
-        run: docker build -t "docker.pkg.github.com/${{ steps.info.outputs.owner }}/sbcl:1.4.8-alpine" "sbcl/1.4.8/alpine"
+        run: docker build -t "docker.pkg.github.com/${{ github.repository }}/sbcl:1.4.8-alpine" "sbcl/1.4.8/alpine"
       - name: Save sbcl Alpine image
-        run: docker push "docker.pkg.github.com/${{ steps.info.outputs.owner }}/sbcl:1.4.8-alpine"
+        run: docker push "docker.pkg.github.com/${{ github.repository }}/sbcl:1.4.8-alpine"
 
   publish:
     name: Publish Docker images
@@ -48,12 +44,12 @@ jobs:
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u "${{ steps.info.outputs.owner }}" --password-stdin
       - name: Pull sbcl Debian image
         run: |
-          docker pull "docker.pkg.github.com/${{ steps.info.outputs.owner }}/sbcl:1.4.8"
-          docker tag "docker.pkg.github.com/${{ steps.info.outputs.owner }}/sbcl:1.4.8" "${{ steps.info.outputs.owner }}/sbcl:1.4.8"
+          docker pull "docker.pkg.github.com/${{ github.repository }}/sbcl:1.4.8"
+          docker tag "docker.pkg.github.com/${{ github.repository }}/sbcl:1.4.8" "${{ steps.info.outputs.owner }}/sbcl:1.4.8"
       - name: Pull sbcl Alpine image
         run: |
-          docker pull "docker.pkg.github.com/${{ steps.info.outputs.owner }}/sbcl:1.4.8-alpine"
-          docker tag "docker.pkg.github.com/${{ steps.info.outputs.owner }}/sbcl:1.4.8-alpine" "${{ steps.info.outputs.owner }}/sbcl:1.4.8-alpine"
+          docker pull "docker.pkg.github.com/${{ github.repository }}/sbcl:1.4.8-alpine"
+          docker tag "docker.pkg.github.com/${{ github.repository }}/sbcl:1.4.8-alpine" "${{ steps.info.outputs.owner }}/sbcl:1.4.8-alpine"
       - name: Login to Docker Hub
         run: |
           echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ steps.info.outputs.owner }}" --password-stdin

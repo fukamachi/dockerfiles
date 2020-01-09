@@ -16,20 +16,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
-      - name: Extract owner name
-        shell: bash
-        run: echo "##[set-output name=owner;]$(echo ${GITHUB_REPOSITORY%/*})"
-        id: info
       - name: Login to GitHub Registry
-        run: docker login docker.pkg.github.com -u "${{ steps.info.outputs.owner }}" -p "${{ secrets.GITHUB_TOKEN }}"
+        run: docker login docker.pkg.github.com -u "${GITHUB_REPOSITORY%/*}" -p "${{ secrets.GITHUB_TOKEN }}"
       - name: Build %%IMAGE%% Debian image
-        run: docker build -t "docker.pkg.github.com/${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%" "%%IMAGE%%/%%VERSION%%"
+        run: docker build -t "docker.pkg.github.com/${{ github.repository }}/%%IMAGE%%:%%VERSION%%" "%%IMAGE%%/%%VERSION%%"
       - name: Save %%IMAGE%% Debian image
-        run: docker push "docker.pkg.github.com/${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%"
+        run: docker push "docker.pkg.github.com/${{ github.repository }}/%%IMAGE%%:%%VERSION%%"
       - name: Build %%IMAGE%% Alpine image
-        run: docker build -t "docker.pkg.github.com/${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%-alpine" "%%IMAGE%%/%%VERSION%%/alpine"
+        run: docker build -t "docker.pkg.github.com/${{ github.repository }}/%%IMAGE%%:%%VERSION%%-alpine" "%%IMAGE%%/%%VERSION%%/alpine"
       - name: Save %%IMAGE%% Alpine image
-        run: docker push "docker.pkg.github.com/${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%-alpine"
+        run: docker push "docker.pkg.github.com/${{ github.repository }}/%%IMAGE%%:%%VERSION%%-alpine"
 
   publish:
     name: Publish Docker images
@@ -48,12 +44,12 @@ jobs:
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u "${{ steps.info.outputs.owner }}" --password-stdin
       - name: Pull %%IMAGE%% Debian image
         run: |
-          docker pull "docker.pkg.github.com/${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%"
-          docker tag "docker.pkg.github.com/${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%" "${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%"
+          docker pull "docker.pkg.github.com/${{ github.repository }}/%%IMAGE%%:%%VERSION%%"
+          docker tag "docker.pkg.github.com/${{ github.repository }}/%%IMAGE%%:%%VERSION%%" "${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%"
       - name: Pull %%IMAGE%% Alpine image
         run: |
-          docker pull "docker.pkg.github.com/${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%-alpine"
-          docker tag "docker.pkg.github.com/${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%-alpine" "${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%-alpine"
+          docker pull "docker.pkg.github.com/${{ github.repository }}/%%IMAGE%%:%%VERSION%%-alpine"
+          docker tag "docker.pkg.github.com/${{ github.repository }}/%%IMAGE%%:%%VERSION%%-alpine" "${{ steps.info.outputs.owner }}/%%IMAGE%%:%%VERSION%%-alpine"
       - name: Login to Docker Hub
         run: |
           echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ steps.info.outputs.owner }}" --password-stdin
