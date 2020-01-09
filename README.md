@@ -1,10 +1,10 @@
 # Dockerfiles for Common Lisp programming
 
-Dockerfiles for each versions of Common Lisp implementations and utilities. Currently this repository provides for the following products:
+Dockerfiles for each version of Common Lisp implementations and utilities. Currently provides for the following products:
 
-- [roswell](https://github.com/roswell/roswell)
+- [roswell](https://github.com/roswell/roswell), a Common Lisp implementation manager
   - [https://hub.docker.com/r/fukamachi/roswell](https://hub.docker.com/r/fukamachi/roswell)
-- [sbcl](http://sbcl.org)
+- [sbcl](http://sbcl.org), a high-performance Common Lisp compiler
   - [https://hub.docker.com/r/fukamachi/sbcl](https://hub.docker.com/r/fukamachi/sbcl)
 
 ## Usage
