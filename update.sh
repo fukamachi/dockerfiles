@@ -10,6 +10,7 @@ images=( "${images[@]%/}" )
 
 for image in "${images[@]}"; do
     ./$image/update.sh
+    ./generate-readme.sh $image > $image/README.md
 done
 
 roswell_versions=( `cat roswell/versions` )
