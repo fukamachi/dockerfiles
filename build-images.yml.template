@@ -5,6 +5,7 @@ on:
     paths:
       - 'roswell/**'
       - 'sbcl/**'
+      - 'ccl/**'
       - '.github/workflows/build-images.yml'
 
 jobs:
