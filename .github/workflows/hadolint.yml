@@ -6,9 +6,6 @@ on:
       - '**/*/Dockerfile'
       - '.github/workflows/hadolint.yml'
 
-env:
-    HADOLINT: $HOME/hadolint
-
 jobs:
   autoupdate:
     runs-on: ubuntu-18.04
@@ -16,8 +13,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install hadolint
         run: |
-          curl -sL -o $HADOLINT "https://github.com/hadolint/hadolint/releases/download/v1.17.4/hadolint-$(uname -s)-$(uname -m)"
-          chmod 700 $HADOLINT
+          curl -L -o ~/hadolint "https://github.com/hadolint/hadolint/releases/download/v1.17.4/hadolint-$(uname -s)-$(uname -m)"
+          chmod 700 ~/hadolint
       - name: Run hadolint
         run: |
-          git ls-files --exclude=Dockerfile --ignored | xargs --max-lines=1 $HADOLINT
+          git ls-files --exclude=Dockerfile --ignored | xargs --max-lines=1 ~/hadolint
