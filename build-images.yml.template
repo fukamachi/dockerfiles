@@ -43,8 +43,8 @@ jobs:
           run: |
             ./build.sh roswell ${{ matrix.version }} ${{ matrix.target }}
             docker inspect ${GITHUB_REPOSITORY%/*}/roswell:${{ matrix.version }}-${{ matrix.target }}
-            if [ "$GITHUB_REF" == "refs/heads/master" ]; then
-              ./publish.sh roswell ${{ matrix.version }} ${{ matrix.target }}
+            if [ "$GITHUB_REF" = "refs/heads/master" ]
+              then ./publish.sh roswell ${{ matrix.version }} ${{ matrix.target }}
             fi
 
   sbcl:
