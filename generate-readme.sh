@@ -34,12 +34,14 @@ echo
 echo "## Supported tags"
 echo
 echo "- \`${versions[0]}\`, \`${versions[0]}-debian\`, \`latest\`, \`latest-debian\`"
+echo "- \`${versions[0]}-ubuntu\`, \`latest-ubuntu\`"
 echo "- \`${versions[0]}-alpine\`, \`latest-alpine\`"
 unset versions[0]
 
 for version in "${versions[@]}"; do
     echo "- \`${version}\`, \`${version}-debian\`"
     echo "- \`${version}-alpine\`"
+    echo "- \`${version}-ubuntu\`"
 done
 
 echo

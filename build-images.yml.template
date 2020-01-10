@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        target: [debian, alpine]
+        target: [debian, ubuntu, alpine]
         version: %%ROSWELL_VERSIONS%%
 
     steps:
@@ -32,7 +32,7 @@ jobs:
     needs: roswell
     strategy:
       matrix:
-        target: [debian, alpine]
+        target: [debian, ubuntu, alpine]
         version: %%SBCL_VERSIONS%%
 
     steps:
