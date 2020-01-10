@@ -35,22 +35,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: uraimo/run-on-arch-action@v1.0.5
-        id: runcmd
+        env:
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         with:
           architecture: armv7
           distribution: ubuntu18.04
           run: |
-            uname -a
-            echo ::set-output name=uname::$(uname -a)
-      - name: Build roswell:${{ matrix.version }}-${{ matrix.target }} image
-        run: ./build.sh roswell ${{ matrix.version }} ${{ matrix.target }}
-      - name: Inspect roswell:${{ matrix.version }}-${{ matrix.target }} image
-        run: docker inspect ${GITHUB_REPOSITORY%/*}/roswell:${{ matrix.version }}-${{ matrix.target }}
-      - name: Publish roswell:${{ matrix.version }}-${{ matrix.target }} image
-        if: github.ref == 'refs/heads/master'
-        env:
-          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        run: ./publish.sh roswell ${{ matrix.version }} ${{ matrix.target }}
+            ./build.sh roswell ${{ matrix.version }} ${{ matrix.target }}
+            docker inspect ${GITHUB_REPOSITORY%/*}/roswell:${{ matrix.version }}-${{ matrix.target }}
+            if [ "$GITHUB_REF" == "refs/heads/master" ]; then
+              ./publish.sh roswell ${{ matrix.version }} ${{ matrix.target }}
+            fi
 
   sbcl:
     name: SBCL
