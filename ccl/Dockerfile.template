@@ -3,13 +3,16 @@ FROM %%BASE%%:%%BASE_TAG%%
 ARG VERSION
 
 RUN set -x; \
+  ros install sbcl-bin && \
   ros install "ccl-bin/${VERSION}" \
     && ros use "ccl-bin/${VERSION}" \
     # Uninstall unnecessary files
     && ros -e '(ql:uninstall-dist "quicklisp")' -e '(ql-dist:install-dist "http://beta.quicklisp.org/dist/quicklisp.txt" :prompt nil)' \
+    && ros delete sbcl-bin \
     && rm -rf /root/.roswell/archives/* \
+      /root/.roswell/src/sbcl-* \
       /root/.roswell/src/ccl-* \
-      /root/.roswell/env/roswell/impls/x86-64/linux/ccl-bin/${VERSION}/dump/roswell.core
+      /root/.roswell/env/roswell/impls/x86-64/linux/sbcl-bin/*/dump/roswell.core
 
 RUN set -x; \
   printf '#!/bin/sh\nros run -- "$@"\n' > /usr/local/bin/ccl \
