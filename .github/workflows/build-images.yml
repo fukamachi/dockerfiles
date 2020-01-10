@@ -41,6 +41,7 @@ jobs:
           architecture: armv7
           distribution: ubuntu18.04
           run: |
+            ./install-docker.sh
             ./build.sh roswell ${{ matrix.version }} ${{ matrix.target }}
             docker inspect ${GITHUB_REPOSITORY%/*}/roswell:${{ matrix.version }}-${{ matrix.target }}
             if [ "$GITHUB_REF" = "refs/heads/master" ]
