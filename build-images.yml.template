@@ -15,9 +15,33 @@ jobs:
       matrix:
         target: [debian, ubuntu, alpine]
         version: %%ROSWELL_VERSIONS%%
-
     steps:
       - uses: actions/checkout@v2
+      - name: Build roswell:${{ matrix.version }}-${{ matrix.target }} image
+        run: ./build.sh roswell ${{ matrix.version }} ${{ matrix.target }}
+      - name: Publish roswell:${{ matrix.version }}-${{ matrix.target }} image
+        if: github.ref == 'refs/heads/master'
+        env:
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: ./publish.sh roswell ${{ matrix.version }} ${{ matrix.target }}
+
+  roswell_armv7:
+    name: Roswell (ARMv7)
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        target: [debian, ubuntu, alpine]
+        version: %%ROSWELL_VERSIONS%%
+    steps:
+      - uses: actions/checkout@v2
+      - uses: uraimo/run-on-arch-action@v1.0.5
+        id: runcmd
+        with:
+          architecture: armv7
+          distribution: ubuntu18.04
+          run: |
+            uname -a
+            echo ::set-output name=uname::$(uname -a)
       - name: Build roswell:${{ matrix.version }}-${{ matrix.target }} image
         run: ./build.sh roswell ${{ matrix.version }} ${{ matrix.target }}
       - name: Publish roswell:${{ matrix.version }}-${{ matrix.target }} image
@@ -34,7 +58,6 @@ jobs:
       matrix:
         target: [debian, ubuntu, alpine]
         version: %%SBCL_VERSIONS%%
-
     steps:
       - uses: actions/checkout@v2
       - name: Build sbcl:${{ matrix.version }}-${{ matrix.target }} image
@@ -53,7 +76,6 @@ jobs:
       matrix:
         target: [debian, ubuntu, alpine]
         version: %%CCL_VERSIONS%%
-
     steps:
       - uses: actions/checkout@v2
       - name: Build ccl:${{ matrix.version }}-${{ matrix.target }} image
