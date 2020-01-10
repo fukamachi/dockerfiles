@@ -7,14 +7,16 @@ on:
       - '.github/workflows/hadolint.yml'
 
 jobs:
-  autoupdate:
+  lint:
+    name: Lint Dockerfiles
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - name: Install hadolint
         run: |
-          curl -L -o ~/hadolint "https://github.com/hadolint/hadolint/releases/download/v1.17.4/hadolint-$(uname -s)-$(uname -m)"
-          chmod 700 ~/hadolint
+          curl -L -o ./hadolint "https://github.com/hadolint/hadolint/releases/download/v1.17.4/hadolint-$(uname -s)-$(uname -m)"
+          chmod 700 ./hadolint
+          ./hadolint -v
       - name: Run hadolint
         run: |
-          git ls-files --exclude=Dockerfile --ignored | xargs --max-lines=1 ~/hadolint
+          git ls-files --exclude=Dockerfile --ignored | xargs --max-lines=1 ./hadolint
