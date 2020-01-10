@@ -2,12 +2,21 @@
 
 Dockerfiles for each version of Common Lisp implementations and utilities. Currently provides the following products:
 
-- [Roswell](https://github.com/roswell/roswell), a Common Lisp implementation manager
-  - [https://hub.docker.com/r/fukamachi/roswell](https://hub.docker.com/r/fukamachi/roswell)
-- [SBCL](http://sbcl.org), a high-performance Common Lisp compiler
-  - [https://hub.docker.com/r/fukamachi/sbcl](https://hub.docker.com/r/fukamachi/sbcl)
-- [Clozure CL](https://ccl.clozure.com/), an open source Common Lisp implementation hosted by Clozure Associates
-  - [https://hub.docker.com/r/fukamachi/ccl](https://hub.docker.com/r/fukamachi/ccl)
+- [Roswell](https://github.com/roswell/roswell), a Common Lisp implementation manager  
+  [![Docker Pulls](https://img.shields.io/docker/pulls/fukamachi/roswell.svg)](https://hub.docker.com/r/fukamachi/roswell/)
+  [![Docker Stars](https://img.shields.io/docker/stars/fukamachi/roswell.svg)](https://hub.docker.com/r/fukamachi/roswell/)
+  [![](https://images.microbadger.com/badges/version/fukamachi/roswell.svg)](https://microbadger.com/images/fukamachi/roswell)
+  [![](https://images.microbadger.com/badges/image/fukamachi/roswell.svg)](https://microbadger.com/images/fukamachi/roswell)
+- [SBCL](http://sbcl.org), a high-performance Common Lisp compiler  
+  [![Docker Pulls](https://img.shields.io/docker/pulls/fukamachi/sbcl.svg)](https://hub.docker.com/r/fukamachi/sbcl/)
+  [![Docker Stars](https://img.shields.io/docker/stars/fukamachi/sbcl.svg)](https://hub.docker.com/r/fukamachi/sbcl/)
+  [![](https://images.microbadger.com/badges/version/fukamachi/sbcl.svg)](https://microbadger.com/images/fukamachi/sbcl)
+  [![](https://images.microbadger.com/badges/image/fukamachi/sbcl.svg)](https://microbadger.com/images/fukamachi/sbcl)
+- [Clozure CL](https://ccl.clozure.com/), an open source Common Lisp implementation hosted by Clozure Associates  
+  [![Docker Pulls](https://img.shields.io/docker/pulls/fukamachi/ccl.svg)](https://hub.docker.com/r/fukamachi/ccl/)
+  [![Docker Stars](https://img.shields.io/docker/stars/fukamachi/ccl.svg)](https://hub.docker.com/r/fukamachi/ccl/)
+  [![](https://images.microbadger.com/badges/version/fukamachi/ccl.svg)](https://microbadger.com/images/fukamachi/ccl)
+  [![](https://images.microbadger.com/badges/image/fukamachi/ccl.svg)](https://microbadger.com/images/fukamachi/ccl)
 
 ## Usage
 

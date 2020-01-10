@@ -1,5 +1,10 @@
 # Docker images for roswell
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/fukamachi/roswell.svg)](https://hub.docker.com/r/fukamachi/roswell/)
+[![Docker Stars](https://img.shields.io/docker/stars/fukamachi/roswell.svg)](https://hub.docker.com/r/fukamachi/roswell/)
+[![](https://images.microbadger.com/badges/version/fukamachi/roswell.svg)](https://microbadger.com/images/fukamachi/roswell)
+[![](https://images.microbadger.com/badges/image/fukamachi/roswell.svg)](https://microbadger.com/images/fukamachi/roswell)
+
 ## Usage
 
 ```
@@ -30,5 +35,5 @@ $ docker run -it --rm fukamachi/roswell:19.09.12.102
 ## Building by your own
 
 ```
-$ docker build -t roswell:19.09.12.102 --build-arg VERSION=19.09.12.102 sbcl/debian/
+$ docker build -t roswell:19.09.12.102 --build-arg VERSION=19.09.12.102 roswell/debian/
 ```

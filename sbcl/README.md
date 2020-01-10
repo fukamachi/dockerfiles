@@ -1,5 +1,10 @@
 # Docker images for sbcl
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/fukamachi/sbcl.svg)](https://hub.docker.com/r/fukamachi/sbcl/)
+[![Docker Stars](https://img.shields.io/docker/stars/fukamachi/sbcl.svg)](https://hub.docker.com/r/fukamachi/sbcl/)
+[![](https://images.microbadger.com/badges/version/fukamachi/sbcl.svg)](https://microbadger.com/images/fukamachi/sbcl)
+[![](https://images.microbadger.com/badges/image/fukamachi/sbcl.svg)](https://microbadger.com/images/fukamachi/sbcl)
+
 ## Usage
 
 ```
