@@ -3,9 +3,8 @@ name: Build Docker images
 on:
   push:
     paths:
-      - 'roswell/**'
-      - 'sbcl/**'
-      - 'ccl/**'
+      - '**/*/Dockerfile'
+      - '**/versions'
       - '.github/workflows/build-images.yml'
 
 jobs:
