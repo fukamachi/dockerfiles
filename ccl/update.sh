@@ -4,7 +4,7 @@ cd `dirname $0`
 
 base="fukamachi/roswell"
 
-curl -s "https://api.github.com/repos/roswell/ccl_bin/releases?per_page=10" | jq -r '.[] | .tag_name' | grep -E '^[0-9\\.]+$' | cat versions - | sort -V | uniq > versions
+curl -s "https://api.github.com/repos/roswell/ccl_bin/releases?per_page=10" | jq -r '.[] | .tag_name' | grep -E '^[0-9\\.]+$' | head -n 3 | cat versions - | sort -V | uniq > versions
 
 latest_roswell=$(basename $(cat ../roswell/versions | sort -Vr | head -n 1))
 
