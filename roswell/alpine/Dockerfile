@@ -37,7 +37,8 @@ FROM frolvlad/alpine-glibc:alpine-3.10
 ARG VERSION
 COPY --from=build-env /home/roswell-builder/packages/x86_64/roswell-$VERSION-r0.apk roswell.apk
 
-RUN set -x; apk add --allow-untrusted --no-cache roswell.apk
+RUN set -x; apk add --allow-untrusted --no-cache roswell.apk \
+  && rm roswell.apk
 
 ENV PATH /root/.roswell/bin:${PATH}
 
