@@ -5,6 +5,7 @@ on:
     paths:
       - '**/*/Dockerfile'
       - '**/versions'
+      - 'install-docker.sh'
       - '.github/workflows/build-images.yml'
 
 jobs:
