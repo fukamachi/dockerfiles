@@ -6,14 +6,12 @@ base="fukamachi/roswell"
 
 curl -s https://api.github.com/repos/roswell/sbcl_bin/releases | jq -r '.[] | .tag_name' | sed -e 's/^v//' | cat versions - | sort -V | uniq > versions
 
-latestRoswell=$(basename $(cat ../roswell/versions | sort -Vr | head -n 1))
-roswellDebianTag="$latestRoswell-debian"
-roswellAlpineTag="$latestRoswell-alpine"
+latest_roswell=$(basename $(cat ../roswell/versions | sort -Vr | head -n 1))
 
-sed -e 's:%%BASE%%:'"$base"':g' \
-    -e 's/%%BASE_TAG%%/'"$roswellDebianTag"'/g' \
-    Dockerfile.template > debian/Dockerfile
+targets=("debian" "ubuntu" "alpine")
 
-sed -e 's:%%BASE%%:'"$base"':g' \
-    -e 's/%%BASE_TAG%%/'"$roswellAlpineTag"'/g' \
-    Dockerfile.template > alpine/Dockerfile
+for target in "${targets[@]}"; do
+    sed -e 's:%%BASE%%:'"$base"':g' \
+        -e 's/%%BASE_TAG%%/'"$latest_roswell-$target"'/g' \
+        Dockerfile.template > $target/Dockerfile
+done
