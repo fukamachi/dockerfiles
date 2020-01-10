@@ -5,8 +5,11 @@ ARG VERSION
 RUN set -x; \
   ros install "sbcl-bin/${VERSION}" \
     && ros use "sbcl-bin/${VERSION}" \
-    && rm /root/.roswell/archives/* \
-      /root/.roswell/lisp/quicklisp/dists/quicklisp/archives/*
+    # Uninstall unnecessary files
+    && ros -e '(ql:uninstall-dist "quicklisp")' -e '(ql-dist:install-dist "http://beta.quicklisp.org/dist/quicklisp.txt" :prompt nil)' \
+    && rm -rf /root/.roswell/archives/* \
+      /root/.roswell/src/sbcl-* \
+      /root/.roswell/env/roswell/impls/x86-64/linux/sbcl-bin/${VERSION}/dump/roswell.core
 
 RUN set -x; \
   printf '#!/bin/sh\nros run -- "$@"\n' > /usr/local/bin/sbcl \
