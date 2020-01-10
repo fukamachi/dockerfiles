@@ -16,7 +16,7 @@ roswell_versions=( `cat roswell/versions` )
 sbcl_versions=( `cat sbcl/versions` )
 ccl_versions=( `cat ccl/versions` )
 
-sed -e 's/%%ROSWELL_VERSIONS%%/'"[$(IFS=,; echo "${roswell_versions[*]}")]"'/g' \
-    -e 's/%%SBCL_VERSIONS%%/'"[$(IFS=,; echo "${sbcl_versions[*]}")]"'/g' \
-    -e 's/%%CCL_VERSIONS%%/'"[$(IFS=,; echo "${ccl_versions[*]}")]"'/g' \
+sed -e 's/%%ROSWELL_VERSIONS%%/'"[$(a=$(printf ', "%s"' "${roswell_versions[@]}"); echo ${a:1})]"'/g' \
+    -e 's/%%SBCL_VERSIONS%%/'"[$(a=$(printf ', "%s"' "${sbcl_versions[@]}"); echo ${a:1})]"'/g' \
+    -e 's/%%CCL_VERSIONS%%/'"[$(a=$(printf ', "%s"' "${ccl_versions[@]}"); echo ${a:1})]"'/g' \
     build-images.yml.template > .github/workflows/build-images.yml
