@@ -44,6 +44,8 @@ jobs:
             echo ::set-output name=uname::$(uname -a)
       - name: Build roswell:${{ matrix.version }}-${{ matrix.target }} image
         run: ./build.sh roswell ${{ matrix.version }} ${{ matrix.target }}
+      - name: Inspect roswell:${{ matrix.version }}-${{ matrix.target }} image
+        run: docker inspect ${GITHUB_REPOSITORY%/*}/roswell:${{ matrix.version }}-${{ matrix.target }}
       - name: Publish roswell:${{ matrix.version }}-${{ matrix.target }} image
         if: github.ref == 'refs/heads/master'
         env:
