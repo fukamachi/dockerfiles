@@ -1,11 +1,11 @@
-name: Create pull request to update
+name: Auto-update pull request
 
 on:
   schedule:
     - cron: '0 15 * * *'
 
 jobs:
-  createPullRequest:
+  autoupdate:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
