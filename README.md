@@ -2,11 +2,11 @@
 
 Dockerfiles for each version of Common Lisp implementations and utilities. Currently provides the following products:
 
-- [roswell](https://github.com/roswell/roswell), a Common Lisp implementation manager
+- [Roswell](https://github.com/roswell/roswell), a Common Lisp implementation manager
   - [https://hub.docker.com/r/fukamachi/roswell](https://hub.docker.com/r/fukamachi/roswell)
-- [sbcl](http://sbcl.org), a high-performance Common Lisp compiler
+- [SBCL](http://sbcl.org), a high-performance Common Lisp compiler
   - [https://hub.docker.com/r/fukamachi/sbcl](https://hub.docker.com/r/fukamachi/sbcl)
-- [ccl](https://ccl.clozure.com/), a open source Common Lisp implementation hosted by Clozure Associates
+- [Clozure CL](https://ccl.clozure.com/), an open source Common Lisp implementation hosted by Clozure Associates
   - [https://hub.docker.com/r/fukamachi/ccl](https://hub.docker.com/r/fukamachi/ccl)
 
 ## Usage
