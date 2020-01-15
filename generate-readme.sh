@@ -24,8 +24,6 @@ echo "# Docker images for $image"
 echo
 echo "[![Docker Pulls](https://img.shields.io/docker/pulls/$owner/$image.svg)](https://hub.docker.com/r/$owner/$image/)"
 echo "[![Docker Stars](https://img.shields.io/docker/stars/$owner/$image.svg)](https://hub.docker.com/r/$owner/$image/)"
-echo "[![](https://images.microbadger.com/badges/version/$owner/$image.svg)](https://microbadger.com/images/$owner/$image)"
-echo "[![](https://images.microbadger.com/badges/image/$owner/$image.svg)](https://microbadger.com/images/$owner/$image)"
 echo
 echo "## Usage"
 echo

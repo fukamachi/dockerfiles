@@ -2,8 +2,6 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/fukamachi/ccl.svg)](https://hub.docker.com/r/fukamachi/ccl/)
 [![Docker Stars](https://img.shields.io/docker/stars/fukamachi/ccl.svg)](https://hub.docker.com/r/fukamachi/ccl/)
-[![](https://images.microbadger.com/badges/version/fukamachi/ccl.svg)](https://microbadger.com/images/fukamachi/ccl)
-[![](https://images.microbadger.com/badges/image/fukamachi/ccl.svg)](https://microbadger.com/images/fukamachi/ccl)
 
 ## Usage
 

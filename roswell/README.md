@@ -2,8 +2,6 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/fukamachi/roswell.svg)](https://hub.docker.com/r/fukamachi/roswell/)
 [![Docker Stars](https://img.shields.io/docker/stars/fukamachi/roswell.svg)](https://hub.docker.com/r/fukamachi/roswell/)
-[![](https://images.microbadger.com/badges/version/fukamachi/roswell.svg)](https://microbadger.com/images/fukamachi/roswell)
-[![](https://images.microbadger.com/badges/image/fukamachi/roswell.svg)](https://microbadger.com/images/fukamachi/roswell)
 
 ## Usage
 
