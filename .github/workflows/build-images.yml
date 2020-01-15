@@ -21,7 +21,7 @@ jobs:
       - name: Build roswell:${{ matrix.version }}-${{ matrix.target }} image
         run: ./build.sh roswell ${{ matrix.version }} ${{ matrix.target }}
       - name: Test roswell:${{ matrix.version }}-${{ matrix.target }} image
-        run: docker run -it --rm roswell:${{ matrix.version }}-${{ matrix.target }} ros --version
+        run: docker run --rm roswell:${{ matrix.version }}-${{ matrix.target }} ros --version
       - name: Publish roswell:${{ matrix.version }}-${{ matrix.target }} image
         if: github.ref == 'refs/heads/master'
         env:
@@ -42,7 +42,7 @@ jobs:
       - name: Build sbcl:${{ matrix.version }}-${{ matrix.target }} image
         run: ./build.sh sbcl ${{ matrix.version }} ${{ matrix.target }}
       - name: Test sbcl:${{ matrix.version }}-${{ matrix.target }} image
-        run: docker run -it --rm sbcl:${{ matrix.version }}-${{ matrix.target }} sbcl --version
+        run: docker run --rm sbcl:${{ matrix.version }}-${{ matrix.target }} sbcl --version
       - name: Publish sbcl:${{ matrix.version }}-${{ matrix.target }} image
         if: github.ref == 'refs/heads/master'
         env:
@@ -63,7 +63,7 @@ jobs:
       - name: Build ccl:${{ matrix.version }}-${{ matrix.target }} image
         run: ./build.sh ccl ${{ matrix.version }} ${{ matrix.target }}
       - name: Test ccl:${{ matrix.version }}-${{ matrix.target }} image
-        run: docker run -it --rm ccl:${{ matrix.version }}-${{ matrix.target }} ccl --version
+        run: docker run --rm ccl:${{ matrix.version }}-${{ matrix.target }} ccl --version
       - name: Publish ccl:${{ matrix.version }}-${{ matrix.target }} image
         if: github.ref == 'refs/heads/master'
         env:
