@@ -18,8 +18,7 @@ RUN set -x; \
     && ros delete sbcl-bin \
     && rm -rf /root/.roswell/archives/* \
       /root/.roswell/src/sbcl-* \
-      /root/.roswell/src/ccl-* \
-      /root/.roswell/env/roswell/impls/x86-64/linux/sbcl-bin/*/dump/roswell.core
+      /root/.roswell/src/ccl-*
 
 RUN set -x; \
   printf '#!/bin/sh\nros run -- "$@"\n' > /usr/local/bin/ccl \
