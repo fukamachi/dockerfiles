@@ -1,0 +1,20 @@
+name: Build Edge images
+
+on:
+  schedule:
+    - cron: '0 15 * * *'
+
+jobs:
+  build_edge:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build edge image
+        run: ./build.sh roswell edge debian
+      - name: Test edge image
+        run: ./test.sh roswell edge debian ros
+      - name: Publish edge image
+        if: github.ref == 'refs/heads/master'
+        env:
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: ./publish.sh roswell edge debian
