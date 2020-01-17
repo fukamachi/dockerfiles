@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '**/*/Dockerfile'
+      - '**/*/Dockerfile.edge'
       - '**/versions'
       - '.github/workflows/build-images.yml'
 
@@ -19,11 +20,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build roswell:${{ matrix.version }}-${{ matrix.target }} image
+        if: matrix.target == 'debian' || matrix.version != 'edge'
         run: ./build.sh roswell ${{ matrix.version }} ${{ matrix.target }}
       - name: Test roswell:${{ matrix.version }}-${{ matrix.target }} image
+        if: matrix.target == 'debian' || matrix.version != 'edge'
         run: ./test.sh roswell ${{ matrix.version }} ${{ matrix.target }} ros
       - name: Publish roswell:${{ matrix.version }}-${{ matrix.target }} image
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && (matrix.target == 'debian' || matrix.version != 'edge')
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         run: ./publish.sh roswell ${{ matrix.version }} ${{ matrix.target }}

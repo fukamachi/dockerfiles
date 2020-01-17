@@ -13,7 +13,7 @@ for image in "${images[@]}"; do
     ./generate-readme.sh $image > $image/README.md
 done
 
-roswell_versions=( `cat roswell/versions` )
+roswell_versions=( `cat roswell/versions` "edge" )
 sbcl_versions=( `cat sbcl/versions` )
 ccl_versions=( `cat ccl/versions` )
 

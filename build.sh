@@ -19,8 +19,16 @@ target=$3
 tagname="$owner/$image:$version-$target"
 
 echo "Build $tagname"
-docker build -t $tagname \
-    --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-    --build-arg VCS_REF=`git rev-parse --short HEAD` \
-    --build-arg VERSION="$version" \
-    $image/$target/
+if [ "$version" == "edge" ]; then
+    docker build -t $tagname \
+        --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+        --build-arg VCS_REF=`git rev-parse --short HEAD` \
+        $image/$target/ \
+        --file $image/$target/Dockerfile.edge
+else
+    docker build -t $tagname \
+        --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+        --build-arg VCS_REF=`git rev-parse --short HEAD` \
+        --build-arg VERSION="$version" \
+        $image/$target/
+fi
