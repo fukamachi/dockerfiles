@@ -21,4 +21,4 @@ RUN set -x; \
   printf '#!/bin/sh\nros run -- "$@"\n' > /usr/local/bin/sbcl \
   && chmod u+x /usr/local/bin/sbcl
 
-CMD ["ros", "run"]
+ENTRYPOINT ["/usr/local/bin/sbcl"]

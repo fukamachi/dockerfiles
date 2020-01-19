@@ -24,4 +24,4 @@ RUN set -x; \
   printf '#!/bin/sh\nros run -- "$@"\n' > /usr/local/bin/ccl \
   && chmod u+x /usr/local/bin/ccl
 
-CMD ["ros", "run"]
+ENTRYPOINT ["/usr/local/bin/ccl"]

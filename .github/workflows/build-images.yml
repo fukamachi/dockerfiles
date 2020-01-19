@@ -24,7 +24,7 @@ jobs:
         run: ./build.sh roswell ${{ matrix.version }} ${{ matrix.target }}
       - name: Test roswell:${{ matrix.version }}-${{ matrix.target }} image
         if: matrix.target == 'debian' || matrix.version != 'edge'
-        run: ./test.sh roswell ${{ matrix.version }} ${{ matrix.target }} ros
+        run: ./test.sh roswell ${{ matrix.version }} ${{ matrix.target }}
       - name: Publish roswell:${{ matrix.version }}-${{ matrix.target }} image
         if: github.ref == 'refs/heads/master' && (matrix.target == 'debian' || matrix.version != 'edge')
         env:

@@ -12,7 +12,7 @@ jobs:
       - name: Build edge image
         run: ./build.sh roswell edge debian
       - name: Test edge image
-        run: ./test.sh roswell edge debian ros
+        run: ./test.sh roswell edge debian
       - name: Publish edge image
         if: github.ref == 'refs/heads/master'
         env:

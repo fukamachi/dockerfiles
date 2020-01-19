@@ -22,4 +22,5 @@ RUN set -x; \
 
 ENV PATH /root/.roswell/bin:${PATH}
 
-CMD ["ros", "run"]
+ENTRYPOINT ["ros"]
+CMD ["run"]
