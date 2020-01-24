@@ -1,4 +1,6 @@
-FROM ubuntu:18.04
+ARG BASE_IMAGE
+# hadolint ignore=DL3006
+FROM $BASE_IMAGE
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -11,11 +13,12 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 
 ADD https://github.com/roswell/roswell/releases/download/v${VERSION}/roswell_${VERSION}-1_amd64.deb roswell.deb
 
+# hadolint ignore=DL3008
 RUN set -x; \
   apt-get update && apt-get -y install --no-install-recommends \
-    libcurl3-gnutls=7.58.0-2ubuntu3.8 \
-    ca-certificates=20180409 \
-    make=4.1-9.1ubuntu1 && \
+    libcurl3-gnutls \
+    ca-certificates \
+    make && \
   rm -rf /var/lib/apt/lists/* && \
   dpkg -i roswell.deb && rm roswell.deb
 

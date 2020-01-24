@@ -18,7 +18,7 @@ cd $image
 
 image=$(basename `pwd`)
 
-versions=( `cat versions | sort -Vr` )
+versions=( `cat versions | awk -F, '{ print $1 }' | sort -Vr` )
 
 echo "# Docker images for $image"
 echo
