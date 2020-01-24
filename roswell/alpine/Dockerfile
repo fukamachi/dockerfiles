@@ -15,7 +15,7 @@ ARG USER_NAME="fukamachi"
 ARG USER_EMAIL="e.arrows@gmail.com"
 ARG LOGIN_USER="roswell-builder"
 
-# hadolint ignore=DL3008,DL3019
+# hadolint ignore=DL3018,DL3019
 RUN set -x; \
   apk add --update \
     alpine-sdk \
@@ -44,6 +44,7 @@ RUN set -x; \
   su-exec $LOGIN_USER abuild checksum && \
   su-exec $LOGIN_USER abuild -r
 
+# hadolint ignore=DL3006
 FROM $BASE_IMAGE
 ARG VERSION
 COPY --from=build-env /home/roswell-builder/packages/x86_64/roswell-$VERSION-r0.apk roswell.apk
