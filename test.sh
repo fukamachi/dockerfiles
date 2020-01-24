@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $# -ne 4 ]; then
+if [ $# -ne 3 ]; then
   echo "Invalid number of arguments."
   exit 1
 fi
