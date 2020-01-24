@@ -1,34 +1,19 @@
 #!/bin/bash
 
 if [ $# -ne 3 ]; then
-  echo "Too few arguments."
+  echo "Invalid number of arguments."
   exit 1
 fi
 
 cd `dirname $0`
 
-owner=fukamachi
-if [ "$GITHUB_REPOSITORY" ]; then
-    owner="${GITHUB_REPOSITORY%/*}"
-fi
-
 image=$1
 version=$2
 target=$3
 
-tagname="$owner/$image:$version-$target"
-
-echo "Build $tagname"
-if [ "$version" == "edge" ]; then
-    docker build -t $tagname \
-        --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-        --build-arg VCS_REF=`git rev-parse --short HEAD` \
-        $image/$target/ \
-        --file $image/$target/Dockerfile.edge
-else
-    docker build -t $tagname \
-        --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-        --build-arg VCS_REF=`git rev-parse --short HEAD` \
-        --build-arg VERSION="$version" \
-        $image/$target/
+if [ ! -d "$image" ]; then
+    echo "Invalid image name: ${image}"
+    exit -1
 fi
+
+exec $image/build.sh $version $target

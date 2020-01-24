@@ -1,4 +1,6 @@
-FROM frolvlad/alpine-glibc:alpine-3.10 AS build-env
+ARG BASE_IMAGE
+# hadolint ignore=DL3006
+FROM $BASE_IMAGE AS build-env
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -13,11 +15,11 @@ ARG USER_NAME="fukamachi"
 ARG USER_EMAIL="e.arrows@gmail.com"
 ARG LOGIN_USER="roswell-builder"
 
-# hadolint ignore=DL3019
+# hadolint ignore=DL3018,DL3019
 RUN set -x; \
   apk add --update \
-    alpine-sdk=1.0-r0 \
-    su-exec=0.2-r0 && \
+    alpine-sdk \
+    su-exec && \
   adduser -D $LOGIN_USER && \
   addgroup $LOGIN_USER abuild && \
   echo "$LOGIN_USER ALL=(ALL) ALL" >> /etc/sudoers && \
@@ -42,7 +44,8 @@ RUN set -x; \
   su-exec $LOGIN_USER abuild checksum && \
   su-exec $LOGIN_USER abuild -r
 
-FROM frolvlad/alpine-glibc:alpine-3.10
+# hadolint ignore=DL3006
+FROM $BASE_IMAGE
 ARG VERSION
 COPY --from=build-env /home/roswell-builder/packages/x86_64/roswell-$VERSION-r0.apk roswell.apk
 

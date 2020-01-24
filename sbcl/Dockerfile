@@ -1,4 +1,7 @@
-FROM %%BASE%%:%%BASE_TAG%%
+ARG ROSWELL_IMAGE=fukamachi/roswell
+ARG ROSWELL_VERSION
+ARG PLATFORM=debian
+FROM $ROSWELL_IMAGE:$ROSWELL_VERSION-$PLATFORM
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -10,18 +13,15 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0"
 
 RUN set -x; \
-  ros install sbcl-bin && \
-  ros install "ccl-bin/${VERSION}" \
-    && ros use "ccl-bin/${VERSION}" \
+  ros install "sbcl-bin/${VERSION}" \
+    && ros use "sbcl-bin/${VERSION}" \
     # Uninstall unnecessary files
     && ros -e '(ql:uninstall-dist "quicklisp")' -e '(ql-dist:install-dist "http://beta.quicklisp.org/dist/quicklisp.txt" :prompt nil)' \
-    && ros delete sbcl-bin \
     && rm -rf /root/.roswell/archives/* \
-      /root/.roswell/src/sbcl-* \
-      /root/.roswell/src/ccl-*
+      /root/.roswell/src/sbcl-*
 
 RUN set -x; \
-  printf '#!/bin/sh\nros run -- "$@"\n' > /usr/local/bin/ccl \
-  && chmod u+x /usr/local/bin/ccl
+  printf '#!/bin/sh\nros run -- "$@"\n' > /usr/local/bin/sbcl \
+  && chmod u+x /usr/local/bin/sbcl
 
-ENTRYPOINT ["/usr/local/bin/ccl"]
+ENTRYPOINT ["/usr/local/bin/sbcl"]

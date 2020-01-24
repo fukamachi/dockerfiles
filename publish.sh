@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -ne 3 ]; then
-  echo "Too few arguments."
+  echo "Invalid number of arguments."
   exit 1
 fi
 

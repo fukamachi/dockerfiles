@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ $# <= 4 ]; then
-  echo "Too few arguments."
+if [ $# -ne 4 ]; then
+  echo "Invalid number of arguments."
   exit 1
 fi
 
