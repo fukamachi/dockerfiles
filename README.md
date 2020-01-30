@@ -47,4 +47,11 @@ $ docker run -it --rm sbcl:2.0.0-debian
 
 ## Fork
 
-To make GitHub Actions work, add your Docker Hub password as a secret named `DOCKER_HUB_PASSWORD` to your forked GitHub repository. See [GitHub's document](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets).
+To make GitHub Actions work, add the following secrets` to your forked GitHub repository.
+
+- DOCKER_HUB_PASSWORD
+  - Password for Docker Hub
+- AUTO_UPDATE_GITHUB_TOKEN
+  - GitHub personal token to check the newer versions and create a pull request
+
+See [GitHub's document](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets).

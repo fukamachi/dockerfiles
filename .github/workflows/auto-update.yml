@@ -13,6 +13,8 @@ jobs:
         run: ./update.sh
       - name: Create pull request
         uses: peter-evans/create-pull-request@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.AUTO_UPDATE_GITHUB_TOKEN }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Auto-update.
