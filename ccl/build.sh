@@ -35,3 +35,16 @@ docker build -t $tagname \
   --build-arg VCS_REF=`git rev-parse --short HEAD` \
   --build-arg VERSION="$version" \
   .
+
+echo "Create alias tags"
+if [ "$target" == "debian" ]; then
+  docker tag $tagname "$owner/$image:$version"
+fi
+
+latest_version=$(basename $(cat versions | sort -Vr | head -n 1))
+if [ "$latest_version" == "$version" ]; then
+  docker tag $tagname "$owner/$image:latest-$target"
+  if [ "$target" == "debian" ]; then
+    docker tag $tagname "$owner/$image:latest"
+  fi
+fi

@@ -3,6 +3,10 @@ name: Build Edge images
 on:
   schedule:
     - cron: '0 15 * * *'
+  push:
+    paths:
+      - '**/*/Dockerfile.edge'
+      - '.github/workflows/build-edge-images.yml'
 
 jobs:
   build_edge:
@@ -17,4 +21,4 @@ jobs:
         if: github.ref == 'refs/heads/master'
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        run: ./publish.sh roswell edge debian
+        run: ./publish.sh roswell
