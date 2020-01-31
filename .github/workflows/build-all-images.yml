@@ -5,7 +5,7 @@ on:
     paths:
       - '**/*/Dockerfile'
       - '.github/workflows/build-all-images.yml'
-      - 'build.sh'
+      - '**/*/build.sh'
       - 'publish.sh'
 
 jobs:
