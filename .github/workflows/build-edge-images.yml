@@ -21,4 +21,4 @@ jobs:
         if: github.ref == 'refs/heads/master'
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        run: ./publish.sh roswell edge debian
+        run: ./publish.sh roswell

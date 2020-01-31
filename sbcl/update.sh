@@ -14,6 +14,5 @@ for version in "${new_versions[@]}"; do
   for target in "${targets[@]}"; do
     ./build.sh $version $target
     ../test.sh sbcl $version $target
-    ../publish.sh sbcl $version $target
   done
 done

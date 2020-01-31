@@ -16,6 +16,5 @@ for version in "${new_versions[@]}"; do
   for target in "${targets[@]}"; do
     ./build.sh $version $target
     ../test.sh roswell $version $target
-    ../publish.sh roswell $version $target
   done
 done

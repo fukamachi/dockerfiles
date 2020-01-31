@@ -11,6 +11,14 @@ jobs:
       - uses: actions/checkout@v2
       - name: Auto-update
         run: ./update.sh
+      - name: Publish new images
+        if: github.ref == 'refs/heads/master'
+        env:
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: |
+          ./publish roswell || true
+          ./publish sbcl || true
+          ./publish ccl || true
       - name: Create pull request
         uses: peter-evans/create-pull-request@v2
         env:

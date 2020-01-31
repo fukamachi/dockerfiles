@@ -27,11 +27,7 @@ jobs:
         if: github.ref == 'refs/heads/master'
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        run: |
-          for version in `cat roswell/versions | awk -F, '{ print $1 }'`
-          do
-            ./publish.sh roswell $version ${{ matrix.target }}
-          done
+        run: ./publish.sh roswell || true
 
   sbcl:
     name: SBCL
@@ -54,11 +50,7 @@ jobs:
         if: github.ref == 'refs/heads/master'
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        run: |
-          for version in `cat sbcl/versions | awk -F, '{ print $1 }'`
-          do
-            ./publish.sh sbcl $version ${{ matrix.target }}
-          done
+        run: ./publish.sh sbcl || true
 
   ccl:
     name: Clozure CL
@@ -81,8 +73,4 @@ jobs:
         if: github.ref == 'refs/heads/master'
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        run: |
-          for version in `cat ccl/versions | awk -F, '{ print $1 }'`
-          do
-            ./publish.sh ccl $version ${{ matrix.target }}
-          done
+        run: ./publish.sh ccl || true
