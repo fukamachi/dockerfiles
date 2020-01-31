@@ -5,6 +5,8 @@ on:
     paths:
       - '**/*/Dockerfile'
       - '.github/workflows/build-all-images.yml'
+      - 'build.sh'
+      - 'publish.sh'
 
 jobs:
   roswell:
