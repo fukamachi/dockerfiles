@@ -1,0 +1,88 @@
+name: Build Docker images
+
+on:
+  push:
+    paths:
+      - '**/*/Dockerfile'
+      - '.github/workflows/build-all-images.yml'
+
+jobs:
+  roswell:
+    name: Roswell
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        target: [debian, ubuntu, alpine]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build roswell ${{ matrix.target }} images
+        run: |
+          for version in `cat roswell/versions`
+          do
+            ./build.sh roswell $version ${{ matrix.target }}
+            ./test.sh roswell $version ${{ matrix.target }}
+          done
+      - name: Publish roswell ${{ matrix.target }} images
+        if: github.ref == 'refs/heads/master'
+        env:
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: |
+          for version in `cat roswell/versions`
+          do
+            ./publish.sh roswell $version ${{ matrix.target }}
+          done
+
+  sbcl:
+    name: SBCL
+    runs-on: ubuntu-18.04
+    needs: roswell
+    strategy:
+      matrix:
+        target: [debian, ubuntu, alpine]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build sbcl ${{ matrix.target }} images
+        run: |
+          for version in `cat sbcl/versions`
+          do
+            ./build.sh sbcl $version ${{ matrix.target }}
+            ./test.sh roswell $version ${{ matrix.target }}
+          done
+      - name: Publish sbcl ${{ matrix.target }} images
+        if: github.ref == 'refs/heads/master'
+        env:
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: |
+          for version in `cat sbcl/versions`
+          do
+            ./publish.sh sbcl $version ${{ matrix.target }}
+          done
+
+  ccl:
+    name: Clozure CL
+    runs-on: ubuntu-18.04
+    needs: roswell
+    strategy:
+      matrix:
+        target: [debian, ubuntu, alpine]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build ccl ${{ matrix.target }} images
+        run: |
+          for version in `cat ccl/versions`
+          do
+            ./build.sh ccl $version ${{ matrix.target }}
+            ./test.sh ccl $version ${{ matrix.target }}
+          done
+      - name: Publish ccl ${{ matrix.target }} images
+        if: github.ref == 'refs/heads/master'
+        env:
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: |
+          for version in `cat ccl/versions`
+          do
+            ./publish.sh ccl $version ${{ matrix.target }}
+          done

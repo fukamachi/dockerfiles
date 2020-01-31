@@ -3,6 +3,10 @@ name: Build Edge images
 on:
   schedule:
     - cron: '0 15 * * *'
+  push:
+    paths:
+      - '**/*/Dockerfile.edge'
+      - '.github/workflows/build-edge-images.yml'
 
 jobs:
   build_edge:
