@@ -9,4 +9,7 @@ latest_roswell=$(cat ../roswell/versions | sort -Vr | head -n 1 | awk -F, '{ pri
 for version in "${new_versions[@]}"; do
   echo "New Clozure CL version found: $version"
   echo "$version,$latest_roswell" >> versions
+  ./build.sh $version "debian"
+  ./build.sh $version "alpine"
+  ./build.sh $version "ubuntu"
 done

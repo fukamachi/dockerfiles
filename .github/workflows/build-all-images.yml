@@ -48,7 +48,7 @@ jobs:
           for version in `cat sbcl/versions | awk -F, '{ print $1 }'`
           do
             ./build.sh sbcl $version ${{ matrix.target }}
-            ./test.sh roswell $version ${{ matrix.target }}
+            ./test.sh sbcl $version ${{ matrix.target }}
           done
       - name: Publish sbcl ${{ matrix.target }} images
         if: github.ref == 'refs/heads/master'

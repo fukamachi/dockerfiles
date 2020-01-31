@@ -11,4 +11,7 @@ ubuntu_image="18.04"
 for version in "${new_versions[@]}"; do
   echo "New Roswell version found: $version"
   echo "$version,$debian_image,$alpine_image,$ubuntu_image" >> versions
+  ./build.sh $version "debian"
+  ./build.sh $version "alpine"
+  ./build.sh $version "ubuntu"
 done
