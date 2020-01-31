@@ -8,10 +8,14 @@ debian_image="buster-slim"
 alpine_image="3.10"
 ubuntu_image="18.04"
 
+targets=("debian" "alpine" "ubuntu")
+
 for version in "${new_versions[@]}"; do
   echo "New Roswell version found: $version"
   echo "$version,$debian_image,$alpine_image,$ubuntu_image" >> versions
-  ./build.sh $version "debian"
-  ./build.sh $version "alpine"
-  ./build.sh $version "ubuntu"
+  for target in "${targets[@]}"; do
+    ./build.sh $version $target
+    ../test.sh roswell $version $target
+    ../publish.sh roswell $version $target
+  done
 done

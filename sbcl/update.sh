@@ -6,10 +6,14 @@ new_versions=( `curl -s https://api.github.com/repos/roswell/sbcl_bin/releases |
 
 latest_roswell=$(cat ../roswell/versions | sort -Vr | head -n 1 | awk -F, '{ print $1 }')
 
+targets=("debian" "alpine" "ubuntu")
+
 for version in "${new_versions[@]}"; do
   echo "New SBCL version found: $version"
   echo "$version,$latest_roswell" >> versions
-  ./build.sh $version "debian"
-  ./build.sh $version "alpine"
-  ./build.sh $version "ubuntu"
+  for target in "${targets[@]}"; do
+    ./build.sh $version $target
+    ../test.sh sbcl $version $target
+    ../publish.sh sbcl $version $target
+  done
 done
