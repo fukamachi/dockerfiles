@@ -12,7 +12,6 @@ jobs:
       - name: Auto-update
         run: ./update.sh
       - name: Publish new images
-        if: github.ref == 'refs/heads/master'
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         run: |
