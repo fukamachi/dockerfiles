@@ -5,7 +5,7 @@ on:
     - cron: '0 15 * * *'
   push:
     paths:
-      - '**/*/Dockerfile.edge'
+      - '**/Dockerfile.edge'
       - '.github/workflows/build-edge-images.yml'
 
 jobs:

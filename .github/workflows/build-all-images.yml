@@ -3,7 +3,7 @@ name: Build Docker images
 on:
   push:
     paths:
-      - '**/*/Dockerfile'
+      - '**/Dockerfile'
       - '.github/workflows/build-all-images.yml'
 
 jobs:

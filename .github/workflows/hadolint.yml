@@ -3,8 +3,8 @@ name: Lint Dockerfiles
 on:
   push:
     paths:
-      - '**/*/Dockerfile'
-      - '**/*/Dockerfile.edge'
+      - '**/Dockerfile'
+      - '**/Dockerfile.edge'
       - '.github/workflows/hadolint.yml'
 
 jobs:
