@@ -18,7 +18,6 @@ RUN set -x; \
     && ros use "ccl-bin/${VERSION}" \
     # Uninstall unnecessary files
     && ros -e '(ql:uninstall-dist "quicklisp")' -e '(ql-dist:install-dist "http://beta.quicklisp.org/dist/quicklisp.txt" :prompt nil)' \
-    && ros delete sbcl-bin \
     && rm -rf /root/.roswell/archives/* \
       /root/.roswell/src/sbcl-* \
       /root/.roswell/src/ccl-*
