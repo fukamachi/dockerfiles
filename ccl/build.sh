@@ -41,7 +41,7 @@ if [ "$target" == "debian" ]; then
   docker tag $tagname "$owner/ccl:$version"
 fi
 
-latest_version=$(basename $(cat versions | sort -Vr | head -n 1))
+latest_version=$(basename $(cat versions | awk -F, '{ print $1 }' | sort -Vr | head -n 1))
 if [ "$latest_version" == "$version" ]; then
   docker tag $tagname "$owner/ccl:latest-$target"
   if [ "$target" == "debian" ]; then
