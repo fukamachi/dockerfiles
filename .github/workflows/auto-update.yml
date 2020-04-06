@@ -15,9 +15,9 @@ jobs:
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         run: |
-          ./publish roswell || true
-          ./publish sbcl || true
-          ./publish ccl || true
+          ./publish.sh roswell || true
+          ./publish.sh sbcl || true
+          ./publish.sh ccl || true
       - name: Create pull request
         uses: peter-evans/create-pull-request@v2
         env:
