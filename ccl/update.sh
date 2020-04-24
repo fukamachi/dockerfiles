@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eux
+
 cd `dirname $0`
 
 new_versions=( `curl -s "https://api.github.com/repos/roswell/ccl_bin/releases?per_page=10" | jq -r '.[] | .tag_name' | grep -E '^[0-9\\.]+$' | head -n 3 | grep -v "^$(cat versions | awk -F, '{ print $1 }')$" | sort -V` )

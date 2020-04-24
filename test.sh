@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eux
+
 if [ $# -ne 3 ]; then
   echo "Invalid number of arguments."
   exit 1

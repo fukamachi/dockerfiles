@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eux
+
 owner=fukamachi
 
 image="$@"
