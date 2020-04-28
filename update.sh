@@ -11,6 +11,9 @@ fi
 images=( "${images[@]%/}" )
 
 for image in "${images[@]}"; do
-    ./$image/update.sh
-    ./generate-readme.sh $image > $image/README.md
+    # Skip Clozure CL for now because its Roswell build is broken.
+    if [ "$image" != "ccl" ]; then
+      ./$image/update.sh
+      ./generate-readme.sh $image > $image/README.md
+    fi
 done
