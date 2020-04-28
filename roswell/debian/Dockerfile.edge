@@ -16,7 +16,7 @@ ADD https://github.com/roswell/roswell/archive/master.tar.gz roswell.tar.gz
 RUN set -x; \
   tar zxf roswell.tar.gz && mv roswell-* roswell && cd roswell && \
   apt-get update && apt-get -y install --no-install-recommends \
-    libcurl4-openssl-dev=7.64.0-4 \
+    libcurl4-openssl-dev=7.64.0-4+deb10u1 \
     bzip2=1.0.6-9.2~deb10u1 \
     ca-certificates=20190110 \
     build-essential=12.6 \
