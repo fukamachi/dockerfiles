@@ -17,6 +17,7 @@ jobs:
         run: |
           ./publish.sh roswell || true
           ./publish.sh sbcl || true
+          ./publish.sh ccl || true
       - name: Create pull request
         uses: peter-evans/create-pull-request@v2
         env:
