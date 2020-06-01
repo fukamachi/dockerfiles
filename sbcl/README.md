@@ -8,15 +8,18 @@
 ```
 $ docker pull fukamachi/sbcl
 $ docker run -it --rm fukamachi/sbcl
-$ docker pull fukamachi/sbcl:2.0.3
-$ docker run -it --rm fukamachi/sbcl:2.0.3
+$ docker pull fukamachi/sbcl:2.0.4
+$ docker run -it --rm fukamachi/sbcl:2.0.4
 ```
 
 ## Supported tags
 
-- `2.0.4`, `2.0.4-debian`, `latest`, `latest-debian`
-- `2.0.4-ubuntu`, `latest-ubuntu`
-- `2.0.4-alpine`, `latest-alpine`
+- `2.0.5`, `2.0.5-debian`, `latest`, `latest-debian`
+- `2.0.5-ubuntu`, `latest-ubuntu`
+- `2.0.5-alpine`, `latest-alpine`
+- `2.0.4`, `2.0.4-debian`
+- `2.0.4-alpine`
+- `2.0.4-ubuntu`
 - `2.0.3`, `2.0.3-debian`
 - `2.0.3-alpine`
 - `2.0.3-ubuntu`
@@ -120,5 +123,5 @@ $ docker run -it --rm fukamachi/sbcl:2.0.3
 ## Building by your own
 
 ```
-$ docker build -t sbcl:2.0.3 --build-arg VERSION=2.0.3 sbcl/debian/
+$ docker build -t sbcl:2.0.4 --build-arg VERSION=2.0.4 sbcl/debian/
 ```
