@@ -8,15 +8,18 @@
 ```
 $ docker pull fukamachi/roswell
 $ docker run -it --rm fukamachi/roswell
-$ docker pull fukamachi/roswell:20.04.14.105
-$ docker run -it --rm fukamachi/roswell:20.04.14.105
+$ docker pull fukamachi/roswell:20.05.14.106
+$ docker run -it --rm fukamachi/roswell:20.05.14.106
 ```
 
 ## Supported tags
 
-- `20.05.14.106`, `20.05.14.106-debian`, `latest`, `latest-debian`
-- `20.05.14.106-ubuntu`, `latest-ubuntu`
-- `20.05.14.106-alpine`, `latest-alpine`
+- `20.06.14.107`, `20.06.14.107-debian`, `latest`, `latest-debian`
+- `20.06.14.107-ubuntu`, `latest-ubuntu`
+- `20.06.14.107-alpine`, `latest-alpine`
+- `20.05.14.106`, `20.05.14.106-debian`
+- `20.05.14.106-alpine`
+- `20.05.14.106-ubuntu`
 - `20.04.14.105`, `20.04.14.105-debian`
 - `20.04.14.105-alpine`
 - `20.04.14.105-ubuntu`
@@ -42,5 +45,5 @@ $ docker run -it --rm fukamachi/roswell:20.04.14.105
 ## Building by your own
 
 ```
-$ docker build -t roswell:20.04.14.105 --build-arg VERSION=20.04.14.105 roswell/debian/
+$ docker build -t roswell:20.05.14.106 --build-arg VERSION=20.05.14.106 roswell/debian/
 ```
