@@ -19,7 +19,7 @@ jobs:
           ./publish.sh sbcl || true
           ./publish.sh ccl || true
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v2
+        uses: peter-evans/create-pull-request@v3
         env:
           GITHUB_TOKEN: ${{ secrets.AUTO_UPDATE_GITHUB_TOKEN }}
         with:
