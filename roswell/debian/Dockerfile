@@ -10,6 +10,8 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-url="https://github.com/fukamachi/dockerfiles" \
       org.label-schema.version=$VERSION \
       org.label-schema.schema-version="1.0"
+ENV LANG C.UTF-8
+ENV PATH /root/.roswell/bin:${PATH}
 
 ADD https://github.com/roswell/roswell/releases/download/v${VERSION}/roswell_${VERSION}-1_amd64.deb roswell.deb
 
@@ -22,8 +24,6 @@ RUN set -x; \
     make && \
   rm -rf /var/lib/apt/lists/* && \
   dpkg -i roswell.deb && rm roswell.deb
-
-ENV PATH /root/.roswell/bin:${PATH}
 
 ENTRYPOINT ["ros"]
 CMD ["run"]

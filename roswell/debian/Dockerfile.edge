@@ -9,6 +9,8 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-url="https://github.com/fukamachi/dockerfiles" \
       org.label-schema.version="edge" \
       org.label-schema.schema-version="1.0"
+ENV LANG C.UTF-8
+ENV PATH /root/.roswell/bin:${PATH}
 
 ADD https://github.com/roswell/roswell/archive/master.tar.gz roswell.tar.gz
 
@@ -24,8 +26,6 @@ RUN set -x; \
   sh bootstrap && ./configure && make && make install && \
   rm -rf /var/lib/apt/lists/* && \
   cd .. && rm -rf roswell
-
-ENV PATH /root/.roswell/bin:${PATH}
 
 ENTRYPOINT ["ros"]
 CMD ["run"]
