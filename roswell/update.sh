@@ -9,12 +9,13 @@ new_versions=( `curl -s https://api.github.com/repos/roswell/roswell/releases\?p
 debian_image="buster-slim"
 alpine_image="3.10"
 ubuntu_image="18.04"
+libcurl_version="libcurl4-gnutls-dev"
 
 targets=("debian" "alpine" "ubuntu")
 
 for version in "${new_versions[@]}"; do
   echo "New Roswell version found: $version"
-  echo "$version,$debian_image,$alpine_image,$ubuntu_image" >> versions
+  echo "$version,$debian_image,$alpine_image,$ubuntu_image,$libcurl_version" >> versions
   for target in "${targets[@]}"; do
     ./build.sh $version $target
     ../test.sh roswell $version $target

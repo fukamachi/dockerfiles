@@ -10,6 +10,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-url="https://github.com/fukamachi/dockerfiles" \
       org.label-schema.version=$VERSION \
       org.label-schema.schema-version="1.0"
+ARG LIBCURL=libcurl4-gnutls-dev
 ENV LANG C.UTF-8
 ENV PATH /root/.roswell/bin:${PATH}
 
@@ -18,7 +19,7 @@ ADD https://github.com/roswell/roswell/releases/download/v${VERSION}/roswell_${V
 # hadolint ignore=DL3008
 RUN set -x; \
   apt-get update && apt-get -y install --no-install-recommends \
-    libcurl3-gnutls \
+    "${LIBCURL}" \
     ca-certificates \
     make && \
   rm -rf /var/lib/apt/lists/* && \

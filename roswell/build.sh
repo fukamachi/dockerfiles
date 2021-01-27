@@ -43,8 +43,10 @@ else
       exit 1
   esac
 fi
+libcurl=$(echo $version_row | awk -F, '{ print $5 }')
 
 echo "BASE_IMAGE=$base_image"
+echo "LIBCURL=$libcurl"
 
 tagname="$owner/roswell:$version-$target"
 
@@ -54,6 +56,7 @@ docker build -t $tagname \
   --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
   --build-arg VCS_REF=`git rev-parse --short HEAD` \
   --build-arg VERSION="$version" \
+  --build-arg LIBCURL="$libcurl" \
   $target/ --file $dockerfile
 
 echo "Create alias tags"
