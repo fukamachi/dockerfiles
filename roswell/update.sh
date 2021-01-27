@@ -7,8 +7,8 @@ cd `dirname $0`
 new_versions=( `curl -s https://api.github.com/repos/roswell/roswell/releases\?per_page\=5 | jq -r '.[] | .tag_name' | sed -e 's/^v//' | grep -v "^$(cat versions | awk -F, '{ print $1 }')$" | sort -V` )
 
 debian_image="buster-slim"
-alpine_image="3.10"
-ubuntu_image="18.04"
+alpine_image="3.13"
+ubuntu_image="20.04"
 libcurl_version="libcurl4-gnutls-dev"
 
 targets=("debian" "alpine" "ubuntu")
