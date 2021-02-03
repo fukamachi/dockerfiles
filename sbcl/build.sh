@@ -49,27 +49,27 @@ eval docker buildx build -t $tagname \
   --build-arg VERSION="$version" \
   .
 
-docker pull "$tagname" >/dev/null 2>&1 || true
-
-echo "Create alias tags"
-if [ "$target" == "debian" ]; then
-  docker pull "$tagname"
-  docker tag "$tagname" "$owner/sbcl:$version"
-  if [[ "$build_args" = *"--push"* ]]; then
-    docker push "$owner/sbcl:$version"
-  fi
-fi
-
-latest_version=$(basename $(cat versions | awk -F, '{ print $1 }' | sort -Vr | head -n 1))
-if [ "$latest_version" == "$version" ]; then
-  docker tag "$tagname" "$owner/sbcl:latest-$target"
-  if [[ "$build_args" = *"--push"* ]]; then
-    docker push "$owner/sbcl:latest-$target"
-  fi
-  if [ "$target" == "debian" ]; then
-    docker tag "$tagname" "$owner/sbcl:latest"
-    if [[ "$build_args" = *"--push"* ]]; then
-      docker push "$owner/sbcl:latest"
-    fi
-  fi
-fi
+#docker pull "$tagname" >/dev/null 2>&1 || true
+#
+#echo "Create alias tags"
+#if [ "$target" == "debian" ]; then
+#  docker pull "$tagname"
+#  docker tag "$tagname" "$owner/sbcl:$version"
+#  if [[ "$build_args" = *"--push"* ]]; then
+#    docker push "$owner/sbcl:$version"
+#  fi
+#fi
+#
+#latest_version=$(basename $(cat versions | awk -F, '{ print $1 }' | sort -Vr | head -n 1))
+#if [ "$latest_version" == "$version" ]; then
+#  docker tag "$tagname" "$owner/sbcl:latest-$target"
+#  if [[ "$build_args" = *"--push"* ]]; then
+#    docker push "$owner/sbcl:latest-$target"
+#  fi
+#  if [ "$target" == "debian" ]; then
+#    docker tag "$tagname" "$owner/sbcl:latest"
+#    if [[ "$build_args" = *"--push"* ]]; then
+#      docker push "$owner/sbcl:latest"
+#    fi
+#  fi
+#fi
