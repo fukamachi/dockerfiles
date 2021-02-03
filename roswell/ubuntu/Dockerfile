@@ -14,16 +14,19 @@ ARG LIBCURL=libcurl4-gnutls-dev
 ENV LANG C.UTF-8
 ENV PATH /root/.roswell/bin:${PATH}
 
-ADD https://github.com/roswell/roswell/releases/download/v${VERSION}/roswell_${VERSION}-1_amd64.deb roswell.deb
+ADD https://github.com/roswell/roswell/archive/v${VERSION}.tar.gz roswell.tar.gz
 
-# hadolint ignore=DL3008
+# hadolint ignore=DL3008,DL3003
 RUN set -x; \
   apt-get update && apt-get -y install --no-install-recommends \
     "${LIBCURL}" \
     ca-certificates \
-    make && \
+    build-essential \
+    automake && \
   rm -rf /var/lib/apt/lists/* && \
-  dpkg -i roswell.deb && rm roswell.deb
+  tar xvfz roswell.tar.gz && cd "roswell-${VERSION}" && \
+  sh bootstrap && ./configure && make && make install \
+    && cd .. && rm -rf "roswell-${VERSION}"
 
 ENTRYPOINT ["ros"]
 CMD ["run"]

@@ -16,7 +16,7 @@ ENV PATH /root/.roswell/bin:${PATH}
 
 ADD https://github.com/roswell/roswell/archive/v${VERSION}.tar.gz roswell.tar.gz
 
-# hadolint ignore=DL3008
+# hadolint ignore=DL3008,DL3003
 RUN set -x; \
   apt-get update && apt-get -y install --no-install-recommends \
     "${LIBCURL}" \
