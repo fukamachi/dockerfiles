@@ -27,10 +27,14 @@ fi
 echo "ROSWELL_VERSION=$roswell_version"
 
 tagname="$owner/sbcl:$version-$target"
+platform="linux/amd64,linux/arm64,linux/arm/v7"
+if [ $(echo "$version" | awk '{print substr($0,1,1);exit}') = "1" ]; then
+  platform="linux/amd64"
+fi
 
 echo "Build $tagname"
 docker buildx build -t $tagname \
-  --platform linux/amd64,linux/arm64,linux/arm/v7 \
+  --platform "$platform" \
   --build-arg ROSWELL_IMAGE="$owner/roswell" \
   --build-arg ROSWELL_VERSION=$roswell_version \
   --build-arg PLATFORM=$target \
