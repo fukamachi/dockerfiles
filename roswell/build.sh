@@ -16,7 +16,7 @@ fi
 
 version=$1
 target=$2
-push=${3:-}
+build_args=${3:---load}
 
 edge_base_image="debian:buster-slim"
 
@@ -50,48 +50,41 @@ echo "BASE_IMAGE=$base_image"
 echo "LIBCURL=$libcurl"
 
 tagname="$owner/roswell:$version-$target"
+platform="linux/amd64,linux/arm64"
+if [[ "$build_args" = *"--load"* ]]; then
+  platform="linux/amd64"
+fi
 
 echo "Build $tagname"
-if [ "$push" = "--push" ]; then
-  docker buildx build -t $tagname \
-    --push \
-    --platform linux/amd64,linux/arm64 \
-    --build-arg BASE_IMAGE=$base_image \
-    --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-    --build-arg VCS_REF=`git rev-parse --short HEAD` \
-    --build-arg VERSION="$version" \
-    --build-arg LIBCURL="$libcurl" \
-    $target/ --file $dockerfile
-else
-  docker buildx build -t $tagname \
-    --platform linux/amd64,linux/arm64 \
-    --build-arg BASE_IMAGE=$base_image \
-    --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-    --build-arg VCS_REF=`git rev-parse --short HEAD` \
-    --build-arg VERSION="$version" \
-    --build-arg LIBCURL="$libcurl" \
-    $target/ --file $dockerfile
-fi
+eval docker buildx build -t $tagname \
+  "$build_args" \
+  --platform "$platform" \
+  --build-arg BASE_IMAGE=$base_image \
+  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+  --build-arg VCS_REF=`git rev-parse --short HEAD` \
+  --build-arg VERSION="$version" \
+  --build-arg LIBCURL="$libcurl" \
+  $target/ --file $dockerfile
+
+docker pull "$tagname" >/dev/null 2>&1 || true
 
 echo "Create alias tags"
 if [ "$target" == "debian" ]; then
-  docker pull "$tagname"
   docker tag "$tagname" "$owner/roswell:$version"
-  if [ "$push" = "--push" ]; then
+  if [[ "$build_args" = *"--push"* ]]; then
     docker push "$owner/roswell:$version"
   fi
 fi
 
 latest_version=$(basename $(cat versions | awk -F, '{ print $1 }' | sort -Vr | head -n 1))
 if [ "$latest_version" == "$version" ]; then
-  docker pull "$tagname"
   docker tag "$tagname" "$owner/roswell:latest-$target"
-  if [ "$push" = "--push" ]; then
+  if [[ "$build_args" = *"--push"* ]]; then
     docker push "$owner/roswell:latest-$target"
   fi
   if [ "$target" == "debian" ]; then
     docker tag "$tagname" "$owner/roswell:latest"
-    if [ "$push" = "--push" ]; then
+    if [[ "$build_args" = *"--push"* ]]; then
       docker push "$owner/roswell:latest"
     fi
   fi

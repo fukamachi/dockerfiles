@@ -10,7 +10,7 @@ fi
 cd `dirname $0`
 
 owner=fukamachi
-if [ "$GITHUB_REPOSITORY" ]; then
+if [ -z ${GITHUB_REPOSITORY-x} ]; then
     owner="${GITHUB_REPOSITORY%/*}"
 fi
 
@@ -21,5 +21,4 @@ target=$3
 tagname="$owner/$image:$version-$target"
 
 echo "Test $tagname"
-docker pull "$tagname"
 docker run --rm "$tagname" --version

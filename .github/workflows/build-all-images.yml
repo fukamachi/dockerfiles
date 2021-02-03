@@ -27,6 +27,7 @@ jobs:
           for version in `cat roswell/versions | awk -F, '{ print $1 }'`
           do
             ./build.sh roswell $version ${{ matrix.target }}
+            ./test.sh roswell $version ${{ matrix.target }}
           done
       - name: Build and publish roswell ${{ matrix.target }} images
         if: github.ref == 'refs/heads/master'
@@ -50,17 +51,23 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build sbcl ${{ matrix.target }} images
+        if: github.ref != 'refs/heads/master'
         run: |
           for version in `cat sbcl/versions | awk -F, '{ print $1 }'`
           do
             ./build.sh sbcl $version ${{ matrix.target }}
             ./test.sh sbcl $version ${{ matrix.target }}
           done
-      - name: Publish sbcl ${{ matrix.target }} images
+      - name: Build and publish sbcl ${{ matrix.target }} images
         if: github.ref == 'refs/heads/master'
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        run: ./publish.sh sbcl || true
+        run: |
+          for version in `cat sbcl/versions | awk -F, '{ print $1 }'`
+          do
+            ./build.sh sbcl $version ${{ matrix.target }} --push
+            ./test.sh sbcl $version ${{ matrix.target }}
+          done
 
   ccl:
     name: Clozure CL
@@ -73,14 +80,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build ccl ${{ matrix.target }} images
+        if: github.ref != 'refs/heads/master'
         run: |
           for version in `cat ccl/versions | awk -F, '{ print $1 }'`
           do
             ./build.sh ccl $version ${{ matrix.target }}
             ./test.sh ccl $version ${{ matrix.target }}
           done
-      - name: Publish ccl ${{ matrix.target }} images
+      - name: Build and publish ccl ${{ matrix.target }} images
         if: github.ref == 'refs/heads/master'
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        run: ./publish.sh ccl || true
+        run: |
+          for version in `cat ccl/versions | awk -F, '{ print $1 }'`
+          do
+            ./build.sh ccl $version ${{ matrix.target }} --push
+            ./test.sh ccl $version ${{ matrix.target }}
+          done

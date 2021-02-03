@@ -30,6 +30,7 @@ tagname="$owner/ccl:$version-$target"
 
 echo "Build $tagname"
 docker buildx build -t $tagname \
+  --load \
   --build-arg ROSWELL_IMAGE="$owner/roswell" \
   --build-arg ROSWELL_VERSION=$roswell_version \
   --build-arg PLATFORM=$target \

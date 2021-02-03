@@ -19,7 +19,9 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Build edge image
         if: github.ref != 'refs/heads/master'
-        run: ./build.sh roswell edge debian
+        run: |
+          ./build.sh roswell edge debian
+          ./test.sh roswell edge debian
       - name: Build and publish edge image
         if: github.ref == 'refs/heads/master'
         env:
