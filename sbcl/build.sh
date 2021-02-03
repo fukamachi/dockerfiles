@@ -27,7 +27,7 @@ fi
 echo "ROSWELL_VERSION=$roswell_version"
 
 tagname="$owner/sbcl:$version-$target"
-platform="linux/amd64,linux/arm64,linux/arm/v7"
+platform="linux/amd64,linux/arm64"
 if [ $(echo "$version" | awk '{print substr($0,1,1);exit}') = "1" ]; then
   platform="linux/amd64"
 fi

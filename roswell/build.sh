@@ -52,7 +52,7 @@ tagname="$owner/roswell:$version-$target"
 
 echo "Build $tagname"
 docker buildx build -t $tagname \
-  --platform linux/amd64,linux/arm64,linux/arm/v7 \
+  --platform linux/amd64,linux/arm64 \
   --build-arg BASE_IMAGE=$base_image \
   --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
   --build-arg VCS_REF=`git rev-parse --short HEAD` \
