@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eux
+set -ex
 
 if [ $# -ne 2 ]; then
   echo "Invalid number of arguments."
@@ -16,6 +16,9 @@ fi
 
 version=$1
 target=$2
+build_args=$3
+# NOTE: CCL ignores $PLATFORM
+platform=linux/amd64
 
 roswell_version=$(cat versions | grep "$version," | head -n 1 | awk -F, '{ print $2 }')
 
@@ -29,8 +32,9 @@ echo "ROSWELL_VERSION=$roswell_version"
 tagname="$owner/ccl:$version-$target"
 
 echo "Build $tagname"
-docker buildx build -t $tagname \
-  --load \
+eval docker buildx build -t $tagname \
+  "$build_args" \
+  --platform "$platform" \
   --build-arg ROSWELL_IMAGE="$owner/roswell" \
   --build-arg ROSWELL_VERSION=$roswell_version \
   --build-arg PLATFORM=$target \
@@ -39,15 +43,26 @@ docker buildx build -t $tagname \
   --build-arg VERSION="$version" \
   .
 
+docker pull "$tagname" >/dev/null 2>&1 || true
+
 echo "Create alias tags"
 if [ "$target" == "debian" ]; then
   docker tag $tagname "$owner/ccl:$version"
+  if [[ "$build_args" = *"--push"* ]]; then
+    docker push "$owner/ccl:$version"
+  fi
 fi
 
 latest_version=$(basename $(cat versions | awk -F, '{ print $1 }' | sort -Vr | head -n 1))
 if [ "$latest_version" == "$version" ]; then
   docker tag $tagname "$owner/ccl:latest-$target"
+  if [[ "$build_args" = *"--push"* ]]; then
+    docker push "$owner/ccl:latest-$target"
+  fi
   if [ "$target" == "debian" ]; then
     docker tag $tagname "$owner/ccl:latest"
+    if [[ "$build_args" = *"--push"* ]]; then
+      docker push "$owner/ccl:latest"
+    fi
   fi
 fi

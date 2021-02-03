@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eux
+set -ex
 
 if [ $# -ne 2 ]; then
   echo "Invalid number of arguments."
@@ -16,7 +16,8 @@ fi
 
 version=$1
 target=$2
-build_args=${3:---load}
+build_args=$3
+platform=${PLATFORM:-linux/amd64}
 
 edge_base_image="debian:buster-slim"
 
@@ -50,10 +51,6 @@ echo "BASE_IMAGE=$base_image"
 echo "LIBCURL=$libcurl"
 
 tagname="$owner/roswell:$version-$target"
-platform="linux/amd64,linux/arm64"
-if [[ "$build_args" = *"--load"* ]]; then
-  platform="linux/amd64"
-fi
 
 echo "Build $tagname"
 eval docker buildx build -t $tagname \

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eux
+set -ex
 
 if [ $# -ne 2 ]; then
   echo "Invalid number of arguments."
@@ -16,7 +16,8 @@ fi
 
 version=$1
 target=$2
-build_args=${3:---load}
+build_args=$3
+platform=${PLATFORM:-linux/amd64}
 
 roswell_version=$(cat versions | grep "$version," | head -n 1 | awk -F, '{ print $2 }')
 
@@ -28,9 +29,12 @@ fi
 echo "ROSWELL_VERSION=$roswell_version"
 
 tagname="$owner/sbcl:$version-$target"
-platform="linux/amd64,linux/arm64"
+
 if [ $(echo "$version" | awk '{print substr($0,1,1);exit}') = "1" ]; then
-  platform="linux/amd64"
+  if [[ "$platform" = *"linux/arm64"* ]]; then
+    echo "SBCL $version can't build on linux/arm64."
+    platform=linux/amd64
+  fi
 fi
 
 echo "Build $tagname"

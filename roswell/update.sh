@@ -1,8 +1,10 @@
 #!/bin/bash
 
-set -eux
+set -ex
 
 cd `dirname $0`
+
+build_args=$1
 
 new_versions=( `curl -s https://api.github.com/repos/roswell/roswell/releases\?per_page\=5 | jq -r '.[] | .tag_name' | sed -e 's/^v//' | grep -v "^$(cat versions | awk -F, '{ print $1 }')$" | sort -V` )
 
@@ -17,7 +19,7 @@ for version in "${new_versions[@]}"; do
   echo "New Roswell version found: $version"
   echo "$version,$debian_image,$alpine_image,$ubuntu_image,$libcurl_version" >> versions
   for target in "${targets[@]}"; do
-    ./build.sh $version $target
+    ./build.sh $version $target $build_args
     ../test.sh roswell $version $target
   done
 done

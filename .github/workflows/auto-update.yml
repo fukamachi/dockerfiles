@@ -10,14 +10,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Auto-update
-        run: ./update.sh
-      - name: Publish new images
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          PLATFORM: linux/amd64,linux/arm64
         run: |
-          ./publish.sh roswell || true
-          ./publish.sh sbcl || true
-          ./publish.sh ccl || true
+          ./update.sh --push
       - name: Create pull request
         uses: peter-evans/create-pull-request@v3
         env:

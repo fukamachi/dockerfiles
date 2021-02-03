@@ -17,15 +17,14 @@ jobs:
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      - name: Build edge image
-        if: github.ref != 'refs/heads/master'
-        run: |
-          ./build.sh roswell edge debian
-          ./test.sh roswell edge debian
       - name: Build and publish edge image
-        if: github.ref == 'refs/heads/master'
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          PLATFORM: linux/amd64,linux/arm64
         run: |
-          ./build.sh roswell edge debian --push
+          build_arg=""
+          if [ "${{ github.ref }}" = "refs/heads/master" ]; then
+            build_arg="--push"
+          fi
+          ./build.sh roswell edge debian $build_arg
           ./test.sh roswell edge debian

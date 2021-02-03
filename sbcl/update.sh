@@ -1,8 +1,10 @@
 #!/bin/bash
 
-set -eux
+set -ex
 
 cd `dirname $0`
+
+build_args=$1
 
 new_versions=( `curl -s https://api.github.com/repos/roswell/sbcl_bin/releases | jq -r '.[] | .tag_name' | sed -e 's/^v//' | grep -v "^$(cat versions | awk -F, '{ print $1 }')$" | sort -V` )
 
@@ -14,7 +16,7 @@ for version in "${new_versions[@]}"; do
   echo "New SBCL version found: $version"
   echo "$version,$latest_roswell" >> versions
   for target in "${targets[@]}"; do
-    ./build.sh $version $target
+    ./build.sh $version $target $build_args
     ../test.sh sbcl $version $target
   done
 done

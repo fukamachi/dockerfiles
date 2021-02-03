@@ -21,23 +21,18 @@ jobs:
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      - name: Build roswell ${{ matrix.target }} images
-        if: github.ref != 'refs/heads/master'
-        run: |
-          for version in `cat roswell/versions | awk -F, '{ print $1 }'`
-          do
-            ./build.sh roswell $version ${{ matrix.target }}
-            ./test.sh roswell $version ${{ matrix.target }}
-          done
       - name: Build and publish roswell ${{ matrix.target }} images
-        if: github.ref == 'refs/heads/master'
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          PLATFORM: linux/amd64,linux/arm64
         run: |
+          build_arg=""
+          if [ "${{ github.ref }}" = "refs/heads/master" ]; then
+            build_arg="--push"
+          fi
           for version in `cat roswell/versions | awk -F, '{ print $1 }'`
           do
-            ./build.sh roswell $version ${{ matrix.target }} --push
-            ./test.sh roswell $version ${{ matrix.target }}
+            ./build.sh roswell $version ${{ matrix.target }} $build_arg
           done
 
   sbcl:
@@ -50,23 +45,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Build sbcl ${{ matrix.target }} images
-        if: github.ref != 'refs/heads/master'
-        run: |
-          for version in `cat sbcl/versions | awk -F, '{ print $1 }'`
-          do
-            ./build.sh sbcl $version ${{ matrix.target }}
-            ./test.sh sbcl $version ${{ matrix.target }}
-          done
       - name: Build and publish sbcl ${{ matrix.target }} images
-        if: github.ref == 'refs/heads/master'
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          PLATFORM: linux/amd64,linux/arm64
         run: |
+          build_arg=""
+          if [ "${{ github.ref }}" = "refs/heads/master" ]; then
+            build_arg="--push"
+          fi
           for version in `cat sbcl/versions | awk -F, '{ print $1 }'`
           do
-            ./build.sh sbcl $version ${{ matrix.target }} --push
-            ./test.sh sbcl $version ${{ matrix.target }}
+            ./build.sh sbcl $version ${{ matrix.target }} $build_arg
           done
 
   ccl:
@@ -79,21 +69,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Build ccl ${{ matrix.target }} images
-        if: github.ref != 'refs/heads/master'
-        run: |
-          for version in `cat ccl/versions | awk -F, '{ print $1 }'`
-          do
-            ./build.sh ccl $version ${{ matrix.target }}
-            ./test.sh ccl $version ${{ matrix.target }}
-          done
       - name: Build and publish ccl ${{ matrix.target }} images
-        if: github.ref == 'refs/heads/master'
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          PLATFORM: linux/amd64,linux/arm64
         run: |
+          build_arg=""
+          if [ "${{ github.ref }}" = "refs/heads/master" ]; then
+            build_arg="--push"
+          fi
           for version in `cat ccl/versions | awk -F, '{ print $1 }'`
           do
-            ./build.sh ccl $version ${{ matrix.target }} --push
-            ./test.sh ccl $version ${{ matrix.target }}
+            ./build.sh ccl $version ${{ matrix.target }} $build_arg
           done
