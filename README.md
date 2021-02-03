@@ -32,6 +32,8 @@ $ docker run -it --rm fukamachi/sbcl
 $ git clone https://github.com/fukamachi/dockerfiles
 $ cd dockerfiles
 
+$ docker buildx create --use
+
 # Build SBCL 2.0.0 image (Debian)
 $ sbcl/build.sh 2.0.0 debian
 # Build SBCL 2.0.0 image (Alpine)

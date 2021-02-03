@@ -29,7 +29,8 @@ echo "ROSWELL_VERSION=$roswell_version"
 tagname="$owner/ccl:$version-$target"
 
 echo "Build $tagname"
-docker build -t $tagname \
+docker buildx build -t $tagname \
+  --platform linux/amd64,linux/arm64,linux/arm/v7 \
   --build-arg ROSWELL_IMAGE="$owner/roswell" \
   --build-arg ROSWELL_VERSION=$roswell_version \
   --build-arg PLATFORM=$target \
