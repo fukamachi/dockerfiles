@@ -18,11 +18,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Build edge image
+        if: github.ref != 'refs/heads/master'
         run: ./build.sh roswell edge debian
-      - name: Test edge image
-        run: ./test.sh roswell edge debian
-      - name: Publish edge image
+      - name: Build and publish edge image
         if: github.ref == 'refs/heads/master'
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        run: ./publish.sh roswell
+        run: |
+          ./build.sh roswell edge debian --push
+          ./test.sh roswell edge debian

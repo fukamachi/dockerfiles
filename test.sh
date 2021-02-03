@@ -21,4 +21,5 @@ target=$3
 tagname="$owner/$image:$version-$target"
 
 echo "Test $tagname"
-docker run --rm $tagname --version
+docker pull "$tagname"
+docker run --rm "$tagname" --version

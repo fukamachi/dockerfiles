@@ -22,17 +22,22 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Build roswell ${{ matrix.target }} images
+        if: github.ref != 'refs/heads/master'
         run: |
           for version in `cat roswell/versions | awk -F, '{ print $1 }'`
           do
             ./build.sh roswell $version ${{ matrix.target }}
-            ./test.sh roswell $version ${{ matrix.target }}
           done
-      - name: Publish roswell ${{ matrix.target }} images
+      - name: Build and publish roswell ${{ matrix.target }} images
         if: github.ref == 'refs/heads/master'
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        run: ./publish.sh roswell || true
+        run: |
+          for version in `cat roswell/versions | awk -F, '{ print $1 }'`
+          do
+            ./build.sh roswell $version ${{ matrix.target }} --push
+            ./test.sh roswell $version ${{ matrix.target }}
+          done
 
   sbcl:
     name: SBCL
