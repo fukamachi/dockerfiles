@@ -10,7 +10,7 @@ fi
 cd `dirname $0`
 
 owner=fukamachi
-if [ "$GITHUB_REPOSITORY" ]; then
+if [ -z ${GITHUB_REPOSITORY-x} ]; then
     owner="${GITHUB_REPOSITORY%/*}"
 fi
 

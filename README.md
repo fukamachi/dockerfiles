@@ -33,9 +33,9 @@ $ git clone https://github.com/fukamachi/dockerfiles
 $ cd dockerfiles
 
 # Build SBCL 2.0.0 image (Debian)
-$ docker build -t sbcl:2.0.0-debian --build-arg VERSION=2.0.0 ./sbcl/debian/
+$ sbcl/build.sh 2.0.0 debian
 # Build SBCL 2.0.0 image (Alpine)
-$ docker build -t sbcl:2.0.0-alpine --build-arg VERSION=2.0.0 ./sbcl/alpine/
+$ sbcl/build.sh 2.0.0 alpine
 
 # Start a REPL
 $ docker run -it --rm sbcl:2.0.0-debian
