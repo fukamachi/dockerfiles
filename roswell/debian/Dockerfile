@@ -22,12 +22,13 @@ RUN set -x; \
     "${LIBCURL}" \
     bzip2 \
     ca-certificates \
+    make \
     build-essential \
     automake && \
-  apt-get clean && rm -rf /var/lib/apt/lists/* && \
   tar xvfz roswell.tar.gz && rm roswell.tar.gz && cd "roswell-${VERSION}" && \
   sh bootstrap && ./configure && make && make install \
-    && cd .. && rm -rf "roswell-${VERSION}"
+    && cd .. && rm -rf "roswell-${VERSION}" && \
+  apt-get autoremove --purge -y build-essential automake && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["ros"]
 CMD ["run"]
