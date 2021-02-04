@@ -52,9 +52,21 @@ echo "LIBCURL=$libcurl"
 
 tagname="$owner/roswell:$version-$target"
 
+tag_options="-t $tagname"
+if [ "$target" == "debian" ]; then
+  tag_options="$tag_options -t $owner/roswell:$version"
+fi
+latest_version=$(basename $(cat versions | awk -F, '{ print $1 }' | sort -Vr | head -n 1))
+if [ "$latest_version" == "$version" ]; then
+  tag_options="$tag_options -t $owner/roswell:latest-$target"
+  if [ "$target" == "debian" ]; then
+    tag_options="$tag_options -t $owner/roswell:latest"
+  fi
+fi
+
 echo "Build $tagname"
-eval docker buildx build -t $tagname \
-  "$build_args" \
+eval docker buildx build $tag_options \
+  $build_args \
   --platform "$platform" \
   --build-arg BASE_IMAGE=$base_image \
   --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
@@ -62,27 +74,3 @@ eval docker buildx build -t $tagname \
   --build-arg VERSION="$version" \
   --build-arg LIBCURL="$libcurl" \
   $target/ --file $dockerfile
-
-#docker pull "$tagname" >/dev/null 2>&1 || true
-#
-#echo "Create alias tags"
-#if [ "$target" == "debian" ]; then
-#  docker tag "$tagname" "$owner/roswell:$version"
-#  if [[ "$build_args" = *"--push"* ]]; then
-#    docker push "$owner/roswell:$version"
-#  fi
-#fi
-#
-#latest_version=$(basename $(cat versions | awk -F, '{ print $1 }' | sort -Vr | head -n 1))
-#if [ "$latest_version" == "$version" ]; then
-#  docker tag "$tagname" "$owner/roswell:latest-$target"
-#  if [[ "$build_args" = *"--push"* ]]; then
-#    docker push "$owner/roswell:latest-$target"
-#  fi
-#  if [ "$target" == "debian" ]; then
-#    docker tag "$tagname" "$owner/roswell:latest"
-#    if [[ "$build_args" = *"--push"* ]]; then
-#      docker push "$owner/roswell:latest"
-#    fi
-#  fi
-#fi

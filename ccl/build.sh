@@ -31,9 +31,21 @@ echo "ROSWELL_VERSION=$roswell_version"
 
 tagname="$owner/ccl:$version-$target"
 
+tag_options="-t $tagname"
+if [ "$target" == "debian" ]; then
+  tag_options="$tag_options -t $owner/ccl:$version"
+fi
+latest_version=$(basename $(cat versions | awk -F, '{ print $1 }' | sort -Vr | head -n 1))
+if [ "$latest_version" == "$version" ]; then
+  tag_options="$tag_options -t $owner/ccl:latest-$target"
+  if [ "$target" == "debian" ]; then
+    tag_options="$tag_options -t $owner/ccl:latest"
+  fi
+fi
+
 echo "Build $tagname"
-eval docker buildx build -t $tagname \
-  "$build_args" \
+eval docker buildx build $tag_options \
+  $build_args \
   --platform "$platform" \
   --build-arg ROSWELL_IMAGE="$owner/roswell" \
   --build-arg ROSWELL_VERSION=$roswell_version \
@@ -42,27 +54,3 @@ eval docker buildx build -t $tagname \
   --build-arg VCS_REF=`git rev-parse --short HEAD` \
   --build-arg VERSION="$version" \
   .
-
-#docker pull "$tagname" >/dev/null 2>&1 || true
-#
-#echo "Create alias tags"
-#if [ "$target" == "debian" ]; then
-#  docker tag $tagname "$owner/ccl:$version"
-#  if [[ "$build_args" = *"--push"* ]]; then
-#    docker push "$owner/ccl:$version"
-#  fi
-#fi
-#
-#latest_version=$(basename $(cat versions | awk -F, '{ print $1 }' | sort -Vr | head -n 1))
-#if [ "$latest_version" == "$version" ]; then
-#  docker tag $tagname "$owner/ccl:latest-$target"
-#  if [[ "$build_args" = *"--push"* ]]; then
-#    docker push "$owner/ccl:latest-$target"
-#  fi
-#  if [ "$target" == "debian" ]; then
-#    docker tag $tagname "$owner/ccl:latest"
-#    if [[ "$build_args" = *"--push"* ]]; then
-#      docker push "$owner/ccl:latest"
-#    fi
-#  fi
-#fi

@@ -30,6 +30,18 @@ echo "ROSWELL_VERSION=$roswell_version"
 
 tagname="$owner/sbcl:$version-$target"
 
+tag_options="-t $tagname"
+if [ "$target" == "debian" ]; then
+  tag_options="$tag_options -t $owner/sbcl:$version"
+fi
+latest_version=$(basename $(cat versions | awk -F, '{ print $1 }' | sort -Vr | head -n 1))
+if [ "$latest_version" == "$version" ]; then
+  tag_options="$tag_options -t $owner/sbcl:latest-$target"
+  if [ "$target" == "debian" ]; then
+    tag_options="$tag_options -t $owner/sbcl:latest"
+  fi
+fi
+
 if [ $(echo "$version" | awk '{print substr($0,1,1);exit}') = "1" ]; then
   if [[ "$platform" = *"linux/arm64"* ]]; then
     echo "SBCL $version can't build on linux/arm64."
@@ -38,8 +50,8 @@ if [ $(echo "$version" | awk '{print substr($0,1,1);exit}') = "1" ]; then
 fi
 
 echo "Build $tagname"
-eval docker buildx build -t $tagname \
-  "$build_args" \
+eval docker buildx build $tag_options \
+  $build_args \
   --platform "$platform" \
   --build-arg ROSWELL_IMAGE="$owner/roswell" \
   --build-arg ROSWELL_VERSION=$roswell_version \
@@ -48,28 +60,3 @@ eval docker buildx build -t $tagname \
   --build-arg VCS_REF=`git rev-parse --short HEAD` \
   --build-arg VERSION="$version" \
   .
-
-#docker pull "$tagname" >/dev/null 2>&1 || true
-#
-#echo "Create alias tags"
-#if [ "$target" == "debian" ]; then
-#  docker pull "$tagname"
-#  docker tag "$tagname" "$owner/sbcl:$version"
-#  if [[ "$build_args" = *"--push"* ]]; then
-#    docker push "$owner/sbcl:$version"
-#  fi
-#fi
-#
-#latest_version=$(basename $(cat versions | awk -F, '{ print $1 }' | sort -Vr | head -n 1))
-#if [ "$latest_version" == "$version" ]; then
-#  docker tag "$tagname" "$owner/sbcl:latest-$target"
-#  if [[ "$build_args" = *"--push"* ]]; then
-#    docker push "$owner/sbcl:latest-$target"
-#  fi
-#  if [ "$target" == "debian" ]; then
-#    docker tag "$tagname" "$owner/sbcl:latest"
-#    if [[ "$build_args" = *"--push"* ]]; then
-#      docker push "$owner/sbcl:latest"
-#    fi
-#  fi
-#fi
