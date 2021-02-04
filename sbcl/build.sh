@@ -2,7 +2,7 @@
 
 set -ex
 
-if [ $# -ne 2 ]; then
+if [[ $# > 3 ]]; then
   echo "Invalid number of arguments."
   exit 1
 fi

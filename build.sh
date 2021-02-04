@@ -2,7 +2,7 @@
 
 set -eux
 
-if [ $# -ne 3 ]; then
+if [[ $# > 4 ]]; then
   echo "Invalid number of arguments."
   exit 1
 fi

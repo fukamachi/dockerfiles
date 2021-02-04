@@ -52,11 +52,12 @@ jobs:
       - name: Build and publish sbcl ${{ matrix.target }} images
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          PLATFORM: linux/amd64,linux/arm64
         run: |
+          PLATFORM=linux/amd64
           build_arg=""
           if [ "${{ github.ref }}" = "refs/heads/master" ]; then
             build_arg="--push"
+            PLATFORM=linux/amd64,linux/arm64
           fi
           for version in `cat sbcl/versions | awk -F, '{ print $1 }'`
           do
@@ -80,11 +81,12 @@ jobs:
       - name: Build and publish ccl ${{ matrix.target }} images
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          PLATFORM: linux/amd64,linux/arm64
         run: |
+          PLATFORM=linux/amd64
           build_arg=""
           if [ "${{ github.ref }}" = "refs/heads/master" ]; then
             build_arg="--push"
+            PLATFORM=linux/amd64,linux/arm64
           fi
           for version in `cat ccl/versions | awk -F, '{ print $1 }'`
           do
