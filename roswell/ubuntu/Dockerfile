@@ -26,7 +26,8 @@ RUN set -x; \
   rm -rf /var/lib/apt/lists/* && \
   tar xvfz roswell.tar.gz && cd "roswell-${VERSION}" && \
   sh bootstrap && ./configure && make && make install \
-    && cd .. && rm -rf "roswell-${VERSION}"
+    && apt-get autoremove build-essential automake \
+    && cd .. && rm -rf "roswell-${VERSION}" && rm roswell.tar.gz
 
 ENTRYPOINT ["ros"]
 CMD ["run"]
