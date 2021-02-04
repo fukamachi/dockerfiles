@@ -23,7 +23,7 @@ RUN set -x; \
     ca-certificates \
     build-essential \
     automake && \
-  rm -rf /var/lib/apt/lists/* && \
+  apt-get clean && rm -rf /var/lib/apt/lists/* && \
   tar xvfz roswell.tar.gz && rm roswell.tar.gz && cd "roswell-${VERSION}" && \
   sh bootstrap && ./configure && make && make install \
     && cd .. && rm -rf "roswell-${VERSION}"
