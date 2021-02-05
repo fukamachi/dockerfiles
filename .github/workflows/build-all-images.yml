@@ -113,7 +113,7 @@ jobs:
           cat sbcl/versions | awk -F, '{ print $1 }' | grep '^1\.5\.' | ./build-all-ci.sh ${{ matrix.target }}
 
   sbcl_2_x:
-    name: SBCL 1.5.x
+    name: SBCL 2.x
     runs-on: ubuntu-18.04
     needs: roswell
     strategy:
