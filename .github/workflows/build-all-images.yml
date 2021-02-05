@@ -62,7 +62,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Build and publish sbcl ${{ matrix.target }} images
         run: |
-          cat sbcl/versions | awk -F, '{ print $1 }' | grep '^1\.3\.' | ./build-all-ci.sh ${{ matrix.target }}
+          cat sbcl/versions | awk -F, '{ print $1 }' | grep '^1\.3\.' | xargs ./build-all-ci.sh ${{ matrix.target }}
 
   sbcl_1_4_x:
     name: SBCL 1.4.x
@@ -86,7 +86,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Build and publish sbcl ${{ matrix.target }} images
         run: |
-          cat sbcl/versions | awk -F, '{ print $1 }' | grep '^1\.4\.' | ./build-all-ci.sh ${{ matrix.target }}
+          cat sbcl/versions | awk -F, '{ print $1 }' | grep '^1\.4\.' | xargs ./build-all-ci.sh ${{ matrix.target }}
 
   sbcl_1_5_x:
     name: SBCL 1.5.x
@@ -110,7 +110,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Build and publish sbcl ${{ matrix.target }} images
         run: |
-          cat sbcl/versions | awk -F, '{ print $1 }' | grep '^1\.5\.' | ./build-all-ci.sh ${{ matrix.target }}
+          cat sbcl/versions | awk -F, '{ print $1 }' | grep '^1\.5\.' | xargs ./build-all-ci.sh ${{ matrix.target }}
 
   sbcl_2_x:
     name: SBCL 2.x
@@ -134,7 +134,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Build and publish sbcl ${{ matrix.target }} images
         run: |
-          cat sbcl/versions | awk -F, '{ print $1 }' | grep '^2\.' | ./build-all-ci.sh ${{ matrix.target }}
+          cat sbcl/versions | awk -F, '{ print $1 }' | grep '^2\.' | xargs ./build-all-ci.sh ${{ matrix.target }}
 
   ccl:
     name: Clozure CL
