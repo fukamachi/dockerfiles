@@ -7,18 +7,21 @@ ARG VERSION
 
 ADD https://github.com/sbcl/sbcl/archive/sbcl-$VERSION.tar.gz sbcl.tar.gz
 
+# hadolint ignore=DL3008
 RUN set -x; \
   apt-get update && apt-get -y install --no-install-recommends build-essential zlib1g-dev
 
+# hadolint ignore=DL3003
 RUN set -x; \
-  arch=$(case $(uname -m) in amd64) echo x86-64;; aarch64) echo arm64;; *) echo $(uname -m) ;; esac) && \
+  arch="$(case $(uname -m) in amd64) echo x86-64;; aarch64) echo arm64;; *) uname -m ;; esac)" && \
   tar xvfz sbcl.tar.gz && rm sbcl.tar.gz && cd "sbcl-sbcl-${VERSION}" && \
   echo "\"$VERSION\"" > version.lisp-expr && \
   (sh make.sh --with-sb-core-compression "--prefix=$HOME/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/" || true) \
     && sh install.sh && \
-  tar -czvf /tmp/sbcl.tar.gz $HOME/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/
+  tar -czvf /tmp/sbcl.tar.gz "$HOME/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/"
 
 FROM $ROSWELL_IMAGE:$ROSWELL_VERSION-$OS
+# hadolint ignore=DL3010
 COPY --from=build-env /tmp/sbcl.tar.gz /tmp/sbcl.tar.gz
 
 ARG BUILD_DATE
@@ -35,9 +38,9 @@ RUN set -x; \
   tar xvfz /tmp/sbcl.tar.gz && rm /tmp/sbcl.tar.gz
 
 RUN set -x; \
-  echo "setup.time\t0\t$(expr $(date +%s) + 2208988800)" > ~/.roswell/config && \
-  echo "sbcl-bin.version\t0\t$VERSION" >> ~/.roswell/config && \
-  echo "default.lisp\t0\tsbcl-bin" >> ~/.roswell/config && \
+  printf "setup.time\t0\t%s\n" "$(( $(date +%s) + 2208988800 ))" > ~/.roswell/config && \
+  printf "sbcl-bin.version\t0\t%s\n" "$VERSION" >> ~/.roswell/config && \
+  printf "default.lisp\t0\tsbcl-bin\n" >> ~/.roswell/config && \
   ros setup \
     && ros -e '(ql:uninstall-dist "quicklisp")' -e '(ql-dist:install-dist "http://beta.quicklisp.org/dist/quicklisp.txt" :prompt nil)' \
     && rm -rf /root/.roswell/archives/* /root/.roswell/src/sbcl-*
