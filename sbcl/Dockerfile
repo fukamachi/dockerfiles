@@ -1,7 +1,7 @@
 ARG ROSWELL_IMAGE=fukamachi/roswell
 ARG ROSWELL_VERSION
 ARG OS=debian
-FROM fukamachi/sbcl:latest-$OS AS build-env
+FROM fukamachi/sbcl:2.0.9-$OS AS build-env
 
 ARG VERSION
 
