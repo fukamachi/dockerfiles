@@ -143,7 +143,9 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Build and publish sbcl ${{ matrix.target }} images
         env:
-          ARCH: linux/amd64,linux/arm64
+          # Stop building ARM64 images since it's unbearably slow.
+          #ARCH: linux/amd64,linux/arm64
+          ARCH: linux/amd64
         run: |
           if [ "$GITHUB_REF" = "refs/heads/master" ]; then
             BUILD_ARGS="--push"
