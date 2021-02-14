@@ -31,12 +31,13 @@ jobs:
         env:
           ARCH: linux/amd64,linux/arm64
         run: |
+          BUILD_ARGS=""
           if [ "$GITHUB_REF" = "refs/heads/master" ]; then
             BUILD_ARGS="--push"
           fi
           for version in `cat roswell/versions | awk -F, '{ print $1 }'`
           do
-            ./build.sh roswell $version ${{ matrix.target }}
+            BUILD_ARGS=${BUILD_ARGS} ./build.sh roswell $version ${{ matrix.target }}
           done
 
   sbcl_1_3_x:
@@ -59,12 +60,13 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Build and publish sbcl ${{ matrix.target }} images
         run: |
+          BUILD_ARGS=""
           if [ "$GITHUB_REF" = "refs/heads/master" ]; then
             BUILD_ARGS="--push"
           fi
           for version in `cat sbcl/versions | awk -F, '{ print $1 }' | grep '^1\.3\.'`
           do
-            ./build.sh sbcl $version ${{ matrix.target }}
+            BUILD_ARGS=${BUILD_ARGS} ./build.sh sbcl $version ${{ matrix.target }}
           done
 
   sbcl_1_4_x:
@@ -87,12 +89,13 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Build and publish sbcl ${{ matrix.target }} images
         run: |
+          BUILD_ARGS=""
           if [ "$GITHUB_REF" = "refs/heads/master" ]; then
             BUILD_ARGS="--push"
           fi
           for version in `cat sbcl/versions | awk -F, '{ print $1 }' | grep '^1\.4\.'`
           do
-            ./build.sh sbcl $version ${{ matrix.target }}
+            BUILD_ARGS=$BUILD_ARGS ./build.sh sbcl $version ${{ matrix.target }}
           done
 
   sbcl_1_5_x:
@@ -115,12 +118,13 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Build and publish sbcl ${{ matrix.target }} images
         run: |
+          BUILD_ARGS=""
           if [ "$GITHUB_REF" = "refs/heads/master" ]; then
             BUILD_ARGS="--push"
           fi
           for version in `cat sbcl/versions | awk -F, '{ print $1 }' | grep '^1\.5\.'`
           do
-            ./build.sh sbcl $version ${{ matrix.target }}
+            BUILD_ARGS=$BUILD_ARGS} ./build.sh sbcl $version ${{ matrix.target }}
           done
 
   sbcl_2_x:
@@ -147,12 +151,13 @@ jobs:
           #ARCH: linux/amd64,linux/arm64
           ARCH: linux/amd64
         run: |
+          BUILD_ARGS=""
           if [ "$GITHUB_REF" = "refs/heads/master" ]; then
             BUILD_ARGS="--push"
           fi
           for version in `cat sbcl/versions | awk -F, '{ print $1 }' | grep '^2\.'`
           do
-            ./build.sh sbcl $version ${{ matrix.target }}
+            BUILD_ARGS=$BUILD_ARGS ./build.sh sbcl $version ${{ matrix.target }}
           done
 
   ccl:
@@ -177,10 +182,11 @@ jobs:
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         run: |
+          BUILD_ARGS=""
           if [ "$GITHUB_REF" = "refs/heads/master" ]; then
             BUILD_ARGS="--push"
           fi
           for version in `cat ccl/versions | awk -F, '{ print $1 }'`
           do
-            ./build.sh ccl $version ${{ matrix.target }}
+            BUILD_ARGS=$BUILD_ARGS ./build.sh ccl $version ${{ matrix.target }}
           done

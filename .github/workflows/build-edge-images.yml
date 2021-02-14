@@ -28,8 +28,9 @@ jobs:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
           ARCH: linux/amd64,linux/arm64
         run: |
+          BUILD_ARGS=""
           if [ "$GITHUB_REF" = "refs/heads/master" ]; then
             BUILD_ARGS="--push"
           fi
-          ./build.sh roswell edge debian $build_arg
+          BUILD_ARGS=$BUILD_ARGS ./build.sh roswell edge debian $build_arg
           ./test.sh roswell edge debian
