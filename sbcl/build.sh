@@ -70,13 +70,6 @@ if [ "$latest_version" == "$version" ]; then
   fi
 fi
 
-if [ $(echo "$version" | awk '{print substr($0,1,1);exit}') = "1" ]; then
-  if [[ "$arch" = *"linux/arm64"* ]]; then
-    echo "Error: SBCL $version can't build on linux/arm64."
-    exit
-  fi
-fi
-
 echo "Build $tagname"
 eval docker buildx build $tag_options \
   $build_args \
