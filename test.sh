@@ -16,9 +16,9 @@ fi
 
 image=$1
 version=$2
-target=$3
+os=$3
 
-tagname="$owner/$image:$version-$target"
+tagname="$owner/$image:$version-$os"
 
 echo "Test $tagname"
 docker run --rm "$tagname" --version

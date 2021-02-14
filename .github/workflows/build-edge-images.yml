@@ -26,11 +26,10 @@ jobs:
       - name: Build and publish edge image
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          PLATFORM: linux/amd64,linux/arm64
+          ARCH: linux/amd64,linux/arm64
         run: |
-          build_arg=""
-          if [ "${{ github.ref }}" = "refs/heads/master" ]; then
-            build_arg="--push"
+          if [ "$GITHUB_REF" = "refs/heads/master" ]; then
+            BUILD_ARGS="--push"
           fi
           ./build.sh roswell edge debian $build_arg
           ./test.sh roswell edge debian

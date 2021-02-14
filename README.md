@@ -34,13 +34,15 @@ $ cd dockerfiles
 
 $ docker buildx create --use
 
+# Build the latest SBCL image (Debian)
+$ ./build.sh sbcl
 # Build SBCL 2.0.0 image (Debian)
-$ sbcl/build.sh 2.0.0 debian
+$ ./build.sh sbcl 2.0.0
 # Build SBCL 2.0.0 image (Alpine)
-$ sbcl/build.sh 2.0.0 alpine
+$ ./build.sh sbcl 2.0.0 alpine
 
 # Start a REPL
-$ docker run -it --rm sbcl:2.0.0-debian
+$ docker run -it --rm fukamachi/sbcl:2.0.0-debian
 * (lisp-implementation-type)
 "SBCL"
 * (lisp-implementation-version)

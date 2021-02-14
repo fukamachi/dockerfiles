@@ -2,20 +2,23 @@
 
 set -eux
 
-if [[ $# > 4 ]]; then
+# Usage: ./build.sh <app> <version> <os>
+#
+# Environment variables:
+#   ARCH, BUILD_ARGS
+
+if [[ $# > 3 ]]; then
   echo "Invalid number of arguments."
   exit 1
 fi
 
 cd `dirname $0`
 
-image=$1; shift
-version=$1; shift
-target=$1; shift
+app=$1; shift
 
-if [ ! -d "$image" ]; then
-    echo "Invalid image name: ${image}"
+if [ ! -d "$app" ]; then
+    echo "Error: Invalid app name: ${app}"
     exit -1
 fi
 
-exec $image/build.sh $version $target "$@"
+exec $app/build.sh "$@"
