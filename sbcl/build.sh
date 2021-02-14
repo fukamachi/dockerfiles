@@ -24,7 +24,12 @@ fi
 
 version=${1:-latest}
 os=${2:-debian}
-build_args=${BUILD_ARGS:---load}
+
+if [ -z ${BUILD_ARGS+x} ]; then
+  build_args="--load"
+else
+  build_args=${BUILD_ARGS}
+fi
 
 if [ -z ${ARCH+x} ]; then
   machine_arch=$(uname -m)
