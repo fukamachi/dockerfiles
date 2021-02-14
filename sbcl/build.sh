@@ -35,10 +35,10 @@ if [ -z ${ARCH+x} ]; then
   machine_arch=$(uname -m)
 
   case "$machine_arch" in
-    arm64)
+    arm64|aarch64)
       arch="linux/$machine_arch"
       ;;
-    x86_64)
+    x86_64|x86-64|amd64)
       arch="linux/amd64"
       ;;
     *)

@@ -13,7 +13,7 @@ RUN set -x; \
 
 # hadolint ignore=DL3003
 RUN set -x; \
-  arch="$(case $(uname -m) in amd64) echo x86-64;; aarch64) echo arm64;; *) uname -m ;; esac)" && \
+  arch="$(case $(uname -m) in amd64|x86_64) echo x86-64;; aarch64) echo arm64;; *) uname -m ;; esac)" && \
   tar xvfz sbcl.tar.gz && rm sbcl.tar.gz && cd "sbcl-sbcl-${VERSION}" && \
   echo "\"$VERSION\"" > version.lisp-expr && \
   (sh make.sh --with-sb-core-compression "--prefix=$HOME/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/" || true) \
