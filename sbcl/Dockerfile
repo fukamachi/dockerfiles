@@ -1,7 +1,7 @@
 ARG ROSWELL_IMAGE=fukamachi/roswell
 ARG ROSWELL_VERSION
 ARG OS=debian
-FROM fukamachi/sbcl:2.0.9-$OS AS build-env
+FROM fukamachi/roswell:latest-$OS AS build-env
 
 ARG VERSION
 
@@ -9,14 +9,21 @@ ADD https://github.com/sbcl/sbcl/archive/sbcl-$VERSION.tar.gz sbcl.tar.gz
 
 # hadolint ignore=DL3008
 RUN set -x; \
-  apt-get update && apt-get -y install --no-install-recommends build-essential zlib1g-dev
+  apt-get update && apt-get -y install --no-install-recommends \
+    build-essential \
+    zlib1g-dev \
+    time && \
+  ros setup
 
 # hadolint ignore=DL3003
 RUN set -x; \
   arch="$(case $(uname -m) in amd64|x86_64) echo x86-64;; aarch64) echo arm64;; *) uname -m ;; esac)" && \
   tar xvfz sbcl.tar.gz && rm sbcl.tar.gz && cd "sbcl-sbcl-${VERSION}" && \
   echo "\"$VERSION\"" > version.lisp-expr && \
-  (sh make.sh --with-sb-core-compression "--prefix=$HOME/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/" || true) \
+  (sh make.sh \
+      --with-sb-core-compression \
+      "--xc-host=ros -L sbcl-bin without-roswell=t --no-rc run" \
+      "--prefix=$HOME/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/" || true) \
     && sh install.sh && \
   tar -czvf /tmp/sbcl.tar.gz "$HOME/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/"
 
@@ -43,7 +50,7 @@ RUN set -x; \
   printf "default.lisp\t0\tsbcl-bin\n" >> ~/.roswell/config && \
   ros setup \
     && ros -e '(ql:uninstall-dist "quicklisp")' -e '(ql-dist:install-dist "http://beta.quicklisp.org/dist/quicklisp.txt" :prompt nil)' \
-    && rm -rf /root/.roswell/archives/* /root/.roswell/src/sbcl-*
+    && rm -rf /root/.roswell/archives/* /root/.roswell/src/sbcl-* /root/.cache/common-lisp/sbcl-*/root/.roswell/lisp/quicklisp/dists/quicklisp/software
 
 RUN set -x; \
   printf '#!/bin/sh\nros run -- "$@"\n' > /usr/local/bin/sbcl \
