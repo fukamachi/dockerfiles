@@ -11,7 +11,7 @@ new_versions=( `curl -s https://api.github.com/repos/roswell/roswell/releases\?p
 debian_image="buster-slim"
 alpine_image="3.13"
 ubuntu_image="20.04"
-libcurl_version="libcurl3"
+libcurl_version="libcurl4-gnutls-dev"
 
 targets=("debian" "alpine" "ubuntu")
 
