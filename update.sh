@@ -4,7 +4,7 @@ set -ex
 
 cd `dirname $0`
 
-build_args=$1
+build_args=$1; shift
 
 images=( "$@" )
 if [ ${#images[@]} -eq 0 ]; then
