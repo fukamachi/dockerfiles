@@ -105,6 +105,9 @@ case "$version" in
 esac
 
 libcurl=$(echo $version_row | awk -F, '{ print $5 }')
+if [ "$version" = "edge" ]; then
+  libcurl=libcurl4-gnutls-dev
+fi
 
 echo "BASE_IMAGE=$base_image"
 echo "LIBCURL=$libcurl"
