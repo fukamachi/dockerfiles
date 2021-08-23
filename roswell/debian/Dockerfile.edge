@@ -9,23 +9,24 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-url="https://github.com/fukamachi/dockerfiles" \
       org.label-schema.version="edge" \
       org.label-schema.schema-version="1.0"
+ARG LIBCURL=libcurl4-gnutls-dev
 ENV LANG C.UTF-8
 ENV PATH /root/.roswell/bin:${PATH}
 
 ADD https://github.com/roswell/roswell/archive/master.tar.gz roswell.tar.gz
 
-# hadolint ignore=DL3003
+# hadolint ignore=DL3008,DL3003
 RUN set -x; \
   tar zxf roswell.tar.gz && mv roswell-* roswell && cd roswell && \
   apt-get update && apt-get -y install --no-install-recommends \
-    libcurl4-openssl-dev=7.64.0-4+deb10u1 \
-    bzip2=1.0.6-9.2~deb10u1 \
-    ca-certificates=20190110 \
-    build-essential=12.6 \
-    automake=1:1.16.1-4 && \
-  sh bootstrap && ./configure && make && make install && \
-  rm -rf /var/lib/apt/lists/* && \
-  cd .. && rm -rf roswell
+    "${LIBCURL}" \
+    bzip2 \
+    ca-certificates \
+    build-essential \
+    automake && \
+  sh bootstrap && ./configure && make && make install \
+    && cd .. && rm -rf roswell && \
+  apt-get autoremove --purge -y build-essential automake && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["ros"]
 CMD ["run"]
