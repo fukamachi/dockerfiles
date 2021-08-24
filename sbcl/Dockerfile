@@ -12,8 +12,7 @@ RUN set -x; \
   apt-get update && apt-get -y install --no-install-recommends \
     build-essential \
     zlib1g-dev \
-    time && \
-  ros setup
+    time
 
 # hadolint ignore=DL3003
 RUN set -x; \
@@ -21,6 +20,7 @@ RUN set -x; \
   if [ "$arch" = "x86-64" ]; then \
     ros install "sbcl-bin/${VERSION}"; \
   else \
+    ros setup && \
     tar xvfz sbcl.tar.gz && rm sbcl.tar.gz && cd "sbcl-sbcl-${VERSION}" && \
     echo "\"$VERSION\"" > version.lisp-expr && \
     (sh make.sh \
