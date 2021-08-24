@@ -10,7 +10,7 @@ new_versions=( `curl -s "https://api.github.com/repos/roswell/ccl_bin/releases?p
 
 latest_roswell=$(cat ../roswell/versions | sort -Vr | head -n 1 | awk -F, '{ print $1 }')
 
-targets=("alpine")
+targets=("debian" "ubuntu" "alpine")
 
 for version in "${new_versions[@]}"; do
   echo "New Clozure CL version found: $version"
