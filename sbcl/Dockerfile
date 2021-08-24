@@ -18,7 +18,7 @@ RUN set -x; \
 # hadolint ignore=DL3003
 RUN set -x; \
   arch="$(case $(uname -m) in amd64|x86_64) echo x86-64;; aarch64) echo arm64;; *) uname -m ;; esac)"; \
-  if [ $arch = "x86-64" ]; then \
+  if [ "$arch" = "x86-64" ]; then \
     ros install "sbcl-bin/${VERSION}"; \
   else \
     tar xvfz sbcl.tar.gz && rm sbcl.tar.gz && cd "sbcl-sbcl-${VERSION}" && \
