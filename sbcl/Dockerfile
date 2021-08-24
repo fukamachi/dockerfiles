@@ -25,8 +25,8 @@ RUN set -x; \
         "--xc-host=ros -L sbcl-bin without-roswell=t --no-rc run" \
         "--prefix=$HOME/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/" || true) \
       && sh install.sh && \
-      rm -f /root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/lib/sbcl/sbcl.core.old \
-        && rm -f /root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/bin/sbcl.old ; \
+      rm -f "/root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/lib/sbcl/sbcl.core.old" \
+        && rm -f "/root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/bin/sbcl.old" ; \
   fi; \
   tar -czvf /tmp/sbcl.tar.gz "$HOME/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/"
 
