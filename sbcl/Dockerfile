@@ -49,8 +49,7 @@ RUN set -x; \
   printf "setup.time\t0\t%s\n" "$(( $(date +%s) + 2208988800 ))" > ~/.roswell/config && \
   printf "sbcl-bin.version\t0\t%s\n" "$VERSION" >> ~/.roswell/config && \
   printf "default.lisp\t0\tsbcl-bin\n" >> ~/.roswell/config && \
-  ros setup \
-    && ros -e '(ql:uninstall-dist "quicklisp")' -e '(ql-dist:install-dist "http://beta.quicklisp.org/dist/quicklisp.txt" :prompt nil)' \
+  ros -e '(ql:uninstall-dist "quicklisp")' -e '(ql-dist:install-dist "http://beta.quicklisp.org/dist/quicklisp.txt" :prompt nil)' \
     && rm -f /root/.roswell/lisp/quicklisp/tmp/quicklisp.tar \
     && rm -rf /root/.roswell/archives/* /root/.roswell/src/sbcl-* /root/.cache/common-lisp/sbcl-*/root/.roswell/lisp/quicklisp/dists/quicklisp/software
 
@@ -58,4 +57,4 @@ RUN set -x; \
   printf '#!/bin/sh\nexec ros run -- "$@"\n' > /usr/local/bin/sbcl \
   && chmod u+x /usr/local/bin/sbcl
 
-CMD ["/usr/local/bin/sbcl"]
+ENTRYPOINT ["/usr/local/bin/sbcl"]

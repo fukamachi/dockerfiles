@@ -141,18 +141,20 @@ docker buildx build $tag_options \
 # Workaround for the bug of BuildKit which push only the first tag
 # even when there's more than one --tag options.
 
-manifests=$(docker manifest inspect "$tagname" | jq -r -M ".manifests // [] | map(\"$owner/roswell@\" + .digest) | join(\" \")")
-if [ "$manifests" != "" ]; then
-  if [ "$os" == "debian" ]; then
-    docker manifest create "$owner/roswell:$version" $manifests
-    docker manifest push --purge "$owner/roswell:$version"
-  fi
-  if [ "$latest_version" == "$version" ]; then
-    docker manifest create "$owner/roswell:latest-$os" $manifests
-    docker manifest push --purge "$owner/roswell:latest-$os"
+if [[ "$build_args" == *"--push"* ]]; then
+  manifests=$(docker manifest inspect "$tagname" | jq -r -M ".manifests // [] | map(\"$owner/roswell@\" + .digest) | join(\" \")")
+  if [ "$manifests" != "" ]; then
     if [ "$os" == "debian" ]; then
-      docker manifest create "$owner/roswell:latest" $manifests
-      docker manifest push --purge "$owner/roswell:latest"
+      docker manifest create "$owner/roswell:$version" $manifests
+      docker manifest push --purge "$owner/roswell:$version"
+    fi
+    if [ "$latest_version" == "$version" ]; then
+      docker manifest create "$owner/roswell:latest-$os" $manifests
+      docker manifest push --purge "$owner/roswell:latest-$os"
+      if [ "$os" == "debian" ]; then
+        docker manifest create "$owner/roswell:latest" $manifests
+        docker manifest push --purge "$owner/roswell:latest"
+      fi
     fi
   fi
 fi

@@ -21,9 +21,7 @@ RUN set -x; \
       /root/.roswell/src/sbcl-*
 
 RUN set -x; \
-  printf '#!/bin/sh\nros run -- "$@"\n' > /usr/local/bin/sbcl \
+  printf '#!/bin/sh\nexec ros run -- "$@"\n' > /usr/local/bin/sbcl \
   && chmod u+x /usr/local/bin/sbcl
-
-COPY init.lisp /root/.roswell/init.lisp
 
 ENTRYPOINT ["/usr/local/bin/sbcl"]

@@ -91,18 +91,20 @@ docker buildx build $tag_options \
 # Workaround for the bug of BuildKit which push only the first tag
 # even when there's more than one --tag options.
 
-manifests=$(docker manifest inspect "$tagname" | jq -r -M ".manifests // [] | map(\"$owner/sbcl@\" + .digest) | join(\" \")")
-if [ "$manifests" != "" ]; then
-  if [ "$os" == "debian" ]; then
-    docker manifest create "$owner/sbcl:$version" $manifests
-    docker manifest push --purge "$owner/sbcl:$version"
-  fi
-  if [ "$latest_version" == "$version" ]; then
-    docker manifest create "$owner/sbcl:latest-$os" $manifests
-    docker manifest push --purge "$owner/sbcl:latest-$os"
+if [[ "$build_args" == *"--push"* ]]; then
+  manifests=$(docker manifest inspect "$tagname" | jq -r -M ".manifests // [] | map(\"$owner/sbcl@\" + .digest) | join(\" \")")
+  if [ "$manifests" != "" ]; then
     if [ "$os" == "debian" ]; then
-      docker manifest create "$owner/sbcl:latest" $manifests
-      docker manifest push --purge "$owner/sbcl:latest"
+      docker manifest create "$owner/sbcl:$version" $manifests
+      docker manifest push --purge "$owner/sbcl:$version"
+    fi
+    if [ "$latest_version" == "$version" ]; then
+      docker manifest create "$owner/sbcl:latest-$os" $manifests
+      docker manifest push --purge "$owner/sbcl:latest-$os"
+      if [ "$os" == "debian" ]; then
+        docker manifest create "$owner/sbcl:latest" $manifests
+        docker manifest push --purge "$owner/sbcl:latest"
+      fi
     fi
   fi
 fi
