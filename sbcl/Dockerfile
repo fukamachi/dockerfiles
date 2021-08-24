@@ -7,19 +7,16 @@ ARG VERSION
 
 ADD https://github.com/sbcl/sbcl/archive/sbcl-$VERSION.tar.gz sbcl.tar.gz
 
-# hadolint ignore=DL3008
-RUN set -x; \
-  apt-get update && apt-get -y install --no-install-recommends \
-    build-essential \
-    zlib1g-dev \
-    time
-
-# hadolint ignore=DL3003
+# hadolint ignore=DL3003,DL3008
 RUN set -x; \
   arch="$(case $(uname -m) in amd64|x86_64) echo x86-64;; aarch64) echo arm64;; *) uname -m ;; esac)"; \
   if [ "$arch" = "x86-64" ]; then \
     ros install "sbcl-bin/${VERSION}"; \
   else \
+    apt-get update && apt-get -y install --no-install-recommends \
+      build-essential \
+      zlib1g-dev \
+      time && \
     ros setup && \
     tar xvfz sbcl.tar.gz && rm sbcl.tar.gz && cd "sbcl-sbcl-${VERSION}" && \
     echo "\"$VERSION\"" > version.lisp-expr && \
