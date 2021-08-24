@@ -58,7 +58,7 @@ if [ "$latest_version" == "$version" ]; then
 fi
 
 echo "Build $tagname"
-eval docker buildx build $tag_options \
+docker buildx build $tag_options \
   $build_args \
   --platform "linux/amd64" \
   --build-arg ROSWELL_IMAGE="$owner/roswell" \
