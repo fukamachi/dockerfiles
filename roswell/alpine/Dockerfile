@@ -36,7 +36,7 @@ WORKDIR /roswell/
 COPY APKBUILD .
 
 RUN set -x; \
-  su-exec $LOGIN_USER abuild-keygen -a && \
+  su-exec $LOGIN_USER abuild-keygen -a -n && \
   sed -i -e 's/%%VERSION%%/'"$VERSION"'/g' APKBUILD
 
 RUN set -x; \
