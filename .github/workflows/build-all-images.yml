@@ -40,125 +40,39 @@ jobs:
             BUILD_ARGS=${BUILD_ARGS} ./build.sh roswell $version ${{ matrix.target }}
           done
 
-#  sbcl_2_3_x:
-#    name: SBCL 1.3.x
-#    runs-on: ubuntu-18.04
-#    needs: roswell
-#    strategy:
-#      matrix:
-#        target: [debian, ubuntu, alpine]
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v1
-#      - name: Login to Docker Hub
-#        if: github.ref == 'refs/heads/master'
-#        uses: docker/login-action@v1
-#        with:
-#          username: fukamachi
-#          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-#      - name: Build and publish sbcl ${{ matrix.target }} images
-#        run: |
-#          BUILD_ARGS=""
-#          if [ "$GITHUB_REF" = "refs/heads/master" ]; then
-#            BUILD_ARGS="--push"
-#          fi
-#          for version in `cat sbcl/versions | awk -F, '{ print $1 }' | grep '^1\.3\.'`
-#          do
-#            BUILD_ARGS=${BUILD_ARGS} ./build.sh sbcl $version ${{ matrix.target }}
-#          done
-#
-#  sbcl_1_4_x:
-#    name: SBCL 1.4.x
-#    runs-on: ubuntu-18.04
-#    needs: roswell
-#    strategy:
-#      matrix:
-#        target: [debian, ubuntu, alpine]
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v1
-#      - name: Login to Docker Hub
-#        if: github.ref == 'refs/heads/master'
-#        uses: docker/login-action@v1
-#        with:
-#          username: fukamachi
-#          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-#      - name: Build and publish sbcl ${{ matrix.target }} images
-#        run: |
-#          BUILD_ARGS=""
-#          if [ "$GITHUB_REF" = "refs/heads/master" ]; then
-#            BUILD_ARGS="--push"
-#          fi
-#          for version in `cat sbcl/versions | awk -F, '{ print $1 }' | grep '^1\.4\.'`
-#          do
-#            BUILD_ARGS=$BUILD_ARGS ./build.sh sbcl $version ${{ matrix.target }}
-#          done
-#
-#  sbcl_1_5_x:
-#    name: SBCL 1.5.x
-#    runs-on: ubuntu-18.04
-#    needs: roswell
-#    strategy:
-#      matrix:
-#        target: [debian, ubuntu, alpine]
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v1
-#      - name: Login to Docker Hub
-#        if: github.ref == 'refs/heads/master'
-#        uses: docker/login-action@v1
-#        with:
-#          username: fukamachi
-#          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-#      - name: Build and publish sbcl ${{ matrix.target }} images
-#        run: |
-#          BUILD_ARGS=""
-#          if [ "$GITHUB_REF" = "refs/heads/master" ]; then
-#            BUILD_ARGS="--push"
-#          fi
-#          for version in `cat sbcl/versions | awk -F, '{ print $1 }' | grep '^1\.5\.'`
-#          do
-#            BUILD_ARGS=$BUILD_ARGS} ./build.sh sbcl $version ${{ matrix.target }}
-#          done
-
-  sbcl_2_x:
-    name: SBCL 2.x
-    runs-on: ubuntu-18.04
-    needs: roswell
-    strategy:
-      matrix:
-        target: [alpine]
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to Docker Hub
-        if: github.ref == 'refs/heads/master'
-        uses: docker/login-action@v1
-        with:
-          username: fukamachi
-          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-      - name: Build and publish sbcl ${{ matrix.target }} images
-        env:
-          # Stop building ARM64 images since it's unbearably slow.
-          #ARCH: linux/amd64,linux/arm64
-          ARCH: linux/amd64
-        run: |
-          BUILD_ARGS=""
-          if [ "$GITHUB_REF" = "refs/heads/master" ]; then
-            BUILD_ARGS="--push"
-          fi
-          for version in `cat sbcl/versions | awk -F, '{ print $1 }' | grep '^2\.'`
-          do
-            BUILD_ARGS=$BUILD_ARGS ./build.sh sbcl $version ${{ matrix.target }}
-          done
+  # Stop building SBCL
+  #sbcl_2_x:
+  #  name: SBCL 2.x
+  #  runs-on: ubuntu-18.04
+  #  needs: roswell
+  #  strategy:
+  #    matrix:
+  #      target: [alpine]
+  #
+  #  steps:
+  #    - uses: actions/checkout@v2
+  #    - name: Set up Docker Buildx
+  #      uses: docker/setup-buildx-action@v1
+  #    - name: Login to Docker Hub
+  #      if: github.ref == 'refs/heads/master'
+  #      uses: docker/login-action@v1
+  #      with:
+  #        username: fukamachi
+  #        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+  #    - name: Build and publish sbcl ${{ matrix.target }} images
+  #      env:
+  #        # Stop building ARM64 images since it's unbearably slow.
+  #        #ARCH: linux/amd64,linux/arm64
+  #        ARCH: linux/amd64
+  #      run: |
+  #        BUILD_ARGS=""
+  #        if [ "$GITHUB_REF" = "refs/heads/master" ]; then
+  #          BUILD_ARGS="--push"
+  #        fi
+  #        for version in `cat sbcl/versions | awk -F, '{ print $1 }' | grep '^2\.'`
+  #        do
+  #          BUILD_ARGS=$BUILD_ARGS ./build.sh sbcl $version ${{ matrix.target }}
+  #        done
 
   ccl:
     name: Clozure CL
