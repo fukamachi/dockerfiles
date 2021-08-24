@@ -24,7 +24,9 @@ RUN set -x; \
         --with-sb-core-compression \
         "--xc-host=ros -L sbcl-bin without-roswell=t --no-rc run" \
         "--prefix=$HOME/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/" || true) \
-      && sh install.sh; \
+      && sh install.sh && \
+      rm -f /root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/lib/sbcl/sbcl.core.old \
+        && rm -f /root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/bin/sbcl.old ; \
   fi; \
   tar -czvf /tmp/sbcl.tar.gz "$HOME/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/"
 
@@ -43,9 +45,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0"
 
 RUN set -x; \
-  tar xvfz /tmp/sbcl.tar.gz && rm /tmp/sbcl.tar.gz
-
-RUN set -x; \
+  tar xvfz /tmp/sbcl.tar.gz && rm /tmp/sbcl.tar.gz && \
   printf "setup.time\t0\t%s\n" "$(( $(date +%s) + 2208988800 ))" > ~/.roswell/config && \
   printf "sbcl-bin.version\t0\t%s\n" "$VERSION" >> ~/.roswell/config && \
   printf "default.lisp\t0\tsbcl-bin\n" >> ~/.roswell/config && \
