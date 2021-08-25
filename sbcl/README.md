@@ -8,15 +8,45 @@
 ```
 $ docker pull fukamachi/sbcl
 $ docker run -it --rm fukamachi/sbcl
-$ docker pull fukamachi/sbcl:2.0.8
-$ docker run -it --rm fukamachi/sbcl:2.0.8
+$ docker pull fukamachi/sbcl:2.1.6
+$ docker run -it --rm fukamachi/sbcl:2.1.6
 ```
 
 ## Supported tags
 
-- `2.0.9`, `2.0.9-debian`, `latest`, `latest-debian`
-- `2.0.9-ubuntu`, `latest-ubuntu`
-- `2.0.9-alpine`, `latest-alpine`
+- `2.1.7`, `2.1.7-debian`, `latest`, `latest-debian`
+- `2.1.7-ubuntu`, `latest-ubuntu`
+- `2.1.7-alpine`, `latest-alpine`
+- `2.1.6`, `2.1.6-debian`
+- `2.1.6-alpine`
+- `2.1.6-ubuntu`
+- `2.1.5`, `2.1.5-debian`
+- `2.1.5-alpine`
+- `2.1.5-ubuntu`
+- `2.1.4`, `2.1.4-debian`
+- `2.1.4-alpine`
+- `2.1.4-ubuntu`
+- `2.1.3`, `2.1.3-debian`
+- `2.1.3-alpine`
+- `2.1.3-ubuntu`
+- `2.1.2`, `2.1.2-debian`
+- `2.1.2-alpine`
+- `2.1.2-ubuntu`
+- `2.1.1`, `2.1.1-debian`
+- `2.1.1-alpine`
+- `2.1.1-ubuntu`
+- `2.1.0`, `2.1.0-debian`
+- `2.1.0-alpine`
+- `2.1.0-ubuntu`
+- `2.0.11`, `2.0.11-debian`
+- `2.0.11-alpine`
+- `2.0.11-ubuntu`
+- `2.0.10`, `2.0.10-debian`
+- `2.0.10-alpine`
+- `2.0.10-ubuntu`
+- `2.0.9`, `2.0.9-debian`
+- `2.0.9-alpine`
+- `2.0.9-ubuntu`
 - `2.0.8`, `2.0.8-debian`
 - `2.0.8-alpine`
 - `2.0.8-ubuntu`
@@ -135,5 +165,5 @@ $ docker run -it --rm fukamachi/sbcl:2.0.8
 ## Building by your own
 
 ```
-$ docker build -t sbcl:2.0.8 --build-arg VERSION=2.0.8 sbcl/debian/
+$ docker build -t sbcl:2.1.6 --build-arg VERSION=2.1.6 sbcl/debian/
 ```
