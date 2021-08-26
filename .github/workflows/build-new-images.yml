@@ -50,11 +50,9 @@ jobs:
           case "$IMAGE" in
             roswell)
               ARCH=linux/amd64,linux/arm64
-              BUILD_ARGS=--push
               ;;
             *)
               ARCH=linux/amd64
-              BUILD_ARGS=--push
               ;;
           esac
 
@@ -63,6 +61,6 @@ jobs:
 
           for version in "${VERSIONS[@]}"; do
             for os in "${OS[@]}"; do
-              ./build.sh "$IMAGE" "$version" "$os"
+              BUILD_ARGS=--push ./build.sh "$IMAGE" "$version" "$os"
             done
           done
