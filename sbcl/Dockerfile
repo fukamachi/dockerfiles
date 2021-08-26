@@ -7,7 +7,7 @@ ARG VERSION
 
 ADD https://github.com/sbcl/sbcl/archive/sbcl-$VERSION.tar.gz sbcl.tar.gz
 
-# hadolint ignore=DL3003,DL3008
+# hadolint ignore=DL3003,DL3008,DL4006
 RUN set -x; \
   arch="$(case $(uname -m) in amd64|x86_64) echo x86-64;; aarch64) echo arm64;; *) uname -m ;; esac)"; \
   if [ "$arch" = "x86-64" ]; then \
