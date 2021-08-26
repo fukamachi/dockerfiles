@@ -27,7 +27,7 @@ RUN set -x; \
       && sh install.sh && \
       rm -f "/root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/lib/sbcl/sbcl.core.old" \
         && rm -f "/root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/bin/sbcl.old" \
-        && find "/root/.roswell/impls/$arch/linux/sbcl-bin" -maxdepth 1 -mindepth 1 | grep -v "/sbcl-bin/$VERSION$" | xargs rm -rf | true \
+        && find "/root/.roswell/impls/$arch/linux/sbcl-bin" -maxdepth 1 -mindepth 1 | grep -v "/sbcl-bin/$VERSION$" | xargs rm -rf || true \
         && rm -rf "/root/.roswell/impls/log"; \
   fi
 
