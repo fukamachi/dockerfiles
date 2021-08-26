@@ -43,12 +43,6 @@ jobs:
         with:
           username: fukamachi
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.CR_PAT }}
       - name: Build and publish image
         env:
           IMAGE: ${{ matrix.target }}
@@ -58,10 +52,7 @@ jobs:
               ARCH=linux/amd64,linux/arm64
               BUILD_ARGS=--push
               ;;
-            sbcl)
-              ARCH=linux/amd64
-              BUILD_ARGS=--load
-            ccl)
+            *)
               ARCH=linux/amd64
               BUILD_ARGS=--push
               ;;
@@ -73,12 +64,5 @@ jobs:
           for version in "${VERSIONS[@]}"; do
             for os in "${OS[@]}"; do
               ./build.sh "$IMAGE" "$version" "$os"
-
-              # Push SBCL's amd64 image to GitHub Container Registry
-              if [ "$BUILD_ARGS" = "--load" ]; then
-                tagname="ghcr.io/${{ github.repository_owner }}/$IMAGE:$version-$os-arm64"
-                docker tag "fukamachi/$IMAGE:$version-$os" "$tagname"
-                docker push "$tagname"
-              fi
             done
           done
