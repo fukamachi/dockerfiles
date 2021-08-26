@@ -23,10 +23,10 @@ RUN set -x; \
     make \
     build-essential \
     automake && \
-  curl -sSL "https://github.com/roswell/roswell/archive/v${VERSION}.tar.gz" | tar -xz && \
-  cd "roswell-${VERSION}" && \
+  curl -sL "https://github.com/roswell/roswell/archive/v${VERSION}.tar.gz" -o roswell.tar.gz && \
+  tar xvfz roswell.tar.gz && cd "roswell-${VERSION}" && \
   sh bootstrap && ./configure && make && make install \
-    && cd .. && rm -rf "roswell-${VERSION}" && \
+    && cd .. && rm roswell.tar.gz && rm -rf "roswell-${VERSION}" && \
   apt-get autoremove --purge -y curl build-essential automake && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["ros"]

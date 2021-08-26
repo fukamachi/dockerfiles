@@ -22,10 +22,10 @@ RUN set -x; \
     ca-certificates \
     build-essential \
     automake && \
-  curl -sSL "https://github.com/roswell/roswell/archive/master.tar.gz" | tar -xz && \
-  cd roswell-master && \
+  curl -sL "https://github.com/roswell/roswell/archive/master.tar.gz" -o roswell-master.tar.gz && \
+  tar xvfz roswell-master.tar.gz && cd roswell-master && \
   sh bootstrap && ./configure && make && make install \
-    && cd .. && rm -rf roswell-master && \
+    && cd .. && rm roswell-master.tar.gz && rm -rf roswell-master && \
   apt-get autoremove --purge -y curl build-essential automake && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["ros"]
