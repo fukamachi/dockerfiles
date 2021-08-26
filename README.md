@@ -55,7 +55,5 @@ To make GitHub Actions work, add the following secrets` to your forked GitHub re
 
 - DOCKER_HUB_PASSWORD
   - Password for Docker Hub
-- AUTO_UPDATE_GITHUB_TOKEN
-  - GitHub personal token to check the newer versions and create a pull request
 
 See [GitHub's document](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets).
