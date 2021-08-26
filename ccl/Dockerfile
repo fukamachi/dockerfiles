@@ -20,10 +20,12 @@ RUN set -x; \
     && ros -e '(ql:uninstall-dist "quicklisp")' -e '(ql-dist:install-dist "http://beta.quicklisp.org/dist/quicklisp.txt" :prompt nil)' \
     && rm -rf /root/.roswell/archives/* \
       /root/.roswell/src/sbcl-* \
-      /root/.roswell/src/ccl-*
+      /root/.roswell/src/ccl-* \
+      /root/.roswell/lisp/quicklisp/tmp/quicklisp.tar \
+      /root/.cache/common-lisp/sbcl-*/root/.roswell/lisp/quicklisp/dists/quicklisp/software
 
 RUN set -x; \
-  printf '#!/bin/sh\nros run -- "$@"\n' > /usr/local/bin/ccl \
+  printf '#!/bin/sh\nexec ros run -- "$@"\n' > /usr/local/bin/ccl \
   && chmod u+x /usr/local/bin/ccl
 
 ENTRYPOINT ["/usr/local/bin/ccl"]
