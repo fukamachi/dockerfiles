@@ -3,6 +3,9 @@ name: Auto-update pull request
 on:
   schedule:
     - cron: '0 15 * * *'
+  push:
+    paths:
+      - '.github/workflows/auto-update.yml'
 
 jobs:
   autoupdate:
