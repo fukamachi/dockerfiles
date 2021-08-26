@@ -58,7 +58,7 @@ jobs:
               ;;
           esac
 
-          VERSIONS=($(echo "${{ needs.updated.outputs.versions }}" | jq -rc ".$IMAGE" | tr -d '[]"' | sed -e 's/,/ /g'))
+          VERSIONS=($(echo '${{ needs.updated.outputs.versions }}' | jq -rc ".$IMAGE" | tr -d '[]"' | sed -e 's/,/ /g'))
           OS=("debian" "ubuntu" "alpine")
 
           for version in "${VERSIONS[@]}"; do
