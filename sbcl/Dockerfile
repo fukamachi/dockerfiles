@@ -26,13 +26,14 @@ RUN set -x; \
         "--prefix=$HOME/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/" || true) \
       && sh install.sh && \
       rm -f "/root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/lib/sbcl/sbcl.core.old" \
-        && rm -f "/root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/bin/sbcl.old" ; \
-  fi; \
-  tar -czvf /tmp/sbcl.tar.gz "$HOME/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/"
+        && rm -f "/root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/bin/sbcl.old" \
+        && find "/root/.roswell/impls/$arch/linux/sbcl-bin" -maxdepth 1 -mindepth 1 | grep -v "/sbcl-bin/$VERSION$" | xargs rm -rf | true \
+        && rm -rf "/root/.roswell/impls/log"; \
+  fi
 
 FROM $ROSWELL_IMAGE:$ROSWELL_VERSION-$OS
 # hadolint ignore=DL3010
-COPY --from=build-env /tmp/sbcl.tar.gz /tmp/sbcl.tar.gz
+COPY --from=build-env /root/.roswell/impls /root/.roswell/impls
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -45,7 +46,6 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0"
 
 RUN set -x; \
-  tar xvfz /tmp/sbcl.tar.gz && rm /tmp/sbcl.tar.gz && \
   printf "setup.time\t0\t%s\n" "$(( $(date +%s) + 2208988800 ))" > ~/.roswell/config && \
   printf "sbcl-bin.version\t0\t%s\n" "$VERSION" >> ~/.roswell/config && \
   printf "default.lisp\t0\tsbcl-bin\n" >> ~/.roswell/config && \
