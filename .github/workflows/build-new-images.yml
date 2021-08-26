@@ -11,7 +11,7 @@ jobs:
   updated:
     name: Check new versions
     runs-on: ubuntu-latest
-    if: github.event.merged == true
+    if: github.event.pull_request.merged == true
     outputs:
       versions: ${{ steps.extract-diff.outputs.versions }}
       images: ${{ steps.extract-diff.outputs.images }}
@@ -27,7 +27,7 @@ jobs:
   build_images:
     name: Build ${{ matrix.target }}
     needs: updated
-    if: github.event.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     strategy:
       matrix:
