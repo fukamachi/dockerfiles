@@ -29,6 +29,7 @@ get_arch() {
 arch=$(get_arch)
 
 remote_digest=$(docker manifest inspect -v "$image_and_tag" | jq -r '.Descriptor.digest')
+docker tag "$image_and_tag" "$image_and_tag-$arch"
 docker push "$image_and_tag-$arch"
 local_digest=$(docker manifest inspect -v "$image_and_tag-$arch" | jq -r '.Descriptor.digest')
 
