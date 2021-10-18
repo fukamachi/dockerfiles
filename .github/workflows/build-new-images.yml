@@ -61,6 +61,6 @@ jobs:
 
           for version in "${VERSIONS[@]}"; do
             for os in "${OS[@]}"; do
-              BUILD_ARGS=--push ./build.sh "$IMAGE" "$version" "$os"
+              BUILD_ARGS=--push ARCH="$ARCH" ./build.sh "$IMAGE" "$version" "$os"
             done
           done
