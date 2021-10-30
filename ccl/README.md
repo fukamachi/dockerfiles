@@ -20,9 +20,6 @@ $ docker run -it --rm fukamachi/ccl:1.12
 - `1.12`, `1.12-debian`
 - `1.12-alpine`
 - `1.12-ubuntu`
-- `1.11.8`, `1.11.8-debian`
-- `1.11.8-alpine`
-- `1.11.8-ubuntu`
 - `1.11.5`, `1.11.5-debian`
 - `1.11.5-alpine`
 - `1.11.5-ubuntu`
