@@ -3,6 +3,7 @@ ARG ROSWELL_VERSION
 ARG OS=debian
 FROM fukamachi/roswell:latest-$OS AS build-env
 
+ARG OS
 ARG VERSION
 
 ADD https://github.com/sbcl/sbcl/archive/sbcl-$VERSION.tar.gz sbcl.tar.gz
