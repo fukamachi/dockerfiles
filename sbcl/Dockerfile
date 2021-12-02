@@ -10,26 +10,22 @@ ADD https://github.com/sbcl/sbcl/archive/sbcl-$VERSION.tar.gz sbcl.tar.gz
 # hadolint ignore=DL3003,DL3008,DL4006
 RUN set -x; \
   arch="$(case $(uname -m) in amd64|x86_64) echo x86-64;; aarch64) echo arm64;; *) uname -m ;; esac)"; \
-  if [ "$arch" = "x86-64" ]; then \
-    ros install "sbcl-bin/${VERSION}"; \
-  else \
-    apt-get update && apt-get -y install --no-install-recommends \
-      build-essential \
-      zlib1g-dev \
-      time && \
-    ros setup && \
-    tar xvfz sbcl.tar.gz && rm sbcl.tar.gz && cd "sbcl-sbcl-${VERSION}" && \
-    echo "\"$VERSION\"" > version.lisp-expr && \
-    (sh make.sh \
-        --with-sb-core-compression \
-        "--xc-host=ros -L sbcl-bin without-roswell=t --no-rc run" \
-        "--prefix=$HOME/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/" || true) \
-      && sh install.sh && \
-      rm -f "/root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/lib/sbcl/sbcl.core.old" \
-        && rm -f "/root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/bin/sbcl.old" \
-        && find "/root/.roswell/impls/$arch/linux/sbcl-bin" -maxdepth 1 -mindepth 1 | grep -v "/sbcl-bin/$VERSION$" | xargs rm -rf || true \
-        && rm -rf "/root/.roswell/impls/log"; \
-  fi
+  apt-get update && apt-get -y install --no-install-recommends \
+    build-essential \
+    zlib1g-dev \
+    time && \
+  ros setup && \
+  tar xvfz sbcl.tar.gz && rm sbcl.tar.gz && cd "sbcl-sbcl-${VERSION}" && \
+  echo "\"$VERSION\"" > version.lisp-expr && \
+  (sh make.sh \
+      --with-sb-core-compression \
+      "--xc-host=ros -L sbcl-bin without-roswell=t --no-rc run" \
+      "--prefix=$HOME/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/" || true) \
+    && sh install.sh && \
+    rm -f "/root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/lib/sbcl/sbcl.core.old" \
+      && rm -f "/root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/bin/sbcl.old" \
+      && find "/root/.roswell/impls/$arch/linux/sbcl-bin" -maxdepth 1 -mindepth 1 | grep -v "/sbcl-bin/$VERSION$" | xargs rm -rf || true \
+      && rm -rf "/root/.roswell/impls/log"
 
 FROM $ROSWELL_IMAGE:$ROSWELL_VERSION-$OS
 # hadolint ignore=DL3010
