@@ -12,7 +12,7 @@ ADD https://github.com/sbcl/sbcl/archive/sbcl-$VERSION.tar.gz sbcl.tar.gz
 RUN set -x; \
   arch="$(case $(uname -m) in amd64|x86_64) echo x86-64;; aarch64) echo arm64;; *) uname -m ;; esac)"; \
   if [ "$OS" = "alpine" ]; then \
-    apk add --update build-base linux-headers zstd-dev zstd-libs; \
+    apk add --update build-base linux-headers zstd-dev; \
   else \
     apt-get update && apt-get -y install --no-install-recommends \
       build-essential \
@@ -39,6 +39,7 @@ COPY --from=build-env /root/.roswell/impls /root/.roswell/impls
 
 ARG BUILD_DATE
 ARG VCS_REF
+ARG OS
 ARG VERSION
 
 LABEL org.label-schema.build-date=$BUILD_DATE \
@@ -48,6 +49,9 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0"
 
 RUN set -x; \
+  if [ "$OS" = "alpine" ]; then \
+    apk add --update zstd-libs; \
+  fi; \
   printf "setup.time\t0\t%s\n" "$(( $(date +%s) + 2208988800 ))" > ~/.roswell/config && \
   printf "sbcl-bin.version\t0\t%s\n" "$VERSION" >> ~/.roswell/config && \
   printf "default.lisp\t0\tsbcl-bin\n" >> ~/.roswell/config && \
