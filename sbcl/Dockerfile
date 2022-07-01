@@ -12,7 +12,7 @@ ADD https://github.com/sbcl/sbcl/archive/sbcl-$VERSION.tar.gz sbcl.tar.gz
 RUN set -x; \
   arch="$(case $(uname -m) in amd64|x86_64) echo x86-64;; aarch64) echo arm64;; *) uname -m ;; esac)"; \
   if [ "$OS" = "alpine" ]; then \
-    apk add --update build-base linux-headers zstd-dev; \
+    apk add --update build-base linux-headers zstd-dev zstd-libs; \
   else \
     apt-get update && apt-get -y install --no-install-recommends \
       build-essential \
