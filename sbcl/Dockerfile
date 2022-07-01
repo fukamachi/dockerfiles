@@ -17,6 +17,7 @@ RUN set -x; \
     apt-get update && apt-get -y install --no-install-recommends \
       build-essential \
       zlib1g-dev \
+      libzstd-dev \
       time; \
   fi; \
   ros setup && \
