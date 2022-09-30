@@ -20,7 +20,7 @@ RUN set -x; \
       libzstd-dev \
       time; \
   fi; \
-  ros setup && \
+  ros install sbcl-bin/2.2.7 && \
   tar xvfz sbcl.tar.gz && rm sbcl.tar.gz && cd "sbcl-sbcl-${VERSION}" && \
   echo "\"$VERSION\"" > version.lisp-expr && \
   (sh make.sh \
