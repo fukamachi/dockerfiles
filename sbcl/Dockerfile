@@ -48,9 +48,10 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.version=$VERSION \
       org.label-schema.schema-version="1.0"
 
+# hadolint ignore=DL3018
 RUN set -x; \
   if [ "$OS" = "alpine" ]; then \
-    apk add --update zstd-libs; \
+    apk add --update --no-cache zstd-libs; \
   fi; \
   printf "setup.time\t0\t%s\n" "$(( $(date +%s) + 2208988800 ))" > ~/.roswell/config && \
   printf "sbcl-bin.version\t0\t%s\n" "$VERSION" >> ~/.roswell/config && \
