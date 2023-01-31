@@ -28,14 +28,12 @@ get_arch() {
 
 arch=$(get_arch)
 
-remote_digest=$(docker manifest inspect -v "$image_and_tag" | jq -r '.Descriptor.digest')
 docker tag "$image_and_tag" "$image_and_tag-$arch"
 docker push "$image_and_tag-$arch"
 local_digest=$(docker manifest inspect -v "$image_and_tag-$arch" | jq -r '.Descriptor.digest')
 
 for image in "$@"; do
-  docker manifest create "$image" "$image_name@$remote_digest" "$image_name@$local_digest"
-  docker manifest push --purge "$image"
+  docker buildx imagetools create --append -t "$image" "$image_name@$local_digest"
 done
 
 docker_hub_url="https://hub.docker.com/layers/$image_name/$tag_name-arm64/images/sha256-$(echo "$local_digest" | cut -d : -f 2)"
