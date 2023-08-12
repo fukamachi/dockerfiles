@@ -9,7 +9,7 @@ ARG VERSION
 
 ADD https://github.com/roswell/ccl_bin/releases/download/$VERSION/ccl-$VERSION-linuxx86.tar.gz ccl.tar.gz
 
-# hadolint ignore=SC2010,DL3003,DL3008,DL4006
+# hadolint ignore=SC2164,DL3003,DL3008,DL4006
 RUN set -x; \
   if [ "$OS" = "alpine" ]; then \
     ros install ccl-bin; \
@@ -17,10 +17,10 @@ RUN set -x; \
     apt-get update && apt-get -y install --no-install-recommends build-essential m4; \
     ros install sbcl-bin && \
     tar xvfz ccl.tar.gz && rm ccl.tar.gz && \
-      mkdir /root/.roswell/impls/x86-64/linux/ccl-bin && mv ccl "/root/.roswell/impls/x86-64/linux/ccl-bin/$VERSION"; \
-    (cd "/root/.roswell/impls/x86-64/linux/ccl-bin/$VERSION/lisp-kernel/linuxx8664" || exit 1) && make && (cd /root || exit 1); \
+      mkdir -p /root/.roswell/impls/x86-64/linux/ccl-bin && mv ccl "/root/.roswell/impls/x86-64/linux/ccl-bin/$VERSION"; \
+    cd "/root/.roswell/impls/x86-64/linux/ccl-bin/$VERSION/lisp-kernel/linuxx8664" && make && cd /root; \
   fi; \
-  ls "/root/.roswell/impls/x86-64/linux/ccl-bin/$VERSION" | grep -v -E "lx86cl64|lx86cl64.image" | xargs rm -rf && \
+  find "/root/.roswell/impls/x86-64/linux/ccl-bin/$VERSION" -maxdepth 1 -mindepth 1 | grep -v -E "lx86cl64|lx86cl64.image" | xargs rm -rf && \
     rm -rf /root/.roswell/impls/log
 
 FROM $ROSWELL_IMAGE:$ROSWELL_VERSION-$OS
