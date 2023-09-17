@@ -20,8 +20,7 @@ RUN set -x; \
       mkdir -p /root/.roswell/impls/x86-64/linux/ccl-bin && mv ccl "/root/.roswell/impls/x86-64/linux/ccl-bin/$VERSION"; \
     cd "/root/.roswell/impls/x86-64/linux/ccl-bin/$VERSION/lisp-kernel/linuxx8664" && make && cd /root; \
   fi; \
-  find "/root/.roswell/impls/x86-64/linux/ccl-bin/$VERSION" -maxdepth 1 -mindepth 1 | grep -v -E "lx86cl64|lx86cl64.image" | xargs rm -rf && \
-    rm -rf /root/.roswell/impls/log
+  rm -rf /root/.roswell/impls/log
 
 FROM $ROSWELL_IMAGE:$ROSWELL_VERSION-$OS
 
