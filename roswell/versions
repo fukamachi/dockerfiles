@@ -9,3 +9,4 @@
 21.10.14.111,bullseye-slim,3.14,20.04,libcurl4-gnutls-dev
 22.12.14.112,bullseye-slim,3.16,22.04,libcurl4-gnutls-dev
 22.12.14.113,bullseye-slim,3.16,22.04,libcurl4-gnutls-dev
+23.10.14.114,bookworm-slim,3.17,22.04,libcurl4-gnutls-dev
