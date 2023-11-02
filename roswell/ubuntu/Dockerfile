@@ -19,6 +19,7 @@ RUN set -x; \
   apt-get update && apt-get -y install --no-install-recommends \
     curl \
     "${LIBCURL}" \
+    bzip2 \
     ca-certificates \
     make \
     build-essential \
