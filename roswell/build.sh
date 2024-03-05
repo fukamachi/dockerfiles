@@ -48,12 +48,10 @@ else
   arch=$ARCH
 fi
 
-edge_base_image="debian:buster-slim"
-
 case "$version" in
   edge)
     dockerfile=$os/Dockerfile.edge
-    base_image=$edge_base_image
+    base_image=$(cat versions | tail -n 1 | awk -F, '{ print $2 }')
     ;;
   latest)
     dockerfile=$os/Dockerfile
