@@ -51,7 +51,7 @@ fi
 case "$version" in
   edge)
     dockerfile=$os/Dockerfile.edge
-    base_image=$(cat versions | tail -n 1 | awk -F, '{ print $2 }')
+    base_image="debian:$(cat versions | tail -n 1 | awk -F, '{ print $2 }')"
     ;;
   latest)
     dockerfile=$os/Dockerfile
