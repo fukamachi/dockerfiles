@@ -1,7 +1,7 @@
 #!/bin/sh
 
-app=$1
-version=$2
+app=${1:-sbcl}
+version=${2:-"$(cat "$app/versions" | tail -n 1 | awk -F, '{ print $1 }')"}
 
 ./build.sh "$app" "$version" debian
 ./build.sh "$app" "$version" ubuntu
