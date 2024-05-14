@@ -52,11 +52,15 @@ if [ "$version" == "latest" ]; then
   version=$(cat versions | sort -n | tail -n 1 | awk -F, '{ print $1 }')
 fi
 
-roswell_version=$(cat versions | grep "$version," | head -n 1 | awk -F, '{ print $2 }')
+if [ "$version" == "edge" ]; then
+  roswell_version=$(tail -n 1 "../roswell/versions" | awk -F, '{ print $1 }')
+else
+  roswell_version=$(cat versions | grep "$version," | head -n 1 | awk -F, '{ print $2 }')
 
-if [ "$roswell_version" == "" ]; then
-  echo "Error: Version not found: $version"
-  exit 1
+  if [ "$roswell_version" == "" ]; then
+    echo "Error: Version not found: $version"
+    exit 1
+  fi
 fi
 
 echo "ROSWELL_VERSION=$roswell_version"
@@ -76,6 +80,12 @@ if [ "$latest_version" == "$version" ]; then
 fi
 
 echo "Build $tagname"
+if [ "$version" == "edge" ]; then
+  dockerfile="Dockerfile.edge"
+else
+  dockerfile="Dockerfile"
+fi
+
 docker buildx build $tag_options \
   $build_args \
   --platform "$arch" \
@@ -85,7 +95,7 @@ docker buildx build $tag_options \
   --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
   --build-arg VCS_REF=`git rev-parse --short HEAD` \
   --build-arg VERSION="$version" \
-  .
+  . --file "$dockerfile"
 
 #
 # Workaround for the bug of BuildKit which push only the first tag
