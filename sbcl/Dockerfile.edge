@@ -28,7 +28,7 @@ RUN set -x; \
     && sh install.sh && \
     rm -f "/root/.roswell/impls/$arch/linux/sbcl-head/edge/lib/sbcl/sbcl.core.old" \
       && rm -f "/root/.roswell/impls/$arch/linux/sbcl-head/edge/bin/sbcl.old" \
-      && find "/root/.roswell/impls/$arch/linux/sbcl-head" -maxdepth 1 -mindepth 1 | grep -v "/sbcl-head/edge$" | xargs rm -rf || true \
+      && find "/root/.roswell/impls/$arch/linux" -maxdepth 1 -mindepth 1 | grep -v "sbcl-head$" | xargs rm -rf || true \
       && rm -rf "/root/.roswell/impls/log"
 
 FROM $ROSWELL_IMAGE:$ROSWELL_VERSION-$OS
@@ -50,10 +50,9 @@ RUN set -x; \
   if [ "$OS" = "alpine" ]; then \
     apk add --update --no-cache zstd-libs; \
   fi; \
-  ros setup && \
   printf "sbcl-head.version\t0\t%s\n" "edge" >> ~/.roswell/config && \
-  ros config && \
-  ros use sbcl-head && \
+  grep -v "default.lisp" ~/.roswell/config > /tmp/roswell-config && mv /tmp/roswell-config ~/.roswell/config && \
+  printf "default.lisp\t0\tsbcl-head\n" >> ~/.roswell/config && \
   ros -e '(mapc (function ql-dist:uninstall) (ql-dist:installed-releases t))' \
     && rm -f /root/.roswell/lisp/quicklisp/tmp/quicklisp.tar \
     && rm -rf /root/.roswell/archives/* /root/.roswell/src/sbcl-* /root/.cache/common-lisp/sbcl-*/root/.roswell/lisp/quicklisp/dists/quicklisp/software
