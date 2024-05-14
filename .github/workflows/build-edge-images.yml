@@ -37,3 +37,5 @@ jobs:
           fi
           BUILD_ARGS=$BUILD_ARGS ./build.sh roswell edge debian $build_arg
           ./test.sh roswell edge debian
+          BUILD_ARGS=$BUILD_ARGS ./build.sh sbcl edge debian $build_arg
+          ./test.sh sbcl edge debian
