@@ -50,9 +50,9 @@ RUN set -x; \
   if [ "$OS" = "alpine" ]; then \
     apk add --update --no-cache zstd-libs; \
   fi; \
+  ros setup && \
   printf "sbcl-head.version\t0\t%s\n" "edge" >> ~/.roswell/config && \
-  grep -v "default.lisp" ~/.roswell/config > /tmp/roswell-config && mv /tmp/roswell-config ~/.roswell/config && \
-  printf "default.lisp\t0\tsbcl-head\n" >> ~/.roswell/config && \
+  ros use sbcl-head && \
   ros -e '(mapc (function ql-dist:uninstall) (ql-dist:installed-releases t))' \
     && rm -f /root/.roswell/lisp/quicklisp/tmp/quicklisp.tar \
     && rm -rf /root/.roswell/archives/* /root/.roswell/src/sbcl-* /root/.cache/common-lisp/sbcl-*/root/.roswell/lisp/quicklisp/dists/quicklisp/software
