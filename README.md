@@ -32,13 +32,17 @@ $ docker run -it --rm fukamachi/sbcl
 $ git clone https://github.com/fukamachi/dockerfiles
 $ cd dockerfiles
 
+$ docker buildx create --use
+
+# Build the latest SBCL image (Debian)
+$ ./build.sh sbcl
 # Build SBCL 2.0.0 image (Debian)
-$ docker build -t sbcl:2.0.0-debian --build-arg VERSION=2.0.0 ./sbcl/debian/
+$ ./build.sh sbcl 2.0.0
 # Build SBCL 2.0.0 image (Alpine)
-$ docker build -t sbcl:2.0.0-alpine --build-arg VERSION=2.0.0 ./sbcl/alpine/
+$ ./build.sh sbcl 2.0.0 alpine
 
 # Start a REPL
-$ docker run -it --rm sbcl:2.0.0-debian
+$ docker run -it --rm fukamachi/sbcl:2.0.0-debian
 * (lisp-implementation-type)
 "SBCL"
 * (lisp-implementation-version)
@@ -51,7 +55,5 @@ To make GitHub Actions work, add the following secrets` to your forked GitHub re
 
 - DOCKER_HUB_PASSWORD
   - Password for Docker Hub
-- AUTO_UPDATE_GITHUB_TOKEN
-  - GitHub personal token to check the newer versions and create a pull request
 
 See [GitHub's document](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets).

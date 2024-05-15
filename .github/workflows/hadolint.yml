@@ -10,7 +10,7 @@ on:
 jobs:
   lint:
     name: Lint Dockerfiles
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Install hadolint
@@ -20,4 +20,4 @@ jobs:
           ./hadolint -v
       - name: Run hadolint
         run: |
-          git ls-files --exclude='Dockerfile*' --ignored | grep -v Dockerfile.template | xargs --max-lines=1 ./hadolint
+          git ls-files --exclude='Dockerfile*' --ignored --cached | grep -v Dockerfile.template | xargs --max-lines=1 ./hadolint

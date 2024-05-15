@@ -10,15 +10,15 @@ fi
 cd `dirname $0`
 
 owner=fukamachi
-if [ "$GITHUB_REPOSITORY" ]; then
+if [ -z ${GITHUB_REPOSITORY-x} ]; then
     owner="${GITHUB_REPOSITORY%/*}"
 fi
 
 image=$1
 version=$2
-target=$3
+os=$3
 
-tagname="$owner/$image:$version-$target"
+tagname="$owner/$image:$version-$os"
 
 echo "Test $tagname"
-docker run --rm $tagname --version
+docker run --rm "$tagname" --version

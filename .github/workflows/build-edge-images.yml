@@ -10,15 +10,32 @@ on:
 
 jobs:
   build_edge:
-    runs-on: ubuntu-18.04
+    name: Build the HEAD Roswell
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Build edge image
-        run: ./build.sh roswell edge debian
-      - name: Test edge image
-        run: ./test.sh roswell edge debian
-      - name: Publish edge image
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          image: tonistiigi/binfmt:qemu-v8.1.5
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to Docker Hub
         if: github.ref == 'refs/heads/master'
+        uses: docker/login-action@v1
+        with:
+          username: fukamachi
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      - name: Build and publish edge image
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        run: ./publish.sh roswell
+          ARCH: linux/amd64,linux/arm64
+        run: |
+          BUILD_ARGS=""
+          if [ "$GITHUB_REF" = "refs/heads/master" ]; then
+            BUILD_ARGS="--push"
+          fi
+          BUILD_ARGS=$BUILD_ARGS ./build.sh roswell edge debian $build_arg
+          ./test.sh roswell edge debian
+          BUILD_ARGS=$BUILD_ARGS ./build.sh sbcl edge debian $build_arg
+          ./test.sh sbcl edge debian

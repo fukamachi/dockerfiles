@@ -8,36 +8,51 @@
 ```
 $ docker pull fukamachi/roswell
 $ docker run -it --rm fukamachi/roswell
-$ docker pull fukamachi/roswell:20.01.14.104
-$ docker run -it --rm fukamachi/roswell:20.01.14.104
+$ docker pull fukamachi/roswell:22.12.14.113
+$ docker run -it --rm fukamachi/roswell:22.12.14.113
 ```
 
 ## Supported tags
 
-- `20.04.14.105`, `20.04.14.105-debian`, `latest`, `latest-debian`
-- `20.04.14.105-ubuntu`, `latest-ubuntu`
-- `20.04.14.105-alpine`, `latest-alpine`
+- `23.10.14.114`, `23.10.14.114-debian`, `latest`, `latest-debian`
+- `23.10.14.114-ubuntu`, `latest-ubuntu`
+- `23.10.14.114-alpine`, `latest-alpine`
+- `22.12.14.113`, `22.12.14.113-debian`
+- `22.12.14.113-alpine`
+- `22.12.14.113-ubuntu`
+- `22.12.14.112`, `22.12.14.112-debian`
+- `22.12.14.112-alpine`
+- `22.12.14.112-ubuntu`
+- `21.10.14.111`, `21.10.14.111-debian`
+- `21.10.14.111-alpine`
+- `21.10.14.111-ubuntu`
+- `21.06.14.110`, `21.06.14.110-debian`
+- `21.06.14.110-alpine`
+- `21.06.14.110-ubuntu`
+- `21.05.14.109`, `21.05.14.109-debian`
+- `21.05.14.109-alpine`
+- `21.05.14.109-ubuntu`
+- `21.01.14.108`, `21.01.14.108-debian`
+- `21.01.14.108-alpine`
+- `21.01.14.108-ubuntu`
+- `20.06.14.107`, `20.06.14.107-debian`
+- `20.06.14.107-alpine`
+- `20.06.14.107-ubuntu`
+- `20.05.14.106`, `20.05.14.106-debian`
+- `20.05.14.106-alpine`
+- `20.05.14.106-ubuntu`
+- `20.04.14.105`, `20.04.14.105-debian`
+- `20.04.14.105-alpine`
+- `20.04.14.105-ubuntu`
 - `20.01.14.104`, `20.01.14.104-debian`
 - `20.01.14.104-alpine`
 - `20.01.14.104-ubuntu`
 - `19.12.13.103`, `19.12.13.103-debian`
 - `19.12.13.103-alpine`
 - `19.12.13.103-ubuntu`
-- `19.09.12.102`, `19.09.12.102-debian`
-- `19.09.12.102-alpine`
-- `19.09.12.102-ubuntu`
-- `19.08.10.101`, `19.08.10.101-debian`
-- `19.08.10.101-alpine`
-- `19.08.10.101-ubuntu`
-- `19.06.10.100`, `19.06.10.100-debian`
-- `19.06.10.100-alpine`
-- `19.06.10.100-ubuntu`
-- `19.05.10.99`, `19.05.10.99-debian`
-- `19.05.10.99-alpine`
-- `19.05.10.99-ubuntu`
 
 ## Building by your own
 
 ```
-$ docker build -t roswell:20.01.14.104 --build-arg VERSION=20.01.14.104 roswell/debian/
+$ docker build -t roswell:22.12.14.113 --build-arg VERSION=22.12.14.113 roswell/debian/
 ```

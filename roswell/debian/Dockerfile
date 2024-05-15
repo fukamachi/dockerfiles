@@ -10,20 +10,25 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-url="https://github.com/fukamachi/dockerfiles" \
       org.label-schema.version=$VERSION \
       org.label-schema.schema-version="1.0"
+ARG LIBCURL=libcurl4-gnutls-dev
+ENV LANG C.UTF-8
+ENV PATH /root/.roswell/bin:${PATH}
 
-ADD https://github.com/roswell/roswell/releases/download/v${VERSION}/roswell_${VERSION}-1_amd64.deb roswell.deb
-
-# hadolint ignore=DL3008
+# hadolint ignore=DL3008,DL3003
 RUN set -x; \
   apt-get update && apt-get -y install --no-install-recommends \
-    libcurl3-gnutls \
+    curl \
+    "${LIBCURL}" \
     bzip2 \
     ca-certificates \
-    make && \
-  rm -rf /var/lib/apt/lists/* && \
-  dpkg -i roswell.deb && rm roswell.deb
-
-ENV PATH /root/.roswell/bin:${PATH}
+    make \
+    build-essential \
+    automake && \
+  curl -sL "https://github.com/roswell/roswell/archive/v${VERSION}.tar.gz" -o roswell.tar.gz && \
+  tar xvfz roswell.tar.gz && cd "roswell-${VERSION}" && \
+  sh bootstrap && ./configure && make && make install \
+    && cd .. && rm roswell.tar.gz && rm -rf "roswell-${VERSION}" && \
+  apt-get autoremove --purge -y curl build-essential automake && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["ros"]
 CMD ["run"]

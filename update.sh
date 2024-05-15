@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eux
+set -ex
 
 cd `dirname $0`
 
@@ -12,5 +12,4 @@ images=( "${images[@]%/}" )
 
 for image in "${images[@]}"; do
     ./$image/update.sh
-    ./generate-readme.sh $image > $image/README.md
 done
