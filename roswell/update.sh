@@ -7,7 +7,7 @@ cd `dirname $0`
 new_versions=( `curl -s https://api.github.com/repos/roswell/roswell/releases\?per_page\=5 | jq -r '.[] | .tag_name' | sed -e 's/^v//' | grep -v "^$(cat versions | awk -F, '{ printf "\\\\|^%s$", $1 }' | cut -b 4-)" | sort -V` )
 
 debian_image="bookworm-slim"
-alpine_image="3.20"
+alpine_image="3.17"
 ubuntu_image="24.04"
 libcurl_version="libcurl4-gnutls-dev"
 
