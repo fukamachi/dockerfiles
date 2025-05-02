@@ -12,7 +12,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.version=$VERSION \
       org.label-schema.schema-version="1.0"
 
-RUN set -x; \
+RUN set -x -o pipefail; \
   ros install "sbcl-bin/${VERSION}" \
     && ros use "sbcl-bin/${VERSION}" \
     # Uninstall unnecessary files

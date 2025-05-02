@@ -49,7 +49,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0"
 
 # hadolint ignore=DL3018
-RUN set -x; \
+RUN set -x -o pipefail; \
   if [ "$OS" = "alpine" ]; then \
     apk add --update --no-cache zstd-libs; \
   fi; \

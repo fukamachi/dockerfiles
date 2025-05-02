@@ -15,7 +15,7 @@ ENV LANG C.UTF-8
 ENV PATH /root/.roswell/bin:${PATH}
 
 # hadolint ignore=DL3008,DL3003
-RUN set -x; \
+RUN set -x -o pipefail; \
   apt-get update && apt-get -y install --no-install-recommends \
     curl \
     "${LIBCURL}" \
