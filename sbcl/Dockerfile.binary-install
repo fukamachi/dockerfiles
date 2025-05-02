@@ -12,13 +12,14 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.version=$VERSION \
       org.label-schema.schema-version="1.0"
 
-RUN set -x -o pipefail; \
+RUN set -x; \
   ros install "sbcl-bin/${VERSION}" \
     && ros use "sbcl-bin/${VERSION}" \
     # Uninstall unnecessary files
     && ros -e '(ql:uninstall-dist "quicklisp")' -e '(ql-dist:install-dist "http://beta.quicklisp.org/dist/quicklisp.txt" :prompt nil)' \
-    && head -n 1 ~/.roswell/lisp/quicklisp/local-init/roswell.lisp | grep -q '^#\+ros\.init' \
-      || sed -i '1s/^/#+ros.init /' ~/.roswell/lisp/quicklisp/local-init/roswell.lisp \
+    && ( [ ! -f ~/.roswell/lisp/quicklisp/local-init/roswell.lisp ] || \
+        grep -q '^#+ros.init' ~/.roswell/lisp/quicklisp/local-init/roswell.lisp || \
+        sed -i '1s/^/#+ros.init /' ~/.roswell/lisp/quicklisp/local-init/roswell.lisp ) || true \
     && rm -rf /root/.roswell/archives/* \
       /root/.roswell/src/sbcl-*
 

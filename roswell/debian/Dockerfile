@@ -15,7 +15,7 @@ ENV LANG C.UTF-8
 ENV PATH /root/.roswell/bin:${PATH}
 
 # hadolint ignore=DL3008,DL3003
-RUN set -x -o pipefail; \
+RUN set -x; \
   apt-get update && apt-get -y install --no-install-recommends \
     curl \
     "${LIBCURL}" \
@@ -27,8 +27,6 @@ RUN set -x -o pipefail; \
   curl -sL "https://github.com/roswell/roswell/archive/v${VERSION}.tar.gz" -o roswell.tar.gz && \
   tar xvfz roswell.tar.gz && cd "roswell-${VERSION}" && \
   sh bootstrap && ./configure && make && make install \
-    && head -n 1 ~/.roswell/lisp/quicklisp/local-init/roswell.lisp | grep -q '^#\+ros\.init' \
-      || sed -i '1s/^/#+ros.init /' ~/.roswell/lisp/quicklisp/local-init/roswell.lisp \
     && cd .. && rm roswell.tar.gz && rm -rf "roswell-${VERSION}" && \
   apt-get autoremove --purge -y curl build-essential automake && apt-get clean && rm -rf /var/lib/apt/lists/*
 

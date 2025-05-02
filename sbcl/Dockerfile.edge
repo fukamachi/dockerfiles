@@ -46,7 +46,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0"
 
 # hadolint ignore=DL3018
-RUN set -x -o pipefail; \
+RUN set -x; \
   if [ "$OS" = "alpine" ]; then \
     apk add --update --no-cache zstd-libs; \
   fi; \
@@ -56,8 +56,9 @@ RUN set -x -o pipefail; \
   ros -e '(mapc (function ql-dist:uninstall) (ql-dist:installed-releases t))' \
     && rm -f /root/.roswell/lisp/quicklisp/tmp/quicklisp.tar \
     && rm -rf /root/.roswell/archives/* /root/.roswell/src/sbcl-* /root/.cache/common-lisp/sbcl-*/root/.roswell/lisp/quicklisp/dists/quicklisp/software \
-    && head -n 1 ~/.roswell/lisp/quicklisp/local-init/roswell.lisp | grep -q '^#\+ros\.init' \
-      || sed -i '1s/^/#+ros.init /' ~/.roswell/lisp/quicklisp/local-init/roswell.lisp
+    && ( [ ! -f ~/.roswell/lisp/quicklisp/local-init/roswell.lisp ] || \
+        grep -q '^#+ros.init' ~/.roswell/lisp/quicklisp/local-init/roswell.lisp || \
+        sed -i '1s/^/#+ros.init /' ~/.roswell/lisp/quicklisp/local-init/roswell.lisp ) || true
 
 RUN set -x; \
   printf '#!/bin/sh\nexec ros run -- "$@"\n' > /usr/local/bin/sbcl \
