@@ -26,6 +26,13 @@ $ docker run -it --rm fukamachi/sbcl
 "2.0.0"
 ```
 
+### Copying only SBCL in Dockerfile
+
+```shell
+FROM debian:bookworm-slim
+COPY --from=fukamachi/sbcl:2.4.3 /root/.roswell/impls/*/linux/sbcl-bin/2.4.3 /usr/local
+```
+
 ### Building by your own
 
 ```shell
