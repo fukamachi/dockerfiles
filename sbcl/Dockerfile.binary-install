@@ -17,6 +17,8 @@ RUN set -x; \
     && ros use "sbcl-bin/${VERSION}" \
     # Uninstall unnecessary files
     && ros -e '(ql:uninstall-dist "quicklisp")' -e '(ql-dist:install-dist "http://beta.quicklisp.org/dist/quicklisp.txt" :prompt nil)' \
+    && head -n 1 ~/.roswell/lisp/quicklisp/local-init/roswell.lisp | grep -q '^#\+ros\.init' \
+      || sed -i '1s/^/#+ros.init /' ~/.roswell/lisp/quicklisp/local-init/roswell.lisp \
     && rm -rf /root/.roswell/archives/* \
       /root/.roswell/src/sbcl-*
 

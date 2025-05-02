@@ -59,7 +59,9 @@ RUN set -x; \
   ros setup && \
   ros -e '(mapc (function ql-dist:uninstall) (ql-dist:installed-releases t))' \
     && rm -f /root/.roswell/lisp/quicklisp/tmp/quicklisp.tar \
-    && rm -rf /root/.roswell/archives/* /root/.roswell/src/sbcl-* /root/.cache/common-lisp/sbcl-*/root/.roswell/lisp/quicklisp/dists/quicklisp/software
+    && rm -rf /root/.roswell/archives/* /root/.roswell/src/sbcl-* /root/.cache/common-lisp/sbcl-*/root/.roswell/lisp/quicklisp/dists/quicklisp/software \
+    && head -n 1 ~/.roswell/lisp/quicklisp/local-init/roswell.lisp | grep -q '^#\+ros\.init' \
+      || sed -i '1s/^/#+ros.init /' ~/.roswell/lisp/quicklisp/local-init/roswell.lisp
 
 RUN set -x; \
   printf '#!/bin/sh\nexec ros run -- "$@"\n' > /usr/local/bin/sbcl \

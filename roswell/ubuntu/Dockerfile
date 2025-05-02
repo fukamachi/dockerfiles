@@ -27,6 +27,8 @@ RUN set -x; \
   curl -sL "https://github.com/roswell/roswell/archive/v${VERSION}.tar.gz" -o roswell.tar.gz && \
   tar xvfz roswell.tar.gz && cd "roswell-${VERSION}" && \
   sh bootstrap && ./configure && make && make install \
+    && head -n 1 ~/.roswell/lisp/quicklisp/local-init/roswell.lisp | grep -q '^#\+ros\.init' \
+      || sed -i '1s/^/#+ros.init /' ~/.roswell/lisp/quicklisp/local-init/roswell.lisp \
     && cd .. && rm roswell.tar.gz && rm -rf "roswell-${VERSION}" && \
   apt-get autoremove --purge -y curl build-essential automake && apt-get clean && rm -rf /var/lib/apt/lists/*
 
