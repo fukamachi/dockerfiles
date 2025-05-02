@@ -47,8 +47,8 @@ RUN set -x; \
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE
 ARG VERSION
-ENV LANG C.UTF-8
-ENV PATH /root/.roswell/bin:${PATH}
+ENV LANG=C.UTF-8
+ENV PATH=/root/.roswell/bin:${PATH}
 COPY --from=build-env /home/roswell-builder/packages/x86_64/roswell-$VERSION-r0.apk roswell.apk
 
 # hadolint ignore=DL3018

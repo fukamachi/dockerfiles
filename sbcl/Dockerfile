@@ -65,7 +65,14 @@ RUN set -x; \
         fi)
 
 RUN set -x; \
-  printf '#!/bin/sh\nexec ros run -- "$@"\n' > /usr/local/bin/sbcl \
-  && chmod u+x /usr/local/bin/sbcl
+  arch="$(case $(uname -m) in amd64|x86_64) echo x86-64;; aarch64) echo arm64;; *) uname -m ;; esac)"; \
+  ln -s "/root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/bin/sbcl" /usr/local/bin && \
+  printf '%s\n' \
+    ';;; The following lines added by ql:add-to-init-file:' \
+    '#-quicklisp' \
+    '(let ((quicklisp-init (merge-pathnames "~/.roswell/lisp/quicklisp/setup.lisp"' \
+    '                                       (user-homedir-pathname))))' \
+    '  (when (probe-file quicklisp-init)' \
+    '    (load quicklisp-init)))' >> /root/.sbclrc
 
 ENTRYPOINT ["/usr/local/bin/sbcl"]
