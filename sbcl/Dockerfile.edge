@@ -62,7 +62,7 @@ RUN set -x; \
 
 RUN set -x; \
   arch="$(case $(uname -m) in amd64|x86_64) echo x86-64;; aarch64) echo arm64;; *) uname -m ;; esac)"; \
-  ln -s "/root/.roswell/impls/$arch/linux/sbcl-bin/$VERSION/bin/sbcl" /usr/local/bin && \
+  ln -s "/root/.roswell/impls/$arch/linux/sbcl-head/edge/bin/sbcl" /usr/local/bin && \
   printf '%s\n' \
     ';;; The following lines added by ql:add-to-init-file:' \
     '#-quicklisp' \
