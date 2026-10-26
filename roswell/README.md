@@ -8,15 +8,24 @@
 ```
 $ docker pull fukamachi/roswell
 $ docker run -it --rm fukamachi/roswell
-$ docker pull fukamachi/roswell:24.10.115
-$ docker run -it --rm fukamachi/roswell:24.10.115
+$ docker pull fukamachi/roswell:26.10.118
+$ docker run -it --rm fukamachi/roswell:26.10.118
 ```
 
 ## Supported tags
 
-- `26.02.116`, `26.02.116-debian`, `latest`, `latest-debian`
-- `26.02.116-ubuntu`, `latest-ubuntu`
-- `26.02.116-alpine`, `latest-alpine`
+- `26.10.119`, `26.10.119-debian`, `latest`, `latest-debian`
+- `26.10.119-ubuntu`, `latest-ubuntu`
+- `26.10.119-alpine`, `latest-alpine`
+- `26.10.118`, `26.10.118-debian`
+- `26.10.118-alpine`
+- `26.10.118-ubuntu`
+- `26.10.117`, `26.10.117-debian`
+- `26.10.117-alpine`
+- `26.10.117-ubuntu`
+- `26.02.116`, `26.02.116-debian`
+- `26.02.116-alpine`
+- `26.02.116-ubuntu`
 - `24.10.115`, `24.10.115-debian`
 - `24.10.115-alpine`
 - `24.10.115-ubuntu`
@@ -60,5 +69,5 @@ $ docker run -it --rm fukamachi/roswell:24.10.115
 ## Building by your own
 
 ```
-$ docker build -t roswell:24.10.115 --build-arg VERSION=24.10.115 roswell/debian/
+$ docker build -t roswell:26.10.118 --build-arg VERSION=26.10.118 roswell/debian/
 ```
