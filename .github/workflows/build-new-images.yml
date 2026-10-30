@@ -20,14 +20,14 @@ jobs:
         run: |
           PR_FILES_URL="https://api.github.com/repos/$GITHUB_REPOSITORY/pulls/${{ github.event.number }}/files"
           VERSIONS=$(curl -s "$PR_FILES_URL" \
-            | jq -rcM 'map(select(.filename | test("[^/]+/versions$")) | {(.filename | match("[^/]+") | .string): (.patch | split("\n") | map(select(. | test("^\\+")) | .[1:] | match("[^,]+") | .string))}) | add')
-          echo "::set-output name=versions::$VERSIONS"
-          echo "::set-output name=images::$(echo "$VERSIONS" | jq -Mc 'to_entries | map(.key)')"
+            | jq -rcM 'map(select(.filename | test("[^/]+/versions$")) | {(.filename | match("[^/]+") | .string): (.patch | split("\n") | map(select(. | test("^\\+")) | .[1:] | match("[^,]+") | .string))}) | add // {} | with_entries(select(.value != []))')
+          echo "versions=$VERSIONS" >> "$GITHUB_OUTPUT"
+          echo "images=$(echo "$VERSIONS" | jq -Mc 'keys')" >> "$GITHUB_OUTPUT"
 
   build_images:
     name: Build ${{ matrix.target }}
     needs: updated
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true && needs.updated.outputs.images != '[]'
     runs-on: ubuntu-latest
     strategy:
       matrix:
