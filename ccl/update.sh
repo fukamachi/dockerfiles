@@ -10,5 +10,5 @@ new_versions=( `curl -s "https://api.github.com/repos/roswell/ccl_bin/releases?p
 latest_roswell=$(cat ../roswell/versions | sort -Vr | head -n 1 | awk -F, '{ print $1 }')
 
 for version in "${new_versions[@]}"; do
-  echo "$version,$latest_roswell" > >(tee -a versions)
+  echo "$version,$latest_roswell" | tee -a versions
 done
