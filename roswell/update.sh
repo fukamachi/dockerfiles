@@ -12,5 +12,5 @@ ubuntu_image="24.04"
 libcurl_version="libcurl4-gnutls-dev"
 
 for version in "${new_versions[@]}"; do
-  echo "$version,$debian_image,$alpine_image,$ubuntu_image,$libcurl_version" > >(tee -a versions)
+  echo "$version,$debian_image,$alpine_image,$ubuntu_image,$libcurl_version" | tee -a versions
 done
