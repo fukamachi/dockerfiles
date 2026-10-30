@@ -55,9 +55,10 @@ jobs:
 
           for version in "${VERSIONS[@]}"; do
             for os in "${OS[@]}"; do
+              arch="$ARCH"
               if [ "$os" == "alpine" ]; then
-                ARCH=linux/amd64
+                arch=linux/amd64
               fi
-              BUILD_ARGS=--push ARCH="$ARCH" ./build.sh "$IMAGE" "$version" "$os"
+              BUILD_ARGS=--push ARCH="$arch" ./build.sh "$IMAGE" "$version" "$os"
             done
           done
