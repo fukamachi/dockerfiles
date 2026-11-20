@@ -8,15 +8,18 @@
 ```
 $ docker pull fukamachi/ccl
 $ docker run -it --rm fukamachi/ccl
-$ docker pull fukamachi/ccl:1.12.2
-$ docker run -it --rm fukamachi/ccl:1.12.2
+$ docker pull fukamachi/ccl:1.13
+$ docker run -it --rm fukamachi/ccl:1.13
 ```
 
 ## Supported tags
 
-- `1.13`, `1.13-debian`, `latest`, `latest-debian`
-- `1.13-ubuntu`, `latest-ubuntu`
-- `1.13-alpine`, `latest-alpine`
+- `1.14`, `1.14-debian`, `latest`, `latest-debian`
+- `1.14-ubuntu`, `latest-ubuntu`
+- `1.14-alpine`, `latest-alpine`
+- `1.13`, `1.13-debian`
+- `1.13-alpine`
+- `1.13-ubuntu`
 - `1.12.2`, `1.12.2-debian`
 - `1.12.2-alpine`
 - `1.12.2-ubuntu`
@@ -39,5 +42,5 @@ $ docker run -it --rm fukamachi/ccl:1.12.2
 ## Building by your own
 
 ```
-$ docker build -t ccl:1.12.2 --build-arg VERSION=1.12.2 ccl/debian/
+$ docker build -t ccl:1.13 --build-arg VERSION=1.13 ccl/debian/
 ```
